@@ -17,15 +17,15 @@ El sitio permite conocer la esencia de la marca, su personalidad y voz, paleta d
 También cuenta con una presentación visual de los productos mediante imágenes y contenido multimedia.
 
 ## ⚙️ Funcionalidades
--Navegación mediante un menú responsive.
--Visualización de los productos de la mueblería.
--Galería/carrusel de imágenes.
--Reproducción del video institucional.
--Diseño responsive para computadora, tablet y celular.
--Secciones informativas sobre la identidad de la marca.
--Información sobre materiales y sustentabilidad.
--Información de contacto.
- -Carrito de compras.
+- Navegación mediante un menú responsive.
+- Visualización de los productos de la mueblería.
+- Galería/carrusel de imágenes.
+- Reproducción del video institucional.
+- Diseño responsive para computadora, tablet y celular.
+- Secciones informativas sobre la identidad de la marca.
+- Información sobre materiales y sustentabilidad.
+- Información de contacto.
+- Carrito de compras.
 
 ## 🛠️ Tecnologías utilizadas
 - **HTML5** — estructura y contenido del sitio.
