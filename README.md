@@ -39,7 +39,7 @@ También cuenta con una presentación visual de los productos mediante imágenes
 
   "propongo hacerlo con github pages"
 
-📂 Estructura del proyecto
+## 📂 Estructura del proyecto
 
 ```text
 muebleria-hermanos-jota/
