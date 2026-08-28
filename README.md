@@ -42,9 +42,13 @@ También cuenta con una presentación visual de los productos mediante imágenes
 ## 📂 Estructura del proyecto
 
 ```text
-muebleria-hermanos-jota/
+mueblería-hermanos-jota/
 │
 ├── index.html
+├── catalogo.html
+├── producto.html
+├── contacto.html
+├── carrito.html
 ├── estilos.css
 ├── script.js
 ├── README.md
