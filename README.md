@@ -6,7 +6,7 @@ Sitio web de la Mueblería Hermanos Jota - Proyecto grupal ITBA
 - **Franco Alegre** — GitHub: `frankbj12`
 - **Miqueas Córdoba** — GitHub: `mickx79`
 - **Tomás Cupello** — GitHub: `tomassnahuel`
-- **Reil Brian** — GitHub: `...`
+- **Reil Brian** — GitHub: `reilbrian`
 
 ## 📖 Descripción del proyecto
 
@@ -65,4 +65,4 @@ muebleria-hermanos-jota/
 ```
 ## 📌 Proyecto
 
-Proyecto grupal desarrollado utilizando HTML, CSS y JavaScript."
+Proyecto grupal desarrollado utilizando HTML, CSS y JavaScript.
