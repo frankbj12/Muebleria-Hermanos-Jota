@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=l .0">
+
+        <title>Carrito | Hermanos Jota</title>
+
+        <link rel="stylesheet" href="estilos.css">
+    </head>
+
+    <body>
+        <header class="header">
+            <a href="index.html" class="Logo">
+                <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+            </a>
+
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="index.html">Inicio</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="carrito.html" class="carrito" aria-current="page">
+                    🛒 Carrito
+                    <span id="contador-carrito">0</span>
+                </a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="carrito-pagina" aria-labelledby="titulo-carrito">
+
+                <div class="carrito__header">
+
+                    <p class="seccion-etiqueta">
+                        Tu selección
+                    </p>
+                    <h1 id="titulo-carrito">
+                        Carrito de compras
+                    </h1>
+
+                </div>
+
+                <div id="lista-carrito" class="lista-carrito">
+                    <!--cargar los producos con js-->
+                </div>
+
+                <div id="total-carrito" class="total-carrito">
+                    Total: $0
+                </div>
+
+                <button type="button" id="vaciar-carrito" class="boton">
+                    Vaciar carrito
+                </button>
+
+            </section>
+
+        </main>
+
+        <footer class="footer">
+            
+            <div class="footer__contenido">
+
+                <div class="footer__marca">
+
+                    <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+
+                    <p>
+                        Muebles con diseño, artesanía y materiales nomles para crear espacios que perduran.
+                    </p>
+
+                </div>
+
+                <div class="footer-seccion">
+
+                    <h2>
+                        Hermanos Jota
+                    </h2>
+                    <P>
+                        Mueblería artesanal argentina.
+                    </P>
+                    <p>
+                        Buenos Aires, Argentina
+                    </p>
+                    
+                </div>
+
+                <div class="footer-seccion">
+
+                    <h2>
+                        Contacto
+                    </h2>
+
+                    <address>
+
+                        <p>
+                            <a href="mailto:info@hermanosjota.com.ar">
+                                info@hermanosjota.com.ar
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="tel:+541145678900">
+                                +54 11 4567-8900
+                            </a>
+                        </p>
+
+                    </address>
+
+                </div>
+
+            </div>
+
+            <div class="footer__inferior">
+
+                <p>
+                    © 2026 Hermanos Jota. Todos los derechos reservados.
+                </p>
+
+            </div>
+            
+        </footer>
+
+        <script src="script.js"></script>
+    </body>
+</html>

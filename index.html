@@ -1,15 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mueblería Hermanos Jota</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mueblería Hermanos Jota</title>
 
-    <link rel="stylesheet" href="estilos.css">
-   
-</head>
-<body>
+        <link rel="icon" type="imagen/svg" href="Kit de imágenes/logo.svg">
+        <link rel="stylesheet" href="estilos.css">
     
-    <script src="script.js"></script>
-</body>
+    </head>
+
+    <body>
+        <header class="header">
+
+            <a href="index.html" class="logo">
+                <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+            </a>
+
+            <nav class="navegacion" aria-label="Navegación principal">
+                <a href="index.html">Inicio</a>
+                <a href="catalogo.html">Catálogo</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="carrito.html" class="carrito">
+                    🛒 carrito
+                    <span id="contador-carrito">0</span> <!--contador inicial despues se hace con js-->
+                </a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" aria-label="titulo-hero">
+
+                <div class="hero__contenido">
+                    <p class="hero__etiqueta">
+                        Mueblería Hermanos Jota
+                    </p>
+                    <h1 id="titulo-hero">
+                        Muebles que cuentan historias
+                    </h1>
+                    <p class="hero__descripcion">
+                        Diseño, artesanía y materiales nobles par crear espacios
+                        únicos que perduran en el tiempo.
+                    </p>
+                    <a href="#productos" class="boton">
+                        Descubrí nuestra coleccion
+                    </a>
+
+                </div>
+
+                <div class="hero__media">
+                    <video class="hero__video" autoplay muted loop controls playsinline poster="Kit de imágenes/logo.svg">
+
+                        <source src="Kit de imágenes/Video institucional Hermanos Jota.mp4" type="video/mp4">
+
+                        Tu navegador no soporta la reproducción de este video.
+
+                    </video>
+                </div>  
+
+            </section>
+
+            <section class="productos-destacados" id="productos" aria-labelledby="titulo-productos">
+
+                <div class="seccion-header">
+                    <p class="seccion-eiqueta">Nuestra colección</p>
+                    <h2 id="titulo-productos">
+                        Productos destacados
+                    </h2>
+                    <p>
+                        Descubrí algunas de nuestreas piezas mas destacadas.
+                    </p>
+                </div>
+
+                <div class="productos-grid" id="productos-destacados">
+                    <!-- despues con js se inserta los productos-->
+                </div>
+
+                <div class="productos-accion">
+                    <a href="catalogo.html" class="boton">
+                        Ver catálogo completo
+                    </a>
+                </div>
+
+            </section>
+
+        </main>
+
+        <footer class="footer">
+
+            <div class="footer__contenido">
+
+                <div class="footer__marca">
+
+                    <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+
+                    <p>
+                        Muebles con diseño, artesanía y materiales noblespara crear espacios que perduran.
+                    </p>
+
+                </div>
+
+                <div class="footer__seccion">
+
+                    <h2>Hermanos Jota</h2>
+
+                    <p>
+                        Mueblería artesanal argentina.
+                    </p>
+
+                    <p>
+                        Buenos Aires, Argentina
+                    </p>
+
+                </div>
+
+                <div class="footer__seccion">
+
+                    <h2>Contacto</h2>
+
+                    <address>
+
+                        <p>
+                            <a href="mailto:info@hermanosjota.com.ar">
+                                info@hermanosjota.com.ar
+                            </a>
+                        </p>
+
+                        <p>
+                            <a href="tel:+541145678900">
+                                +54 11 4567-8900
+                            </a>
+                        </p>
+
+                    </address>
+
+                </div>
+
+            </div>
+
+            <div class="footer__inferior">
+
+                <p>
+                    © 2026 Hermanos Jota. Todos los derechos reservados.
+                </p>
+
+            </div>
+
+        </footer>
+
+        <script src="script.js"></script>
+    </body>
 </html>
