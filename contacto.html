@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=l .0">
+    <title>Contacto | Hermanos Jota</title>
 
-        <title>Contacto | Hermanos Jota</title>
-
-        <link rel="icon" type="imagen/svg" href="./assets/logo.svg">
-        <link rel="stylesheet" href="estilos.css">
-    </head>
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="stylesheet" href="estilos.css">
+</head>
 
 <body>
     <header class="header">
-        <a href="index.html" class="Logo">
+        <a href="index.html" class="logo">
             <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
         </a>
 
         <nav class="navegacion" aria-label="Navegación principal">
             <a href="index.html">Inicio</a>
-            <a href="catalogo.html">Catálogo</a>
+            <a href="productos.html">Productos</a>
             <a href="contacto.html" aria-current="page">Contacto</a>
             <a href="carrito.html" class="carrito">
                 🛒 Carrito
@@ -32,22 +28,9 @@
         </nav>
     </header>
 
-    <nav class="navegacion" aria-label="Navegación principal">
-        <a href="index.html">Inicio</a>
-        <a href="productos.html">Productos</a>
-        <a href="contacto.html" aria-current="page">Contacto</a>
-        <a href="carrito.html" class="carrito">
-            🛒 Carrito
-            <span id="contador-carrito">0</span>
-        </a>
-    </nav>
-    </header>
-
     <main>
         <section class="contacto" aria-labelledby="titulo-contacto">
-
             <div class="contacto__intro">
-
                 <p class="seccion-etiqueta">
                     Estamos para ayudarte
                 </p>
@@ -58,31 +41,22 @@
                     ¿Tenés alguna consulta sobre nuestros productos?
                     Completá el formulario y nos pondremos en contacto con vos.
                 </p>
-
             </div>
 
             <form id="formulario-contacto" class="formulario" novalidate>
-
                 <div class="campo">
-                    <label for="nombre">
-                        Nombre
-                    </label>
+                    <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
                 </div>
 
                 <div class="campo">
-                    <label for="email">
-                        Email
-                    </label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="tu@email.com" required>
                 </div>
 
                 <div class="campo">
-                    <label for="mensaje">
-                        Mensaje
-                    </label>
-                    <textarea id="mensaje" name="mensaje" rows="6" placeholder="Escribí tu mensaje..."
-                        required></textarea>
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="6" placeholder="Escribí tu mensaje..." required></textarea>
                 </div>
 
                 <button type="submit" class="boton">
@@ -90,180 +64,44 @@
                 </button>
 
                 <div id="mensaje-exito" class="mensaje-exito" aria-live="polite"></div>
-
             </form>
-
         </section>
     </main>
 
     <footer class="footer">
-
         <div class="footer__contenido">
-
             <div class="footer__marca">
-
-                <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
-
+                <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
                 <p>
                     Muebles con diseño, artesanía y materiales nobles para crear espacios que perduran.
                 </p>
-
             </div>
 
-            <div class="footer-seccion">
-
-                <h2>
-                    Hermanos Jota
-                </h2>
-                <P>
-                    Mueblería artesanal argentina.
-                </P>
-                <p>
-                    Buenos Aires, Argentina.
-                </p>
-
+            <div class="footer__seccion">
+                <h2>Hermanos Jota</h2>
+                <p>Mueblería artesanal argentina.</p>
+                <p>Buenos Aires, Argentina.</p>
             </div>
 
-            <div class="footer-seccion">
-
-                <h2>
-                    Contacto
-                </h2>
-
+            <div class="footer__seccion">
+                <h2>Contacto</h2>
                 <address>
-
                     <p>
-                        <a href="mailto:info@hermanosjota.com.ar">
-                            info@hermanosjota.com.ar
-                        </a>
+                        <a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a>
                     </p>
-
                     <p>
-                        <a href="tel:+541145678900">
-                            +54 11 4567-8900
-                        </a>
+                        <a href="tel:+541145678900">+54 11 4567-8900</a>
                     </p>
-
                 </address>
-
             </div>
-
         </div>
 
         <div class="footer__inferior">
-
-            <p class="seccion-etiqueta">
-                Estamos para ayudarte
-            </p>
-            <h1 id="titulo-contacto">
-                Contactanos
-            </h1>
-            <p>
-                ¿Tenés alguna consulta sobre nuestros productos?
-                Completá el formulario y nospondremos en contacto con vos.
-            </p>
-
+            <p>© 2026 Hermanos Jota. Todos los derechos reservados.</p>
         </div>
+    </footer>
 
-        <form id="formulario-contacto" class="formulario" novalidate>
-
-            <div class="campo">
-                <label for="nombre">
-                    Nombre
-                </label>
-                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-            </div>
-
-            <div class="campo">
-                <label for="email">
-                    Email
-                </label>
-                <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-            </div>
-
-            <div class="campo">
-                <label for="mensaje">
-                    Mensaje
-                </label>
-                <textarea id="mensaje" name="mensaje" rows="6" placeholder="Escribí tu mensaje..." required></textarea>
-            </div>
-
-            <button type="submit" class="boton">
-                Enviar mensaje
-            </button>
-
-            <div id="mensaje-exito" class="mensaje-exito" aria-live="polite"></div>
-
-        </form>
-
-        </section>
-        </main>
-
-        <footer class="footer">
-
-            <div class="footer__contenido">
-
-                <div class="footer__marca">
-
-                    <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
-
-                    <p>
-                        Muebles con diseño, artesanía y materiales nomles para crear espacios que perduran.
-                    </p>
-
-                </div>
-
-                <div class="footer-seccion">
-
-                    <h2>
-                        Hermanos Jota
-                    </h2>
-                    <P>
-                        Mueblería artesanal argentina.
-                    </P>
-                    <p>
-                        Buenos Aires, Argentina
-                    </p>
-
-                </div>
-
-                <div class="footer-seccion">
-
-                    <h2>
-                        Contacto
-                    </h2>
-
-                    <address>
-
-                        <p>
-                            <a href="mailto:info@hermanosjota.com.ar">
-                                info@hermanosjota.com.ar
-                            </a>
-                        </p>
-
-                        <p>
-                            <a href="tel:+541145678900">
-                                +54 11 4567-8900
-                            </a>
-                        </p>
-
-                    </address>
-
-                </div>
-
-            </div>
-
-            <div class="footer__inferior">
-
-                <p>
-                    © 2026 Hermanos Jota. Todos los derechos reservados.
-                </p>
-
-            </div>
-
-        </footer>
-
-        <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

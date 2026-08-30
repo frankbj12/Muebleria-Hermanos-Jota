@@ -1,14 +1,35 @@
+/* ============================================================
+   Hermanos Jota — Estilos principales
+   Paleta y tipografía según docs/brand.md
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap');
+
+/* ---------- Tokens de diseño ---------- */
+
 :root {
-	--color-fondo: #f7f4ef;
-	--color-superficie: #ffffff;
-	--color-texto: #2f2a26;
-	--color-suave: #6f665f;
-	--color-acento: #9a5b3d;
-	--color-acento-oscuro: #6e3e2b;
-	--color-borde: #e4ddd5;
+	/* Paleta de marca */
+	--siena: #A0522D;
+	--siena-oscuro: #7C3D1E;
+	--verde-salvia: #87A96B;
+	--alabastro: #F5E6D3;
+	--vara-de-oro: #D4A437;
+	--rosa-polvo: #C47A6D;
+
+	/* Neutrales derivados */
+	--color-fondo: #FAF6F1;
+	--color-superficie: #FFFFFF;
+	--color-texto: #2C2520;
+	--color-suave: #6B5F56;
+	--color-borde: #E5DDD4;
+	--color-footer: #2C2520;
+
+	/* Estructura */
 	--ancho-contenido: 72rem;
-	--espacio: 1rem;
+	--radio: 0.375rem;
 }
+
+/* ---------- Reset & base ---------- */
 
 *,
 *::before,
@@ -28,8 +49,11 @@ body {
 	flex-direction: column;
 	background: var(--color-fondo);
 	color: var(--color-texto);
-	font-family: Georgia, 'Times New Roman', serif;
-	line-height: 1.5;
+	font-family: 'Inter', system-ui, -apple-system, sans-serif;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
 }
 
 main {
@@ -48,14 +72,29 @@ a {
 
 h1,
 h2,
+h3,
 p {
 	margin-top: 0;
 }
 
-h1,
-h2 {
+h1 {
+	font-family: 'Playfair Display', Georgia, serif;
+	font-weight: 400;
 	line-height: 1.15;
+	letter-spacing: 0.01em;
 }
+
+h2 {
+	font-family: 'Inter', system-ui, sans-serif;
+	font-weight: 500;
+	line-height: 1.25;
+}
+
+address {
+	font-style: normal;
+}
+
+/* ---------- Header ---------- */
 
 .header {
 	display: flex;
@@ -70,69 +109,115 @@ h2 {
 .logo,
 .Logo {
 	display: block;
-	width: 7rem;
+	width: 6.5rem;
+	transition: opacity 0.2s ease;
+}
+
+.logo:hover,
+.Logo:hover {
+	opacity: 0.8;
 }
 
 .navegacion {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: .5rem 1rem;
+	gap: 0.25rem 1.25rem;
 }
 
 .navegacion a {
-	padding: .35rem .25rem;
+	position: relative;
+	padding: 0.4rem 0.15rem;
 	text-decoration: none;
-	font-weight: 700;
+	font-weight: 500;
+	font-size: 0.9rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	transition: color 0.2s ease;
+}
+
+.navegacion a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background: var(--siena);
+	transition: width 0.25s ease;
+}
+
+.navegacion a:hover::after,
+.navegacion a:focus-visible::after,
+.navegacion a[aria-current='page']::after {
+	width: 100%;
 }
 
 .navegacion a:hover,
 .navegacion a:focus-visible,
 .navegacion a[aria-current='page'] {
-	color: var(--color-acento);
+	color: var(--siena);
 }
 
 .carrito span {
 	display: inline-grid;
-	min-width: 1.4rem;
-	min-height: 1.4rem;
-	margin-left: .2rem;
+	min-width: 1.35rem;
+	min-height: 1.35rem;
+	margin-left: 0.2rem;
 	place-items: center;
 	border-radius: 50%;
-	background: var(--color-acento);
+	background: var(--siena);
 	color: #fff;
-	font-size: .8rem;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1;
 }
+
+/* ---------- Botón principal ---------- */
 
 .boton {
 	display: inline-block;
-	padding: .75rem 1.1rem;
-	border: 1px solid var(--color-acento);
-	border-radius: .25rem;
-	background: var(--color-acento);
+	padding: 0.8rem 1.6rem;
+	border: none;
+	border-radius: var(--radio);
+	background: var(--siena);
 	color: #fff;
 	cursor: pointer;
-	font: inherit;
-	font-weight: 700;
+	font-family: 'Inter', system-ui, sans-serif;
+	font-weight: 500;
+	font-size: 0.85rem;
+	letter-spacing: 0.08em;
 	text-align: center;
 	text-decoration: none;
+	text-transform: uppercase;
+	transition: background 0.25s ease, transform 0.15s ease;
 }
 
 .boton:hover,
 .boton:focus-visible {
-	background: var(--color-acento-oscuro);
+	background: var(--siena-oscuro);
+	transform: translateY(-1px);
 }
+
+.boton:active {
+	transform: translateY(0);
+}
+
+/* ---------- Etiquetas de sección ---------- */
 
 .seccion-etiqueta,
 .seccion-eiqueta,
 .hero__etiqueta {
-	margin-bottom: .5rem;
-	color: var(--color-acento);
-	font-size: .8rem;
-	font-weight: 700;
-	letter-spacing: .08em;
+	margin-bottom: 0.5rem;
+	color: var(--siena);
+	font-family: 'Inter', system-ui, sans-serif;
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
+
+/* ---------- Contenedores de sección ---------- */
 
 .hero,
 .productos-destacados,
@@ -145,10 +230,12 @@ h2 {
 	padding: 3rem 0;
 }
 
+/* ---------- Hero ---------- */
+
 .hero {
 	display: flex;
 	flex-direction: column;
-	gap: 2rem;
+	gap: 2.5rem;
 	align-items: center;
 }
 
@@ -158,36 +245,61 @@ h2 {
 }
 
 .hero h1 {
-	margin-bottom: 1rem;
-	font-size: clamp(2.2rem, 10vw, 4.5rem);
+	margin-bottom: 0.75rem;
+	font-size: clamp(2rem, 8vw, 3.8rem);
+	color: var(--color-texto);
+}
+
+.hero h1::after {
+	content: '';
+	display: block;
+	width: 3.5rem;
+	height: 3px;
+	margin-top: 0.75rem;
+	background: var(--vara-de-oro);
+	border-radius: 2px;
 }
 
 .hero__descripcion {
-	max-width: 34rem;
+	max-width: 32rem;
+	margin-bottom: 1.5rem;
 	color: var(--color-suave);
-	font-size: 1.1rem;
+	font-size: 1.05rem;
+	line-height: 1.7;
 }
 
 .hero__video {
 	width: 100%;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 16 / 9;
 	object-fit: cover;
+	border-radius: var(--radio);
+	background: var(--color-borde);
 }
+
+/* ---------- Sección de productos ---------- */
 
 .seccion-header {
 	margin-bottom: 2rem;
 }
 
+.seccion-header h2 {
+	font-family: 'Playfair Display', Georgia, serif;
+	font-weight: 400;
+	font-size: clamp(1.5rem, 4vw, 2.2rem);
+}
+
 .productos-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-	gap: 1.25rem;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+	gap: 1.5rem;
 }
 
 .productos-accion {
-	margin-top: 2rem;
+	margin-top: 2.5rem;
 	text-align: center;
 }
+
+/* ---------- Tarjetas de producto ---------- */
 
 .producto-card,
 .tarjeta-producto,
@@ -197,6 +309,15 @@ h2 {
 	overflow: hidden;
 	background: var(--color-superficie);
 	border: 1px solid var(--color-borde);
+	border-radius: var(--radio);
+	transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.producto-card:hover,
+.tarjeta-producto:hover,
+.producto:hover {
+	box-shadow: 0 8px 24px rgb(160 82 45 / 0.1);
+	transform: translateY(-3px);
 }
 
 .producto-card img,
@@ -213,8 +334,24 @@ h2 {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	gap: .65rem;
-	padding: 1rem;
+	gap: 0.5rem;
+	padding: 1.1rem 1rem;
+}
+
+.producto-card__contenido h3,
+.tarjeta-producto__contenido h3,
+.producto__contenido h3 {
+	font-family: 'Playfair Display', Georgia, serif;
+	font-weight: 400;
+	font-size: 1.1rem;
+}
+
+.producto-card__contenido p,
+.tarjeta-producto__contenido p,
+.producto__contenido p {
+	color: var(--color-suave);
+	font-size: 0.9rem;
+	line-height: 1.5;
 }
 
 .producto-card .boton,
@@ -223,45 +360,94 @@ h2 {
 	margin-top: auto;
 }
 
+/* ---------- Catálogo ---------- */
+
 .catalogo__header,
 .contacto__intro,
 .carrito__header {
 	margin-bottom: 2rem;
 }
 
+.catalogo__header h1,
+.contacto__intro h1,
+.carrito__header h1 {
+	font-size: clamp(1.8rem, 5vw, 2.8rem);
+}
+
+/* ---------- Buscador ---------- */
+
 .buscador,
 .campo {
 	display: flex;
 	flex-direction: column;
-	gap: .4rem;
+	gap: 0.4rem;
 }
 
 .buscador {
-	max-width: 32rem;
+	max-width: 28rem;
 	margin-bottom: 2rem;
+}
+
+.buscador label,
+.campo label {
+	font-weight: 500;
+	font-size: 0.88rem;
+	letter-spacing: 0.02em;
+	color: var(--color-suave);
 }
 
 input,
 textarea {
 	width: 100%;
-	padding: .75rem;
+	padding: 0.75rem 0.9rem;
 	border: 1px solid var(--color-borde);
-	border-radius: .25rem;
+	border-radius: var(--radio);
 	background: var(--color-superficie);
 	color: var(--color-texto);
-	font: inherit;
+	font-family: 'Inter', system-ui, sans-serif;
+	font-size: 0.95rem;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+textarea:focus {
+	outline: none;
+	border-color: var(--siena);
+	box-shadow: 0 0 0 3px rgb(160 82 45 / 0.12);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: #B5ACA3;
 }
 
 textarea {
 	resize: vertical;
 }
 
+/* ---------- Formulario ---------- */
+
 .formulario {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
-	max-width: 42rem;
+	gap: 1.25rem;
+	max-width: 36rem;
 }
+
+.mensaje-exito {
+	padding: 0.9rem 1rem;
+	border-radius: var(--radio);
+	background: rgb(135 169 107 / 0.12);
+	color: #4A6B35;
+	font-weight: 500;
+	font-size: 0.92rem;
+}
+
+.mensaje-exito:empty {
+	display: none;
+}
+
+/* ---------- Carrito ---------- */
 
 .lista-carrito {
 	display: flex;
@@ -272,9 +458,14 @@ textarea {
 
 .total-carrito {
 	margin-bottom: 1rem;
+	padding: 1rem 0;
+	border-top: 1px solid var(--color-borde);
 	font-size: 1.25rem;
 	font-weight: 700;
+	color: var(--siena-oscuro);
 }
+
+/* ---------- Detalle de producto ---------- */
 
 .detalle-producto {
 	display: flex;
@@ -291,18 +482,54 @@ textarea {
 	width: 100%;
 	aspect-ratio: 1 / 1;
 	object-fit: cover;
+	border-radius: var(--radio);
+	background: var(--color-borde);
+}
+
+.detalle-producto__informacion h1 {
+	font-size: clamp(1.6rem, 5vw, 2.4rem);
+	margin-bottom: 0.5rem;
+}
+
+.detalle-producto__fabricacion,
+.detalle-producto__fabricaion {
+	margin: 1.25rem 0;
+	padding: 1rem 1.25rem;
+	background: var(--alabastro);
+	border-radius: var(--radio);
+}
+
+.detalle-producto__fabricacion h2,
+.detalle-producto__fabricaion h2 {
+	font-size: 0.95rem;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 0.5rem;
+	color: var(--siena);
+}
+
+.detalle-producto__fabricacion p,
+.detalle-producto__fabricaion p {
+	color: var(--color-suave);
+	font-size: 0.92rem;
+	line-height: 1.6;
 }
 
 .detalle-producto__precio {
-	color: var(--color-acento-oscuro);
-	font-size: 1.5rem;
+	color: var(--siena-oscuro);
+	font-size: 1.6rem;
 	font-weight: 700;
+	margin-bottom: 0.75rem;
 }
 
+/* ---------- Footer ---------- */
+
 .footer {
-	padding: 2.5rem 1rem 1rem;
-	background: #302a26;
-	color: #fff;
+	padding: 3rem 1rem 1.25rem;
+	margin-top: 2rem;
+	background: var(--color-footer);
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 0.92rem;
 }
 
 .footer__contenido {
@@ -320,29 +547,77 @@ textarea {
 }
 
 .footer__marca img {
-	width: 7rem;
-	margin-bottom: 1rem;
+	width: 6rem;
+	margin-bottom: 0.75rem;
 	filter: brightness(0) invert(1);
 }
 
+.footer__marca p {
+	max-width: 22rem;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.footer h2 {
+	font-size: 0.82rem;
+	font-weight: 500;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--vara-de-oro);
+	margin-bottom: 0.75rem;
+}
+
 .footer a {
-	color: #f3c9a7;
+	color: rgba(255, 255, 255, 0.7);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.footer a:hover,
+.footer a:focus-visible {
+	color: var(--vara-de-oro);
 }
 
 .footer__inferior {
 	width: min(100%, var(--ancho-contenido));
 	margin: 2rem auto 0;
 	padding-top: 1rem;
-	border-top: 1px solid rgb(255 255 255 / 25%);
-	color: #d8d0ca;
-	font-size: .9rem;
+	border-top: 1px solid rgba(255, 255, 255, 0.12);
+	color: rgba(255, 255, 255, 0.45);
+	font-size: 0.82rem;
+	letter-spacing: 0.02em;
 }
+
+/* ---------- Focus visible (accesibilidad) ---------- */
+
+:focus-visible {
+	outline: 2px solid var(--siena);
+	outline-offset: 2px;
+}
+
+/* ---------- Movimiento reducido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+	}
+
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+/* ---------- Responsive: Tablet (48rem+) ---------- */
 
 @media (min-width: 48rem) {
 	.header {
 		flex-direction: row;
 		justify-content: space-between;
-		padding: 1rem max(1rem, calc((100% - var(--ancho-contenido)) / 2));
+		padding: 0.75rem max(1rem, calc((100% - var(--ancho-contenido)) / 2));
 	}
 
 	.hero,
@@ -364,14 +639,20 @@ textarea {
 	}
 }
 
+/* ---------- Responsive: Desktop (64rem+) ---------- */
+
 @media (min-width: 64rem) {
+
 	.hero,
 	.productos-destacados,
 	.catalogo,
 	.contacto,
 	.carrito-pagina,
 	.detalle-producto {
-		padding: 5rem 0;
+		padding: 4.5rem 0;
+	}
+
+	.hero h1 {
+		font-size: 3.8rem;
 	}
 }
-
