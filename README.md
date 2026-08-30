@@ -37,7 +37,7 @@ También cuenta con una presentación visual de los productos mediante imágenes
 
 ## 🌐 Sitio web
 
-  "propongo hacerlo con github pages"
+  https://frankbj12.github.io/Muebleria-Hermanos-Jota/
 
 ## 📂 Estructura del proyecto
 
