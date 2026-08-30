@@ -45,7 +45,7 @@ También cuenta con una presentación visual de los productos mediante imágenes
 mueblería-hermanos-jota/
 │
 ├── index.html
-├── catalogo.html
+├── productos.html
 ├── producto.html
 ├── contacto.html
 ├── carrito.html
@@ -66,6 +66,8 @@ mueblería-hermanos-jota/
     ├── Sillas Córdoba.png
     ├── Sillón Copacabana.png
     ├── Sofá Patagonia.png
+    ├── Video institucional Hermanos Jota.mp4
+    ├── Video de instagram Hermanos Joja.mp4
 ```
 ## 📌 Proyecto
 
