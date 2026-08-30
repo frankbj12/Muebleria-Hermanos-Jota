@@ -43,31 +43,49 @@ También cuenta con una presentación visual de los productos mediante imágenes
 
 ```text
 mueblería-hermanos-jota/
+│   AGENTS.md
+│   carrito.html
+│   contacto.html
+│   estilos.css
+│   index.html
+│   producto.html
+│   productos.html
+│   README.md
+│   script.js
+│   skills-lock.json
 │
-├── index.html
-├── productos.html
-├── producto.html
-├── contacto.html
-├── carrito.html
-├── estilos.css
-├── script.js
-├── README.md
+├───.agents
+│   └───skills
+│       └───frontend-design
+│               LICENSE.txt
+│               SKILL.md
 │
-└── Kit de imágenes/
-    ├── logo.svg
-    ├── Aparador Uspallata.png
-    ├── Biblioteca Recoleta.png
-    ├── Butaca Mendoza.png
-    ├── Escritorio Costa.png
-    ├── Mesa Comedor Pampa.png
-    ├── Mesa de Centro Araucaria.png
-    ├── Mesa de Noche Aconcagua.png
-    ├── Silla de Trabajo Belgrano.png
-    ├── Sillas Córdoba.png
-    ├── Sillón Copacabana.png
-    ├── Sofá Patagonia.png
-    ├── Video institucional Hermanos Jota.mp4
-    ├── Video de instagram Hermanos Joja.mp4
+├───assets
+│   │   logo.svg
+│   │
+│   ├───products
+│   │       Aparador Uspallata.png
+│   │       Biblioteca Recoleta.png
+│   │       Butaca Mendoza.png
+│   │       Escritorio Costa.png
+│   │       Mesa Comedor Pampa.png
+│   │       Mesa de Centro Araucaria.png
+│   │       Mesa de Noche Aconcagua.png
+│   │       Silla de Trabajo Belgrano.png
+│   │       Sillas Córdoba.png
+│   │       Sillón Copacabana.png
+│   │       Sofá Patagonia.png
+│   │
+│   └───videos
+│           publicidad IG.mp4
+│           Video institucional Hermanos Jota.mp4
+│
+└───docs
+    │   brand.md
+    │   products.md
+    │
+    └───sprints
+            sprint-01-02.md
 ```
 ## 📌 Proyecto
 
