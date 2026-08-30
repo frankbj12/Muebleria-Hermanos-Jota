@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-        <title>Productos | Hermanos Jota</title>
-        
-        <link rel="icon" type="imagen/svg" href="./Kit de imágenes/logo.svg">
-        <link rel="stylesheet" href="estilos.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <body>
-    
-        <header class="header">
-    
-            <a href="index.html" class="logo">
-                <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+    <title>Productos | Hermanos Jota</title>
+
+    <link rel="icon" type="imagen/svg" href="./Kit de imágenes/logo.svg">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<title>Catálogo | Hermanos Jota</title>
+
+<link rel="icon" type="imagen/svg" href="./assets/logo.svg">
+<link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+            <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+        </a>
+
+        <nav class="navegacion" aria-label="Navegación principal">
+            <a href="index.html">Inicio</a>
+            <a href="catalogo.html" aria-current="page">Catálogo</a>
+            <a href="contacto.html">Contacto</a>
+            <a href="carrito.html" class="carrito">
+                🛒 Carrito
+                <span id="contador-carrito">0</span>
             </a>
-    
+
             <nav class="navegacion" aria-label="Navegación principal">
                 <a href="index.html">Inicio</a>
                 <a href="productos.html" aria-current="page">Productos</a>
@@ -28,63 +43,123 @@
                     <span id="contador-carrito">0</span>
                 </a>
             </nav>
-        </header>
-    
-        <main>
-            <section class="catalogo" aria-labelledby="titulo-catalogo">
-                
-                <div class="catalogo__header">
-                    
-                    <p class="seccion-etiqueta">
-                        Nuestra colección
-                    </p>
-                    <h1 id="titulo-catalogo">
-                        Productos
-                    </h1>
-                    <p>
-                        Explorá todos nuestros muebles y encontrá
-                        la pieza ideal para tu espacio.
-                    </p>
-    
-                </div>
-    
-                <!-- Campo de búsqueda -->
-                <div class="buscador">
-                    <label for="busqueda">
-                        Buscar producto
-                    </label>
-                    <input type="search" id="busqueda" name="busqueda" placeholder="Buscar por nombre...">
-                </div>
-    
-                <!-- Grilla de productos -->
-                <div class="productos-grid" id="catalogo-productos">
-                    <!--
+    </header>
+
+    <main>
+        <section class="catalogo" aria-labelledby="titulo-catalogo">
+
+            <div class="catalogo__header">
+
+                <p class="seccion-etiqueta">
+                    Nuestra colección
+                </p>
+                <h1 id="titulo-catalogo">
+                    Productos
+                </h1>
+                <p>
+                    Explorá todos nuestros muebles y encontrá
+                    la pieza ideal para tu espacio.
+                </p>
+
+            </div>
+
+            <!-- Campo de búsqueda -->
+            <div class="buscador">
+                <label for="busqueda">
+                    Buscar producto
+                </label>
+                <input type="search" id="busqueda" name="busqueda" placeholder="Buscar por nombre...">
+            </div>
+
+            <!-- Grilla de productos -->
+            <div class="productos-grid" id="catalogo-productos">
+                <!--
                         Los productos serán generados
                         dinámicamente mediante JavaScript.
                     -->
-                </div>
-    
-            </section>
-    
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <div class="footer__contenido">
+
+            <div class="footer__marca">
+
+                <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+
+                <p>
+                    Muebles con diseño, artesanía y materiales nobles para crear espacios que perduran.
+                </p>
+
+            </div>
+
+
+            <div class="footer__seccion">
+
+                <h2>
+                    Hermanos Jota
+                </h2>
+                <p>
+                    Mueblería artesanal argentina.
+                </p>
+                <p>
+                    Buenos Aires, Argentina.
+                </p>
+
+            </div>
+
+
+            <div class="footer__seccion">
+
+                <h2>
+                    Contacto
+                </h2>
+
+                <address>
+
+                    <p>
+                        <a href="mailto:info@hermanosjota.com.ar">
+                            info@hermanosjota.com.ar
+                        </a>
+                    </p>
+
+                    <p>
+                        <a href="tel:+541145678900">
+                            +54 11 4567-8900
+                        </a>
+                    </p>
+
+                </address>
+
+            </div>
+
+        </div>
+
+        </section>
+
         </main>
-    
+
         <footer class="footer">
-    
+
             <div class="footer__contenido">
-    
+
                 <div class="footer__marca">
-    
-                    <img src="Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota">
-    
+
+                    <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
+
                     <p>
                         Muebles con diseño, artesanía y materiales nobles para crear espacios que perduran.
                     </p>
-    
+
                 </div>
-    
-    
+
+
                 <div class="footer__seccion">
-    
+
                     <h2>
                         Hermanos Jota
                     </h2>
@@ -92,49 +167,50 @@
                         Mueblería artesanal argentina.
                     </p>
                     <p>
-                        Buenos Aires, Argentina.
+                        Buenos Aires, Argentina
                     </p>
-    
+
                 </div>
-    
-    
+
+
                 <div class="footer__seccion">
-    
+
                     <h2>
                         Contacto
                     </h2>
-    
+
                     <address>
-    
+
                         <p>
                             <a href="mailto:info@hermanosjota.com.ar">
                                 info@hermanosjota.com.ar
                             </a>
                         </p>
-    
+
                         <p>
                             <a href="tel:+541145678900">
                                 +54 11 4567-8900
                             </a>
                         </p>
-    
+
                     </address>
-    
+
                 </div>
-    
+
             </div>
-    
+
             <div class="footer__inferior">
-    
+
                 <p>
                     © 2026 Hermanos Jota. Todos los derechos reservados.
                 </p>
-    
+
             </div>
-    
+
         </footer>
-    
-    
+
+
         <script src="script.js"></script>
-    </body>
+</body>
+
 </html>
