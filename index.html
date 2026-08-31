@@ -4,176 +4,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mueblería Hermanos Jota</title>
+    <meta name="description"
+        content="Hermanos Jota — Muebles artesanales de Buenos Aires. Madera certificada FSC®, diseño atemporal y compromiso sustentable. Redescubrí el arte de vivir.">
+    <title>Hermanos Jota — Muebles artesanales con alma</title>
 
-    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="estilos.css">
 </head>
 
 <body>
-    <header class="header">
-        <a href="index.html" class="logo">
-            <img src="./assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
-        </a>
 
-        <nav class="navegacion" aria-label="Navegación principal">
-            <a href="index.html" aria-current="page">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="carrito.html" class="carrito">
-                🛒 Carrito
-                <span id="contador-carrito">0</span>
+    <!-- ========== HEADER ========== -->
+    <header class="site-header" id="site-header">
+        <div class="header-container">
+
+            <a href="index.html" class="logo" aria-label="Hermanos Jota — Inicio">
+                <img src="assets/logo.svg" alt="Hermanos Jota" width="60" height="60">
             </a>
-        </nav>
+
+            <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="nav-link active" aria-current="page">Inicio</a></li>
+                    <li><a href="productos.html" class="nav-link">Productos</a></li>
+                    <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="carrito.html" class="cart-link" id="cart-link" aria-label="Carrito de compras">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                    </svg>
+                    <span class="cart-count" id="cart-count" aria-hidden="true">0</span>
+                </a>
+            </div>
+
+            <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="main-nav"
+                aria-label="Abrir menú de navegación">
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+                <span class="menu-toggle-bar"></span>
+            </button>
+
+        </div>
     </header>
 
+
+    <!-- ========== MAIN ========== -->
     <main>
-        <section class="hero" aria-label="titulo-hero">
-            <div class="hero__contenido">
-                <p class="hero__etiqueta">
-                    Mueblería Hermanos Jota
+
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+                <source src="assets/videos/Video institucional Hermanos Jota.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content">
+                <h1 class="hero-title">Redescubrí el arte de vivir</h1>
+                <p class="hero-subtitle">
+                    Muebles artesanales que honran la tradición y abrazan el futuro.
+                    Madera noble, diseño atemporal, compromiso sustentable.
                 </p>
-                <h1 id="titulo-hero">
-                    Muebles que cuentan historias
-                </h1>
-                <p class="hero__descripcion">
-                    Diseño, artesanía y materiales nobles para crear espacios
-                    únicos que perduran en el tiempo.
-                </p>
-                <a href="#productos" class="boton">
-                    Descubrí nuestra colección
-                </a>
+                <a href="productos.html" class="btn btn-primary">Explorar colección</a>
             </div>
 
-            <div class="hero__media">
-                <video class="hero__video" autoplay muted loop controls playsinline poster="assets/logo.svg">
-                    <source src="assets/videos/Video institucional Hermanos Jota.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de este video.
-                </video>
+            <a href="#essence" class="hero-scroll" aria-label="Descubrir más sobre Hermanos Jota">
+                <span>Descubrí más</span>
+                <span class="hero-scroll-line" aria-hidden="true"></span>
+            </a>
+        </section>
+
+
+        <!-- ESENCIA DE MARCA -->
+        <section class="essence" id="essence">
+            <div class="container">
+                <h2 class="section-title fade-in">Nuestra Esencia</h2>
+                <p class="section-intro fade-in">
+                    Cada pieza cuenta la historia de manos expertas y materiales nobles
+                </p>
+
+                <div class="essence-grid">
+                    <article class="essence-card fade-in fade-in-delay-1">
+                        <span class="essence-card-accent" aria-hidden="true"></span>
+                        <h3>Artesanía</h3>
+                        <p>
+                            Técnicas heredadas de generaciones se encuentran con la precisión
+                            contemporánea en cada unión, cada curva, cada acabado.
+                        </p>
+                    </article>
+
+                    <article class="essence-card fade-in fade-in-delay-2">
+                        <span class="essence-card-accent" aria-hidden="true"></span>
+                        <h3>Sustentabilidad</h3>
+                        <p>
+                            Madera certificada FSC® de bosques argentinos, acabados naturales
+                            y compromiso de huella mínima en cada proceso.
+                        </p>
+                    </article>
+
+                    <article class="essence-card fade-in fade-in-delay-3">
+                        <span class="essence-card-accent" aria-hidden="true"></span>
+                        <h3>Diseño Atemporal</h3>
+                        <p>
+                            Inspirados en el optimismo de los 60, diseñamos piezas que
+                            trascienden tendencias y envejecen con la gracia de lo bien hecho.
+                        </p>
+                    </article>
+                </div>
             </div>
         </section>
 
-        <section class="productos-destacados" id="productos" aria-labelledby="titulo-productos">
-            <div class="seccion-header">
-                <p class="seccion-etiqueta">Nuestra colección</p>
-                <h2 id="titulo-productos">
-                    Productos destacados
-                </h2>
-                <p>
-                    Descubrí algunas de nuestras piezas más destacadas.
-                </p>
-            </div>
 
-            <div class="productos-grid" id="productos-destacados">
-                <!-- Se insertan con JS -->
-            </div>
+        <!-- PRODUCTOS DESTACADOS -->
+        <section class="featured-products" id="featured-products">
+            <div class="container">
+                <h2 class="section-title fade-in">Piezas Destacadas</h2>
+                <p class="section-intro fade-in">Diseñadas para quedarse</p>
 
-            <div class="productos-accion">
-                <a href="productos.html" class="boton">
-                    Ver productos
-                </a>
+                <div class="products-grid" id="products-grid">
+                    <p class="products-loading">Cargando productos…</p>
+                </div>
+
+                <div class="section-cta fade-in">
+                    <a href="productos.html" class="btn btn-secondary">Ver toda la colección</a>
+                </div>
             </div>
         </section>
 
+
+        <!-- COMUNIDAD & REDES SOCIALES -->
         <section class="redes-sociales" id="redes" aria-labelledby="titulo-redes">
-            <div class="seccion-header text-center">
-                <p class="seccion-etiqueta">Comunidad & Redes</p>
-                <h2 id="titulo-redes">Encontranos en Instagram</h2>
-                <p>Mirá cómo lucen nuestras piezas en los hogares de quienes nos eligen.</p>
+            <div class="container">
+                <div class="redes-layout">
+                    <div class="redes-info fade-in">
+                        <span class="redes-badge">Comunidad & Experiencias</span>
+                        <h2 id="titulo-redes" class="section-title">Hermanos Jota en tu hogar</h2>
+                        <p class="section-intro">
+                            Nos apasiona ver cómo nuestras piezas cobran vida en los espacios de quienes nos eligen.
+                            Seguinos para inspirarte con proyectos de diseño de interiores, procesos en el taller y
+                            nuevas colecciones.
+                        </p>
+                        <div class="redes-cta-group">
+                            <a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-primary" aria-label="Seguir a Hermanos Jota en Instagram">
+                                Seguir en @hermanosjota_ba
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="redes-card-wrapper fade-in fade-in-delay-2">
+                        <article class="ig-card">
+                            <!-- Header de la publicación -->
+                            <header class="ig-card__header">
+                                <img src="assets/logo.svg" alt="Logo de Mueblería Hermanos Jota"
+                                    class="ig-card__avatar">
+                                <div class="ig-card__usuario">
+                                    <span class="ig-card__username">muebleria_hnos_jota</span>
+                                    <span class="ig-card__location">Buenos Aires, Argentina</span>
+                                </div>
+                                <a href="https://instagram.com/hermanosjota_ba" target="_blank"
+                                    rel="noopener noreferrer" class="ig-card__follow-link">Seguir</a>
+                            </header>
+
+                            <!-- Media (Video de la publicidad) -->
+                            <div class="ig-card__media">
+                                <video class="ig-card__video" autoplay muted loop playsinline poster="assets/logo.svg">
+                                    <source src="assets/videos/publicidad IG.mp4" type="video/mp4">
+                                    Tu navegador no soporta la reproducción de este video.
+                                </video>
+                            </div>
+
+                            <!-- Barra de acciones -->
+                            <div class="ig-card__actions">
+                                <div class="ig-card__actions-left">
+                                    <button type="button" class="ig-card__action-btn" aria-label="Me gusta">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="ig-card__action-btn" aria-label="Comentar">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="ig-card__action-btn" aria-label="Compartir">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <button type="button" class="ig-card__action-btn" aria-label="Guardar">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Detalle y leyenda -->
+                            <div class="ig-card__body">
+                                <p class="ig-card__likes">12.385 Me gusta</p>
+                                <p class="ig-card__caption">
+                                    <span class="ig-card__user-bold">muebleria_hnos_jota</span> ¡Renová tu hogar con
+                                    estilo! ✨ Descubrí nuestra nueva colección de muebles artesanales.🏠
+                                    <br>
+                                    <br>
+                                    ¡Gracias @carolo_!
+                                </p>
+                                <p class="ig-card__hashtags">#muebles #artesanal #diseñodeinteriores #hogar #sustentable
+                                </p>
+                                <time class="ig-card__time" datetime="2026-08-28">HACE 2 DÍAS</time>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
-
-            <article class="ig-card">
-                <!-- Header de la publicación -->
-                <header class="ig-card__header">
-                    <img src="assets/logo.svg" alt="Logo de Mueblería Hermanos Jota" class="ig-card__avatar">
-                    <div class="ig-card__usuario">
-                        <span class="ig-card__username">muebleria_hnos_jota</span>
-                        <span class="ig-card__location">Buenos Aires, Argentina</span>
-                    </div>
-                    <button type="button" class="ig-card__more" aria-label="Más opciones">• • •</button>
-                </header>
-
-                <!-- Media (Video de la publicidad) -->
-                <div class="ig-card__media">
-                    <video class="ig-card__video" autoplay muted loop controls playsinline poster="assets/logo.svg">
-                        <source src="assets/videos/publicidad IG.mp4" type="video/mp4">
-                        Tu navegador no soporta la reproducción de este video.
-                    </video>
-                </div>
-
-                <!-- Barra de acciones -->
-                <div class="ig-card__actions">
-                    <div class="ig-card__actions-left">
-                        <button type="button" class="ig-card__action-btn" aria-label="Me gusta">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        </button>
-                        <button type="button" class="ig-card__action-btn" aria-label="Comentar">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                        </button>
-                        <button type="button" class="ig-card__action-btn" aria-label="Compartir">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                        </button>
-                    </div>
-                    <button type="button" class="ig-card__action-btn" aria-label="Guardar">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                    </button>
-                </div>
-
-                <!-- Detalle y leyenda -->
-                <div class="ig-card__body">
-                    <p class="ig-card__likes">12.385 Me gusta</p>
-                    <p class="ig-card__caption">
-                        <span class="ig-card__user-bold">muebleria_hnos_jota</span> ¡Renová tu hogar con estilo! ✨ Descubrí nuestra nueva colección de muebles de madera. Calidad y diseño que perduran. 🏠
-                    </p>
-                    <p class="ig-card__shoutout">¡Gracias @carolo_!</p>
-                    <p class="ig-card__hashtags">#muebles #diseñodeinteriores #hogar #decoracion #muebleria #calidad #estilo</p>
-                    <p class="ig-card__comments-count">Ver los 24 comentarios</p>
-                    <time class="ig-card__time" datetime="2026-08-28">HACE 2 DÍAS</time>
-                </div>
-
-                <!-- Agregar comentario -->
-                <div class="ig-card__comment-box">
-                    <span class="ig-card__emoji">😊</span>
-                    <input type="text" placeholder="Agregá un comentario..." class="ig-card__input" readonly>
-                    <button type="button" class="ig-card__post-btn">Publicar</button>
-                </div>
-            </article>
         </section>
+
+        <!-- COMPROMISO — HERENCIA VIVA -->
+        <section class="commitment" id="commitment">
+            <div class="container">
+                <h2 class="section-title fade-in">Programa Herencia Viva</h2>
+                <p class="section-intro fade-in">
+                    Nuestro compromiso va más allá de la venta
+                </p>
+
+                <div class="commitment-grid">
+                    <div class="commitment-stat fade-in fade-in-delay-1">
+                        <span class="stat-number">10</span>
+                        <span class="stat-label">años de garantía en estructura</span>
+                    </div>
+                    <div class="commitment-stat fade-in fade-in-delay-2">
+                        <span class="stat-number">30%</span>
+                        <span class="stat-label">materiales recuperados o reciclados</span>
+                    </div>
+                    <div class="commitment-stat fade-in fade-in-delay-3">
+                        <span class="stat-number">FSC®</span>
+                        <span class="stat-label">certificación en todas nuestras maderas</span>
+                    </div>
+                    <div class="commitment-stat fade-in fade-in-delay-4">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">plásticos de un solo uso</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
     </main>
 
-    <footer class="footer">
-        <div class="footer__contenido">
-            <div class="footer__marca">
-                <img src="assets/logo.svg" alt="Logo de Mueblería Hermanos Jota">
-                <p>
-                    Muebles con diseño, artesanía y materiales nobles para crear espacios que perduran.
-                </p>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="site-footer" id="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+                    <img src="assets/logo.svg" alt="Hermanos Jota" class="footer-logo" width="60" height="60">
+                    <p class="footer-tagline">Redescubriendo el arte de vivir</p>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>Navegación</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h4>Visitanos</h4>
+                    <address>
+                        Av. San Juan 2847<br>
+                        San Cristóbal, CABA<br>
+                        Argentina
+                    </address>
+                    <p>Lun–Vie: 10 a 19 h<br>Sáb: 10 a 14 h</p>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Seguinos</h4>
+                    <div class="social-links">
+                        <a href="https://instagram.com/hermanosjota_ba" target="_blank" rel="noopener noreferrer"
+                            aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <circle cx="12" cy="12" r="5" />
+                                <circle cx="17.5" cy="6.5" r="1.5" />
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/541145678900" target="_blank" rel="noopener noreferrer"
+                            aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            </svg>
+                        </a>
+                        <a href="mailto:info@hermanosjota.com.ar" aria-label="Email">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="footer__seccion">
-                <h2>Hermanos Jota</h2>
-                <p>Mueblería artesanal argentina.</p>
-                <p>Buenos Aires, Argentina.</p>
+            <div class="footer-bottom">
+                <p>© 2026 Hermanos Jota. Todos los derechos reservados.</p>
             </div>
-
-            <div class="footer__seccion">
-                <h2>Contacto</h2>
-                <address>
-                    <p>
-                        <a href="mailto:info@hermanosjota.com.ar">info@hermanosjota.com.ar</a>
-                    </p>
-                    <p>
-                        <a href="tel:+541145678900">+54 11 4567-8900</a>
-                    </p>
-                </address>
-            </div>
-        </div>
-
-        <div class="footer__inferior">
-            <p>© 2026 Hermanos Jota. Todos los derechos reservados.</p>
         </div>
     </footer>
 
+
+    <script src="data/products.js"></script>
     <script src="script.js"></script>
 </body>
 
