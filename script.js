@@ -60,3 +60,33 @@ window.addEventListener('scroll', () => {
 elementosFade.forEach((elemento) => {
     observador.observe(elemento);
 });
+
+const buscadorProductos = document.querySelector('#busqueda');
+const tarjetasCatalogo = document.querySelectorAll('.catalogo-collage__tarjeta');
+
+if (buscadorProductos && tarjetasCatalogo.length) {
+    const normalizarTexto = (texto) => texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+
+    const mensajeSinResultados = document.createElement('p');
+    mensajeSinResultados.className = 'catalogo__sin-resultados';
+    mensajeSinResultados.textContent = 'No encontramos productos con ese nombre.';
+    mensajeSinResultados.hidden = true;
+    buscadorProductos.closest('.buscador').after(mensajeSinResultados);
+
+    buscadorProductos.addEventListener('input', () => {
+        const consulta = normalizarTexto(buscadorProductos.value.trim());
+        let productosVisibles = 0;
+
+        tarjetasCatalogo.forEach((tarjeta) => {
+            const nombre = normalizarTexto(tarjeta.getAttribute('aria-label'));
+            const coincide = nombre.includes(consulta);
+            tarjeta.hidden = !coincide;
+            productosVisibles += coincide ? 1 : 0;
+        });
+
+        mensajeSinResultados.hidden = productosVisibles > 0;
+    });
+}

@@ -416,6 +416,134 @@ main {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
 	gap: 1.5rem;
+	margin-inline: auto;
+}
+
+.productos-destacados .productos-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	width: min(100%, 40rem);
+}
+
+.producto-destacado {
+	position: relative;
+	min-width: 0;
+	border: 1px solid var(--color-borde);
+	border-radius: var(--radio);
+	background: var(--color-superficie);
+	box-shadow: 0 12px 24px rgba(44, 37, 32, 0.08);
+	overflow: hidden;
+}
+
+.producto-destacado__imagen {
+	min-width: 0;
+}
+
+.producto-destacado__imagen img {
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: contain;
+	background: var(--color-superficie);
+}
+
+.producto-destacado__descripcion {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 60%;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 1.25rem;
+	background: var(--color-superficie);
+	overflow: hidden;
+	box-shadow: -12px 0 24px rgba(44, 37, 32, 0.08);
+	transform: translateX(100%);
+	transition: transform 0.4s ease;
+}
+
+.producto-destacado:hover .producto-destacado__descripcion,
+.producto-destacado:focus-within .producto-destacado__descripcion {
+	transform: translateX(0);
+}
+
+.producto-destacado__descripcion h3 {
+	margin-bottom: 0.4rem;
+	font-family: 'Playfair Display', Georgia, serif;
+	font-size: 1.25rem;
+	font-weight: 400;
+}
+
+.producto-destacado__descripcion p {
+	color: var(--color-suave);
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.catalogo-collage {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+	width: 100%;
+	max-width: 52rem;
+	margin-bottom: 2.5rem;
+	margin-inline: auto;
+	padding: 0.5rem 0 1rem;
+}
+
+.catalogo-collage__tarjeta {
+	perspective: 1000px;
+	aspect-ratio: 3 / 4;
+	cursor: pointer;
+}
+
+.catalogo-collage__interior {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+	transform-style: preserve-3d;
+}
+
+.catalogo-collage__tarjeta:hover .catalogo-collage__interior,
+.catalogo-collage__tarjeta:focus .catalogo-collage__interior {
+	transform: rotateY(180deg);
+}
+
+.catalogo-collage__frente,
+.catalogo-collage__reverso {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	border-radius: 0.75rem;
+	box-shadow: 0 12px 22px rgba(44, 37, 32, 0.1);
+	backface-visibility: hidden;
+}
+
+.catalogo-collage__frente {
+	background: var(--color-superficie);
+}
+
+.catalogo-collage__frente img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.catalogo-collage__reverso {
+	display: grid;
+	place-items: center;
+	padding: 1rem;
+	background: var(--siena);
+	color: var(--color-superficie);
+	font-family: 'Playfair Display', Georgia, serif;
+	font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+	line-height: 1.2;
+	text-align: center;
+	transform: rotateY(180deg);
 }
 
 .productos-accion {
@@ -518,6 +646,12 @@ main {
 	font-size: 0.88rem;
 	letter-spacing: 0.02em;
 	color: var(--color-suave);
+}
+
+.catalogo__sin-resultados {
+	margin: -1rem auto 2rem;
+	color: var(--color-suave);
+	text-align: center;
 }
 
 input,
