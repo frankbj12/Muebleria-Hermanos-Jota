@@ -645,8 +645,8 @@ function initHeroVolumeToggle() {
 
   if (!toggleBtn || !heroVideo || !heroSection) return;
 
-  // Preferencia del usuario sobre el sonido (por defecto activado)
-  let userWantsSound = true;
+  // Preferencia del usuario sobre el sonido (por defecto desactivado para no forzar audio)
+  let userWantsSound = false;
 
   function updateUI(isUnmuted) {
     if (isUnmuted && !heroVideo.muted) {
@@ -660,25 +660,10 @@ function initHeroVolumeToggle() {
     }
   }
 
-  // 1. Intentar iniciar con sonido al abrir la web
-  heroVideo.muted = false;
-  const playPromise = heroVideo.play();
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        // Autoplay con audio permitido por el navegador
-        userWantsSound = true;
-        updateUI(true);
-      })
-      .catch(() => {
-        // Política de autoplay del navegador bloqueó audio inicial sin interacción
-        heroVideo.muted = true;
-        userWantsSound = false;
-        updateUI(false);
-        // Asegurar que al menos el video continúe reproduciéndose en silencio
-        heroVideo.play().catch(() => { });
-      });
-  }
+  // 1. Iniciar con el video silenciado por defecto
+  heroVideo.muted = true;
+  updateUI(false);
+  heroVideo.play().catch(() => { });
 
   // 2. Control manual con el botón de volumen
   toggleBtn.addEventListener("click", function () {
