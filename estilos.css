@@ -237,7 +237,7 @@ h4 {
   right: 0;
   z-index: 100;
   height: var(--header-height);
-  background-color: var(--alabastro-light);
+  background-color: transparent;
   transition: background-color var(--transition-base),
     box-shadow var(--transition-base);
 }
