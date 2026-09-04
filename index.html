@@ -77,6 +77,27 @@
                 <a href="productos.html" class="btn btn-primary">Explorar colección</a>
             </div>
 
+            <!-- Botón flotante para el audio del Hero -->
+            <button id="video-volume-toggle" class="hero-volume-btn" aria-label="Activar sonido del video"
+                aria-pressed="false">
+                <span class="hero-volume-icon" aria-hidden="true">
+                    <!-- Ícono Muted / Sin sonido (visible por defecto) -->
+                    <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                    <!-- Ícono Sound / Con sonido -->
+                    <svg class="icon-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                </span>
+                <span class="hero-volume-text">Audio</span>
+            </button>
+
             <a href="#essence" class="hero-scroll" aria-label="Descubrir más sobre Hermanos Jota">
                 <span>Descubrí más</span>
                 <span class="hero-scroll-line" aria-hidden="true"></span>
@@ -177,7 +198,8 @@
 
                             <!-- Media (Video de la publicidad) -->
                             <div class="ig-card__media">
-                                <video class="ig-card__video" autoplay muted controls loop playsinline poster="assets/logo.svg">
+                                <video class="ig-card__video" autoplay muted controls loop playsinline
+                                    poster="assets/logo.svg">
                                     <source src="assets/videos/publicidad IG.mp4" type="video/mp4">
                                     Tu navegador no soporta la reproducción de este video.
                                 </video>

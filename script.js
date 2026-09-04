@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initMobileMenu();
   updateCartBadge();
   initScrollAnimations();
+  initHeroVolumeToggle();
 
   // Inicializaciones según la página activa
   if (document.getElementById("products-grid")) {
@@ -619,3 +620,94 @@ function initContactPage() {
     }, 600);
   });
 }
+
+/* =============================================
+   8. CONTROL DE AUDIO HERO (index.html)
+   ============================================= */
+
+function initHeroVolumeToggle() {
+  const toggleBtn = document.getElementById("video-volume-toggle");
+  const heroVideo = document.querySelector(".hero-video");
+  const heroSection = document.getElementById("hero");
+
+  if (!toggleBtn || !heroVideo || !heroSection) return;
+
+  // Preferencia del usuario sobre el sonido (por defecto activado)
+  let userWantsSound = true;
+
+  function updateUI(isUnmuted) {
+    if (isUnmuted && !heroVideo.muted) {
+      toggleBtn.classList.add("is-unmuted");
+      toggleBtn.setAttribute("aria-label", "Silenciar sonido del video");
+      toggleBtn.setAttribute("aria-pressed", "true");
+    } else {
+      toggleBtn.classList.remove("is-unmuted");
+      toggleBtn.setAttribute("aria-label", "Activar sonido del video");
+      toggleBtn.setAttribute("aria-pressed", "false");
+    }
+  }
+
+  // 1. Intentar iniciar con sonido al abrir la web
+  heroVideo.muted = false;
+  const playPromise = heroVideo.play();
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        // Autoplay con audio permitido por el navegador
+        userWantsSound = true;
+        updateUI(true);
+      })
+      .catch(() => {
+        // Política de autoplay del navegador bloqueó audio inicial sin interacción
+        heroVideo.muted = true;
+        userWantsSound = false;
+        updateUI(false);
+        // Asegurar que al menos el video continúe reproduciéndose en silencio
+        heroVideo.play().catch(() => {});
+      });
+  }
+
+  // 2. Control manual con el botón de volumen
+  toggleBtn.addEventListener("click", function () {
+    if (heroVideo.muted) {
+      userWantsSound = true;
+      heroVideo.muted = false;
+      heroVideo.play().then(() => {
+        updateUI(true);
+      }).catch((err) => {
+        console.log("Error al reproducir audio:", err);
+      });
+    } else {
+      userWantsSound = false;
+      heroVideo.muted = true;
+      updateUI(false);
+    }
+  });
+
+  // 3. Control por Scroll (IntersectionObserver)
+  // Al salir del Hero el video sigue pero se mutea; al volver se restaura el sonido si el usuario lo desea.
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // El usuario regresó al Hero
+            if (userWantsSound) {
+              heroVideo.muted = false;
+              heroVideo.play().catch(() => {});
+              updateUI(true);
+            }
+          } else {
+            // El usuario scrolleó fuera del Hero (muteamos sin pausar)
+            heroVideo.muted = true;
+            updateUI(false);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(heroSection);
+  }
+}
+
