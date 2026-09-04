@@ -2,6 +2,8 @@
 
 **Redescubrir el arte de vivir**
 
+> La fuente operativa del catálogo es `data/products.js`. Este documento conserva información editorial ampliada; cualquier dato mostrado por la aplicación debe mantenerse sincronizado con ese archivo.
+
 ---
 
 ## Índice de Productos
@@ -178,6 +180,6 @@ Silla ergonómica regulable en altura con respaldo de malla transpirable y asien
 
 ## Contacto e Información Legal
 
-* **Empresa:** ©2025 Hermanos Jota Furniture
-* **Contacto:** brand@hermanosjota.com
-* **Lema:** Redescubriendo el arte de vivir desde 2025
+* **Empresa:** ©2026 Hermanos Jota Muebles
+* **Contacto:** info@hermanosjota.com.ar
+* **Lema:** Redescubriendo el arte de vivir desde 2026
