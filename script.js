@@ -596,10 +596,19 @@ function initContactPage() {
 
     const name = form.name.value.trim();
     const email = form.email.value.trim();
+    const subject = form.subject.value.trim();
     const message = form.message.value.trim();
+    const feedback = document.getElementById("form-feedback");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!name || !email || !message) {
-      alert("Por favor completá todos los campos requeridos.");
+    if (!name || !email || !subject || !message) {
+      showFormFeedback(feedback, "Por favor completá todos los campos requeridos.", true);
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      showFormFeedback(feedback, "Ingresá un email válido para poder responderte.", true);
+      form.email.focus();
       return;
     }
 
@@ -610,7 +619,11 @@ function initContactPage() {
     }
 
     setTimeout(() => {
-      alert(`¡Gracias ${name}! Recibimos tu consulta. Te responderemos a la brevedad.`);
+      showFormFeedback(
+        feedback,
+        `¡Gracias ${name}! Recibimos tu consulta. Te responderemos a la brevedad.`,
+        false
+      );
       form.reset();
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -618,4 +631,10 @@ function initContactPage() {
       }
     }, 600);
   });
+}
+
+function showFormFeedback(element, message, isError) {
+  if (!element) return;
+  element.textContent = message;
+  element.className = `form-feedback${isError ? " form-feedback-error" : " form-feedback-success"}`;
 }

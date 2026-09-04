@@ -26,6 +26,8 @@ Visita el proyecto en vivo aquí:
 | **Tomás Cupello** | [@tomassnahuel](https://github.com/tomassnahuel) |
 | **Brian Reil** | [@reilbrian](https://github.com/reilbrian) |
 
+> La consigna establece equipos de 5 integrantes. Actualmente el repositorio registra 4; falta incorporar el quinto integrante antes de la entrega.
+
 ---
 
 ## 📖 Acerca del Proyecto
@@ -41,7 +43,7 @@ El objetivo de esta etapa fue construir una fachada frontend completa, interacti
 ### 🏠 1. Página de Inicio (`index.html`)
 - **Hero Section inmersivo** con llamado a la acción (*CTA*).
 - **Sección de Productos Destacados**: Renderizado dinámico de piezas seleccionadas.
-- **Narrativa de Marca**: Sección de historia, valores artesanales, compromiso con la sustentabilidad y materiales nobles (petiribí, guatambú, paraíso, lenga).
+- **Narrativa de Marca**: Sección de historia, valores artesanales, compromiso con la sustentabilidad y materiales nobles.
 - **Contenido Multimedia**: Integración de video institucional y publicitario.
 - **Garantías y Confianza**: Bloques informativos de envíos a todo el país, cuotas y garantía estructural.
 
@@ -49,30 +51,28 @@ El objetivo de esta etapa fue construir una fachada frontend completa, interacti
 - **Carga dinámica del catálogo**: Consumo de base de datos local estructurada en JavaScript (`data/products.js`).
 - **Filtros por categoría en tiempo real**: Living, Comedor, Dormitorio, Trabajo y Todos.
 - **Buscador en vivo**: Filtrado por coincidencia de texto en nombres y descripciones.
-- **Ordenamiento dinámico**: Por precio (menor a mayor, mayor a menor) y orden alfabético.
 - **Estados vacíos**: Mensaje interactivo cuando ninguna búsqueda coincide.
 
 ### 📦 3. Detalle de Producto (`producto.html`)
 - **Carga dinámica por parámetros de URL** (`?id=...`).
 - **Vista detallada**: Galería con imagen principal en alta calidad, descripción artesanal, medidas, tipo de madera, acabado y garantía.
-- **Selector de cantidad** y botón de adición directa al carrito.
-- **Productos sugeridos**: Recomendación dinámica de artículos relacionados.
+- **Botón de adición directa al carrito**.
 
 ### 🛒 4. Carrito de Compras (`carrito.html`)
 - **Persistencia en `localStorage`**: Los productos se mantienen guardados entre sesiones y páginas.
 - **Badge en tiempo real**: Contador de productos visibles en el header de navegación.
 - **Gestión completa**: Modificación de cantidades (+ / -), eliminación individual y vaciado de carrito.
 - **Cálculo automático de costos**: Subtotal, costo de envío y total general.
-- **Modal de Checkout**: Simulación interactiva de compra finalizada con éxito.
+- **Checkout simulado**: Confirmación mediante mensaje del navegador, sin procesamiento real de pagos.
 
 ### ✉️ 5. Página de Contacto (`contacto.html`)
-- **Formulario interactivo**: Validación en tiempo real de campos obligatorios, formato de email y teléfono.
+- **Formulario interactivo**: Validación del lado del cliente de campos obligatorios y formato de email, con feedback en el DOM.
 - **Información del taller & showroom**: Horarios de atención, dirección y canales de comunicación directa.
 
 ### 📱 6. Experiencia UI/UX & Responsive Design
 - **Diseño Mobile-First**: Adaptación fluida para smartphones, tablets y pantallas de escritorio.
 - **Navegación Móvil**: Menú hamburguesa interactivo y accesible.
-- **Microinteracciones y Animaciones**: Efectos hover, transiciones suaves y notificaciones flotantes (*toast feedback*) al agregar productos.
+- **Microinteracciones y Animaciones**: Efectos hover, transiciones suaves y feedback al agregar productos.
 
 ---
 
@@ -92,7 +92,7 @@ El objetivo de esta etapa fue construir una fachada frontend completa, interacti
 muebleria-hermanos-jota/
 │
 ├── index.html               # Página de inicio / Hero / Destacados / Historia
-├── productos.html           # Catálogo completo con filtros, búsqueda y ordenamiento
+├── productos.html           # Catálogo completo con filtros y búsqueda
 ├── producto.html            # Vista de detalle de producto dinámico (?id=...)
 ├── carrito.html             # Carrito de compras con persistencia y checkout
 ├── contacto.html            # Formulario de contacto y datos del showroom
