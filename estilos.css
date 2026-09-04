@@ -101,7 +101,7 @@ body {
   font-weight: 400;
   line-height: 1.6;
   color: var(--negro);
-  background-color: var(--alabastro-light);
+  background-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -299,6 +299,7 @@ h4 {
 }
 
 .nav-link {
+  background-color: transparent;
   font-size: var(--fs-sm);
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -309,7 +310,7 @@ h4 {
 }
 
 .site-header:not(.scrolled) .nav-link {
-  color: var(--negro);
+  color: var(--blanco);
 }
 
 .site-header.scrolled .nav-link {
@@ -338,6 +339,7 @@ h4 {
 }
 
 .cart-link {
+  background-color: transparent;
   position: relative;
   display: flex;
   align-items: center;
@@ -346,7 +348,7 @@ h4 {
 }
 
 .site-header:not(.scrolled) .cart-link {
-  color: var(--negro);
+  color: var(--blanco);
 }
 
 .site-header.scrolled .cart-link {
