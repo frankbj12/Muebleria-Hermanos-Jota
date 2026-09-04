@@ -62,7 +62,7 @@
   /* Layout */
   --container-max: 1200px;
   --container-padding: 1.25rem;
-  --header-height: 70px;
+  --header-height: 120px;
   --border-radius: 8px;
   --border-radius-lg: 12px;
 
@@ -237,6 +237,7 @@ h4 {
   right: 0;
   z-index: 100;
   height: var(--header-height);
+  background-color: var(--alabastro-light);
   transition: background-color var(--transition-base),
     box-shadow var(--transition-base);
 }
@@ -250,6 +251,7 @@ h4 {
       transparent 100%);
   pointer-events: none;
   transition: opacity var(--transition-base);
+  opacity: 0;
 }
 
 .site-header.scrolled {
@@ -280,13 +282,9 @@ h4 {
 }
 
 .logo img {
-  width: 50px;
-  height: 50px;
+  width: 120px;
+  height: 120px;
   transition: filter var(--transition-base);
-}
-
-.site-header:not(.scrolled) .logo img {
-  filter: brightness(0) invert(1);
 }
 
 /* Navegación */
@@ -311,7 +309,7 @@ h4 {
 }
 
 .site-header:not(.scrolled) .nav-link {
-  color: var(--blanco);
+  color: var(--negro);
 }
 
 .site-header.scrolled .nav-link {
@@ -348,7 +346,7 @@ h4 {
 }
 
 .site-header:not(.scrolled) .cart-link {
-  color: var(--blanco);
+  color: var(--negro);
 }
 
 .site-header.scrolled .cart-link {
@@ -399,7 +397,7 @@ h4 {
 }
 
 .site-header:not(.scrolled) .menu-toggle-bar {
-  background-color: var(--blanco);
+  background-color: var(--negro);
 }
 
 .site-header.scrolled .menu-toggle-bar {
@@ -789,6 +787,7 @@ h4 {
   line-height: 1.6;
   margin-bottom: var(--space-md);
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -915,8 +914,8 @@ h4 {
 }
 
 .footer-logo {
-  width: 60px;
-  height: 60px;
+  width: 120px;
+  height: 120px;
   filter: brightness(0) invert(1);
   margin-bottom: var(--space-md);
 }
@@ -1069,7 +1068,7 @@ h4 {
 @media (min-width: 768px) {
   :root {
     --container-padding: 2rem;
-    --header-height: 80px;
+    --header-height: 120px;
   }
 
   /* Header */
@@ -1115,8 +1114,8 @@ h4 {
 
   /* Logo más grande en desktop */
   .logo img {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
   }
 
   /* Productos */
@@ -1438,6 +1437,20 @@ h4 {
 .form-group textarea {
   resize: vertical;
   min-height: 140px;
+}
+
+.form-feedback {
+  min-height: 1.6em;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.form-feedback-error {
+  color: var(--rosa);
+}
+
+.form-feedback-success {
+  color: var(--salvia-dark);
 }
 
 .form-row {

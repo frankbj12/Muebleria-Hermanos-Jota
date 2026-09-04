@@ -383,15 +383,15 @@ function initProductDetailPage() {
           <table class="specs-table">
             <tbody>
               ${Object.entries(product.specs)
-                .map(
-                  ([key, val]) => `
+          .map(
+            ([key, val]) => `
                 <tr>
                   <td>${key}</td>
                   <td>${val}</td>
                 </tr>
               `
-                )
-                .join("")}
+          )
+          .join("")}
             </tbody>
           </table>
         </div>
@@ -497,8 +497,8 @@ function renderCart(products, container, subtitle) {
     <div class="cart-layout">
       <div class="cart-items">
         ${itemsWithDetails
-          .map(
-            (item) => `
+      .map(
+        (item) => `
           <article class="cart-item" id="cart-item-${item.id}">
             <div class="cart-item-image">
               <img src="${item.image}" alt="${item.name}">
@@ -517,8 +517,8 @@ function renderCart(products, container, subtitle) {
             </div>
           </article>
         `
-          )
-          .join("")}
+      )
+      .join("")}
       </div>
 
       <aside class="cart-summary">
@@ -597,10 +597,19 @@ function initContactPage() {
 
     const name = form.name.value.trim();
     const email = form.email.value.trim();
+    const subject = form.subject.value.trim();
     const message = form.message.value.trim();
+    const feedback = document.getElementById("form-feedback");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!name || !email || !message) {
-      alert("Por favor completá todos los campos requeridos.");
+    if (!name || !email || !subject || !message) {
+      showFormFeedback(feedback, "Por favor completá todos los campos requeridos.", true);
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      showFormFeedback(feedback, "Ingresá un email válido para poder responderte.", true);
+      form.email.focus();
       return;
     }
 
@@ -611,7 +620,11 @@ function initContactPage() {
     }
 
     setTimeout(() => {
-      alert(`¡Gracias ${name}! Recibimos tu consulta. Te responderemos a la brevedad.`);
+      showFormFeedback(
+        feedback,
+        `¡Gracias ${name}! Recibimos tu consulta. Te responderemos a la brevedad.`,
+        false
+      );
       form.reset();
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -663,7 +676,7 @@ function initHeroVolumeToggle() {
         userWantsSound = false;
         updateUI(false);
         // Asegurar que al menos el video continúe reproduciéndose en silencio
-        heroVideo.play().catch(() => {});
+        heroVideo.play().catch(() => { });
       });
   }
 
@@ -694,7 +707,7 @@ function initHeroVolumeToggle() {
             // El usuario regresó al Hero
             if (userWantsSound) {
               heroVideo.muted = false;
-              heroVideo.play().catch(() => {});
+              heroVideo.play().catch(() => { });
               updateUI(true);
             }
           } else {
@@ -711,3 +724,9 @@ function initHeroVolumeToggle() {
   }
 }
 
+
+function showFormFeedback(element, message, isError) {
+  if (!element) return;
+  element.textContent = message;
+  element.className = `form-feedback${isError ? " form-feedback-error" : " form-feedback-success"}`;
+}
