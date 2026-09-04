@@ -3,7 +3,7 @@
 > **Muebles de madera maciza diseñados para durar generaciones.**  
 > Proyecto grupal de e-commerce frontend desarrollado en el marco de la Diplomatura Full Stack del **ITBA**.
 
-[![Vercel Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://muebleria-hermanos-jota-eight.vercel.app/)
+[![Vercel Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
@@ -13,7 +13,7 @@
 ## 🌐 Sitio Web en Producción
 
 Visita el proyecto en vivo aquí:  
-👉 **[Hermanos Jota — Muebles artesanales con alma](https://muebleria-hermanos-jota-eight.vercel.app/)**
+👉 **[Hermanos Jota — Muebles artesanales con alma](https://muebleria-hermanos-jota-grupo-13.vercel.app/)**
 
 ---
 
@@ -25,8 +25,6 @@ Visita el proyecto en vivo aquí:
 | **Miqueas Córdoba** | [@mickx79](https://github.com/mickx79) |
 | **Tomás Cupello** | [@tomassnahuel](https://github.com/tomassnahuel) |
 | **Brian Reil** | [@reilbrian](https://github.com/reilbrian) |
-
-> La consigna establece equipos de 5 integrantes. Actualmente el repositorio registra 4; falta incorporar el quinto integrante antes de la entrega.
 
 ---
 
@@ -100,6 +98,12 @@ muebleria-hermanos-jota/
 ├── script.js                # Lógica principal, carrito, eventos y manipulación del DOM
 ├── README.md                # Documentación general del repositorio
 ├── AGENTS.md                # Reglas y directrices de desarrollo
+│ 
+├───.agents                  # Fuente de skills a utilizar
+│   └───skills
+│       └───frontend-design
+│               LICENSE.txt
+│               SKILL.md
 │
 ├── data/
 │   └── products.js          # Base de datos local de productos en JavaScript
