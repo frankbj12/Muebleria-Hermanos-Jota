@@ -33,8 +33,8 @@
   --radio: var(--border-radius-lg);
 
   /* Tipografía */
-  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* Escala tipográfica */
   --fs-xs: 0.75rem;
@@ -78,7 +78,6 @@
   --transition-base: 350ms ease;
   --transition-slow: 500ms ease;
 }
-
 
 /* ----- Reset y Base ----- */
 
@@ -139,7 +138,6 @@ address {
   outline-offset: 3px;
 }
 
-
 /* ----- Tipografía ----- */
 
 h1,
@@ -170,7 +168,6 @@ h4 {
   line-height: 1.7;
 }
 
-
 /* ----- Layout ----- */
 
 .container {
@@ -179,7 +176,6 @@ h4 {
   margin: 0 auto;
   padding: 0 var(--container-padding);
 }
-
 
 /* ----- Botones ----- */
 
@@ -193,7 +189,8 @@ h4 {
   padding: 0.9em 2.2em;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background-color var(--transition-fast),
+  transition:
+    background-color var(--transition-fast),
     color var(--transition-fast),
     box-shadow var(--transition-fast),
     transform var(--transition-fast);
@@ -225,7 +222,6 @@ h4 {
   box-shadow: var(--shadow-md);
 }
 
-
 /* =============================================
    HEADER
    ============================================= */
@@ -238,17 +234,20 @@ h4 {
   z-index: 100;
   height: var(--header-height);
   background-color: transparent;
-  transition: background-color var(--transition-base),
+  transition:
+    background-color var(--transition-base),
     box-shadow var(--transition-base);
 }
 
 .site-header::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg,
-      rgba(59, 36, 20, 0.45) 0%,
-      transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(59, 36, 20, 0.45) 0%,
+    transparent 100%
+  );
   pointer-events: none;
   transition: opacity var(--transition-base);
   opacity: 0;
@@ -318,7 +317,7 @@ h4 {
 }
 
 .nav-link::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
@@ -393,7 +392,8 @@ h4 {
   width: 100%;
   height: 2px;
   border-radius: 1px;
-  transition: transform var(--transition-base),
+  transition:
+    transform var(--transition-base),
     opacity var(--transition-fast),
     background-color var(--transition-base);
 }
@@ -441,7 +441,6 @@ h4 {
   color: var(--negro);
 }
 
-
 /* =============================================
    HERO
    ============================================= */
@@ -454,10 +453,12 @@ h4 {
   min-height: 100vh;
   min-height: 100svh;
   overflow: hidden;
-  background: linear-gradient(135deg,
-      var(--siena-dark) 0%,
-      var(--siena) 40%,
-      var(--negro) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--siena-dark) 0%,
+    var(--siena) 40%,
+    var(--negro) 100%
+  );
 }
 
 .hero-video {
@@ -473,10 +474,12 @@ h4 {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(180deg,
-      rgba(59, 36, 20, 0.6) 0%,
-      rgba(59, 36, 20, 0.4) 40%,
-      rgba(59, 36, 20, 0.7) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(59, 36, 20, 0.6) 0%,
+    rgba(59, 36, 20, 0.4) 40%,
+    rgba(59, 36, 20, 0.7) 100%
+  );
 }
 
 .hero-content {
@@ -542,7 +545,9 @@ h4 {
   background: transparent;
   border: none;
   animation: heroFloat 3.6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transition: color var(--transition-base), opacity var(--transition-base);
+  transition:
+    color var(--transition-base),
+    opacity var(--transition-base);
 }
 
 .hero-scroll:hover {
@@ -553,17 +558,17 @@ h4 {
 .hero-scroll-line {
   width: 1px;
   height: 38px;
-  background: linear-gradient(180deg,
-      rgba(245, 230, 211, 0.7) 0%,
-      transparent 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(245, 230, 211, 0.7) 0%,
+    transparent 100%
+  );
   animation: scrollPulse 2s ease-in-out infinite;
   transition: background var(--transition-base);
 }
 
 .hero-scroll:hover .hero-scroll-line {
-  background: linear-gradient(180deg,
-      var(--oro) 0%,
-      transparent 100%);
+  background: linear-gradient(180deg, var(--oro) 0%, transparent 100%);
 }
 
 /* Control de volumen del video Hero */
@@ -589,10 +594,11 @@ h4 {
   text-transform: uppercase;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  transition: background var(--transition-base),
-              border-color var(--transition-base),
-              transform var(--transition-fast),
-              box-shadow var(--transition-base);
+  transition:
+    background var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-fast),
+    box-shadow var(--transition-base);
 }
 
 .hero-volume-btn:hover {
@@ -653,7 +659,6 @@ h4 {
   }
 }
 
-
 /* =============================================
    ESENCIA DE MARCA
    ============================================= */
@@ -709,7 +714,6 @@ h4 {
   margin: 0 auto;
 }
 
-
 /* =============================================
    PRODUCTOS DESTACADOS
    ============================================= */
@@ -732,7 +736,8 @@ h4 {
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition-base),
+  transition:
+    transform var(--transition-base),
     box-shadow var(--transition-base);
 }
 
@@ -821,7 +826,9 @@ h4 {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  transition: gap var(--transition-fast), color var(--transition-fast);
+  transition:
+    gap var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .product-card-link:hover {
@@ -846,7 +853,6 @@ h4 {
 .section-cta {
   text-align: center;
 }
-
 
 /* =============================================
    COMPROMISO — HERENCIA VIVA
@@ -893,7 +899,6 @@ h4 {
   color: rgba(245, 230, 211, 0.7);
   line-height: 1.5;
 }
-
 
 /* =============================================
    FOOTER
@@ -975,7 +980,8 @@ h4 {
   border-radius: 50%;
   border: 1px solid rgba(245, 230, 211, 0.2);
   color: rgba(245, 230, 211, 0.7);
-  transition: color var(--transition-fast),
+  transition:
+    color var(--transition-fast),
     background-color var(--transition-fast),
     border-color var(--transition-fast);
 }
@@ -1001,13 +1007,11 @@ h4 {
   letter-spacing: 0.02em;
 }
 
-
 /* =============================================
    ANIMACIONES
    ============================================= */
 
 @keyframes heroFloat {
-
   0%,
   100% {
     transform: translateX(-50%) translateY(0);
@@ -1019,7 +1023,6 @@ h4 {
 }
 
 @keyframes scrollPulse {
-
   0%,
   100% {
     opacity: 0.4;
@@ -1036,7 +1039,8 @@ h4 {
 .fade-in {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity var(--transition-slow),
+  transition:
+    opacity var(--transition-slow),
     transform var(--transition-slow);
 }
 
@@ -1061,7 +1065,6 @@ h4 {
 .fade-in-delay-4 {
   transition-delay: 400ms;
 }
-
 
 /* =============================================
    RESPONSIVE — TABLET (768px+)
@@ -1104,7 +1107,6 @@ h4 {
   }
 }
 
-
 /* =============================================
    RESPONSIVE — DESKTOP (1024px+)
    ============================================= */
@@ -1126,7 +1128,6 @@ h4 {
   }
 }
 
-
 /* =============================================
    PAGE BANNER (hero compacto para internas)
    ============================================= */
@@ -1145,7 +1146,6 @@ h4 {
 .page-banner .section-intro {
   margin-bottom: 0;
 }
-
 
 /* =============================================
    CATÁLOGO DE PRODUCTOS
@@ -1177,7 +1177,9 @@ h4 {
   border-radius: var(--border-radius);
   background-color: var(--blanco);
   color: var(--negro);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .catalog-search-input:focus {
@@ -1249,7 +1251,6 @@ h4 {
   font-size: var(--fs-md);
   margin-bottom: var(--space-md);
 }
-
 
 /* =============================================
    DETALLE DE PRODUCTO
@@ -1380,7 +1381,6 @@ h4 {
   margin: 0 var(--space-xs);
 }
 
-
 /* =============================================
    CONTACTO
    ============================================= */
@@ -1425,7 +1425,9 @@ h4 {
   border-radius: var(--border-radius);
   background-color: var(--blanco);
   color: var(--negro);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .form-group input:focus,
@@ -1529,7 +1531,6 @@ h4 {
   height: 100%;
   border: 0;
 }
-
 
 /* =============================================
    CARRITO
@@ -1709,7 +1710,6 @@ h4 {
   margin-bottom: var(--space-xl);
 }
 
-
 /* =============================================
    RESPONSIVE INTERNAS — TABLET (768px+)
    ============================================= */
@@ -1754,7 +1754,6 @@ h4 {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
 
 /* =============================================
    ACCESIBILIDAD — REDUCED MOTION
@@ -1946,7 +1945,9 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .ig-card__action-btn:hover {
