@@ -1,0 +1,27 @@
+{
+  "name": "muebleria-hermanos-jota",
+  "version": "1.0.0",
+  "description": "> **Muebles de madera maciza diseñados para durar generaciones.**  \r > Proyecto grupal de e-commerce frontend desarrollado en el marco de la Diplomatura Full Stack del **ITBA**.",
+  "main": "script.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankbj12/Muebleria-Hermanos-Jota.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/frankbj12/Muebleria-Hermanos-Jota/issues"
+  },
+  "homepage": "https://github.com/frankbj12/Muebleria-Hermanos-Jota#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,5 @@
+# Dependencias de Node
+node_modules/
+
+# Archivos de entorno (si usas contraseñas o puertos privados)
+.env
