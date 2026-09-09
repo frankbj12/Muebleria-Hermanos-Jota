@@ -4,9 +4,9 @@ const app = express();
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-    res.send('prueba de servidor con Express');
+  res.send('prueba de servidor con Express');
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
