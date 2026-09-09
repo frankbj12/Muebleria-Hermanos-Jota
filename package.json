@@ -1,6 +1,7 @@
 {
   "type": "module",
   "scripts": {
+    "start": "node app.js",
     "lint": "eslint .",
     "format": "prettier . --write",
     "prepare": "husky"
