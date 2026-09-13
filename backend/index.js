@@ -1,13 +1,21 @@
 import express from 'express';
+import productosRouter from './routes/productos.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { loggerMiddleware } from './middlewares/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// TODO (Sprint 03-04): Configurar middlewares globales (express.json(), logger)
+app.use(express.json());
+app.use(loggerMiddleware);
 
-// TODO (Sprint 03-04): Definir rutas con express.Router (/api/productos)
+app.use('/api/productos', productosRouter);
 
-// TODO (Sprint 03-04): Configurar manejador de 404 y manejador de errores centralizado
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Servidor Backend corriendo en el puerto ${PORT}`);
