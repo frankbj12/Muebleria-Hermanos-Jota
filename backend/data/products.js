@@ -228,3 +228,6 @@ function fetchFeaturedProducts() {
 function formatPrice(price) {
   return '$\u00A0' + price.toLocaleString('es-AR');
 }
+
+export default PRODUCTS;
+export { PRODUCTS, fetchProducts, fetchFeaturedProducts, formatPrice };
