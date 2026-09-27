@@ -201,7 +201,7 @@ function fetchProducts() {
   return new Promise(function (resolve) {
     setTimeout(function () {
       resolve(PRODUCTS);
-    }, 300);
+    }, 0);
   });
 }
 
@@ -216,7 +216,7 @@ function fetchFeaturedProducts() {
         return p.featured;
       });
       resolve(featured);
-    }, 300);
+    }, 0);
   });
 }
 
@@ -229,4 +229,15 @@ function formatPrice(price) {
   return '$\u00A0' + price.toLocaleString('es-AR');
 }
 
-export { PRODUCTS, fetchProducts, fetchFeaturedProducts, formatPrice };
+/**
+ * Simula un error de red o de servidor.
+ */
+function fetchProductsError() {
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
+      reject(new Error("No se pudieron cargar los productos. Por favor, intente más tarde."));
+    }, 500);
+  });
+}
+
+export { PRODUCTS, fetchProducts, fetchFeaturedProducts, fetchProductsError, formatPrice };
