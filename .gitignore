@@ -50,4 +50,6 @@ coverage/
 .eslintcache
 .prettiercache
 .gemini/
-scratch/
+scratch/
+.local-cache/
+
