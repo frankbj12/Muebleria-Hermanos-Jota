@@ -235,9 +235,19 @@ function formatPrice(price) {
 function fetchProductsError() {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
-      reject(new Error("No se pudieron cargar los productos. Por favor, intente más tarde."));
+      reject(
+        new Error(
+          'No se pudieron cargar los productos. Por favor, intente más tarde.'
+        )
+      );
     }, 500);
   });
 }
 
-export { PRODUCTS, fetchProducts, fetchFeaturedProducts, fetchProductsError, formatPrice };
+export {
+  PRODUCTS,
+  fetchProducts,
+  fetchFeaturedProducts,
+  fetchProductsError,
+  formatPrice,
+};

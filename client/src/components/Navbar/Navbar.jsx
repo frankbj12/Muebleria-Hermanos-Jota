@@ -12,7 +12,7 @@ function Navbar({ cartCount = 0 }) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Llamado inicial
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -21,7 +21,10 @@ function Navbar({ cartCount = 0 }) {
   };
 
   return (
-    <header className={`site-header ${isScrolled ? 'scrolled' : ''}`} id="site-header">
+    <header
+      className={`site-header ${isScrolled ? 'scrolled' : ''}`}
+      id="site-header"
+    >
       <div className="header-container">
         <a href="/" className="logo" aria-label="Hermanos Jota — Inicio">
           <img
@@ -32,13 +35,27 @@ function Navbar({ cartCount = 0 }) {
           />
         </a>
 
-        <nav className={`main-nav ${isMenuOpen ? 'open' : ''}`} id="main-nav" aria-label="Navegación principal">
+        <nav
+          className={`main-nav ${isMenuOpen ? 'open' : ''}`}
+          id="main-nav"
+          aria-label="Navegación principal"
+        >
           <ul className="nav-list">
             <li>
-              <a href="/" className="nav-link" aria-current="page">Inicio</a>
+              <a href="/" className="nav-link" aria-current="page">
+                Inicio
+              </a>
             </li>
-            <li><a href="/productos" className="nav-link">Productos</a></li>
-            <li><a href="/contacto" className="nav-link">Contacto</a></li>
+            <li>
+              <a href="/productos" className="nav-link">
+                Productos
+              </a>
+            </li>
+            <li>
+              <a href="/contacto" className="nav-link">
+                Contacto
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -64,7 +81,9 @@ function Navbar({ cartCount = 0 }) {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            <span className="cart-count" id="cart-count" aria-hidden="true">{cartCount}</span>
+            <span className="cart-count" id="cart-count" aria-hidden="true">
+              {cartCount}
+            </span>
           </a>
         </div>
 
@@ -73,7 +92,11 @@ function Navbar({ cartCount = 0 }) {
           id="menu-toggle"
           aria-expanded={isMenuOpen}
           aria-controls="main-nav"
-          aria-label={isMenuOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
+          aria-label={
+            isMenuOpen
+              ? 'Cerrar menú de navegación'
+              : 'Abrir menú de navegación'
+          }
           onClick={toggleMenu}
         >
           <span className="menu-toggle-bar"></span>
