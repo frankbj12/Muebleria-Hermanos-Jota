@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import ProductList from './components/ProductList/ProductList';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import ContactForm from './components/ContactForm/ContactForm';
+import Home from './components/Home/Home';
 
 function App() {
   // Estado del carrito de compras (array de productos agregados con quantity)
@@ -98,30 +99,8 @@ function App() {
       {/* Navbar recibe el contador del carrito vía props */}
       <Navbar cartCount={cartCount} />
 
-      <main className="main-content">
-        <header className="page-header">
-          <h1>Mueblería Hermanos Jota</h1>
-          <p className="page-tagline">Redescubrir el arte de vivir</p>
-        </header>
-
-        {/* Listado de productos del catálogo */}
-        <ProductList
-          products={products}
-          loading={loading}
-          error={error}
-          onSelectProduct={handleSelectProduct}
-          onAddToCart={handleAddToCart}
-        />
-
-        {/* Detalle del producto con renderizado condicional */}
-        <ProductDetail
-          product={selectedProduct}
-          onAddToCart={handleAddToCart}
-          onClearSelection={handleClearSelection}
-        />
-
-        {/* Formulario de contacto controlado con useState */}
-        <ContactForm />
+      <main>
+        <Home products={products} loading={loading} error={error} />
       </main>
 
       <Footer />
