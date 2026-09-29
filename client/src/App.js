@@ -15,11 +15,9 @@ import ProductList from './components/ProductList/ProductList';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import ContactForm from './components/ContactForm/ContactForm';
 import Home from './components/Home/Home';
+import { CartProvider, useCart } from './context/CartContext';
 
 function App() {
-  // Estado del carrito de compras (array de productos agregados con quantity)
-  const [cart, setCart] = useState([]);
-
   // Estados para productos obtenidos desde la API (GET /api/productos)
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -50,96 +48,57 @@ function App() {
     fetchProducts();
   }, []);
 
-  /**
-   * Agrega un producto al carrito o incrementa su cantidad si ya existe.
-   * Utiliza la forma funcional de setState para garantizar inmutabilidad.
-   */
-  const handleAddToCart = (product) => {
-    if (!product) return;
-
-    setCart((prevCart) => {
-      const itemIndex = prevCart.findIndex((item) => item.id === product.id);
-
-      if (itemIndex >= 0) {
-        return prevCart.map((item, index) =>
-          index === itemIndex
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
-            : item
-        );
-      }
-
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
-  };
-
-  /**
-   * Quita un producto del carrito por su id.
-   */
-  const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-  };
-
-  // Estado derivado: Contador total de artículos en el carrito
-  const cartCount = cart.reduce(
-    (total, item) => total + (item.quantity || 1),
-    0
-  );
-
   return (
-    <BrowserRouter
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
-      <div className="App">
-        <Navbar cartCount={cartCount} />
+    <CartProvider>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <div className="App">
+          <Navbar />
 
-        <main>
-          <Routes>
-            <Route
-              path="/"
-              element={<Home products={products} loading={loading} error={error} />}
-            />
-            <Route
-              path="/productos"
-              element={
-                <ProductList
-                  products={products}
-                  loading={loading}
-                  error={error}
-                />
-              }
-            />
-            <Route
-              path="/producto"
-              element={
-                <ProductRoute
-                  products={products}
-                  loading={loading}
-                  error={error}
-                  onAddToCart={handleAddToCart}
-                />
-              }
-            />
-            <Route path="/contacto" element={<ContactForm />} />
-            <Route
-              path="/carrito"
-              element={
-                <CartPage cart={cart} onRemoveFromCart={handleRemoveFromCart} />
-              }
-            />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
+          <main>
+            <Routes>
+              <Route
+                path="/"
+                element={<Home products={products} loading={loading} error={error} />}
+              />
+              <Route
+                path="/productos"
+                element={
+                  <ProductList
+                    products={products}
+                    loading={loading}
+                    error={error}
+                  />
+                }
+              />
+              <Route
+                path="/producto"
+                element={
+                  <ProductRoute
+                    products={products}
+                    loading={loading}
+                    error={error}
+                  />
+                }
+              />
+              <Route path="/contacto" element={<ContactForm />} />
+              <Route path="/carrito" element={<CartPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
 
-        <Footer />
-      </div>
-    </BrowserRouter>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 
-function ProductRoute({ products, loading, error, onAddToCart }) {
+function ProductRoute({ products, loading, error }) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const productId = searchParams.get('id');
@@ -178,13 +137,13 @@ function ProductRoute({ products, loading, error, onAddToCart }) {
   return (
     <ProductDetail
       product={product}
-      onAddToCart={onAddToCart}
       onClearSelection={() => navigate('/productos')}
     />
   );
 }
 
-function CartPage({ cart, onRemoveFromCart }) {
+function CartPage() {
+  const { cart, removeFromCart } = useCart();
   const total = cart.reduce(
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
@@ -221,11 +180,14 @@ function CartPage({ cart, onRemoveFromCart }) {
                     <p className="cart-item-price">{formatPrice(item.price)}</p>
                   </div>
                   <div className="cart-item-actions">
-                    <span>{item.quantity || 1} unidades</span>
+                    <span>
+                      {item.quantity || 1}{' '}
+                      {(item.quantity || 1) === 1 ? 'unidad' : 'unidades'}
+                    </span>
                     <button
                       type="button"
                       className="cart-remove-btn"
-                      onClick={() => onRemoveFromCart(item.id)}
+                      onClick={() => removeFromCart(item.id)}
                     >
                       Quitar
                     </button>

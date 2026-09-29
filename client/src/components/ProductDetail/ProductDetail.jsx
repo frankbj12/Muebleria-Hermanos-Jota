@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useCart } from '../../context/CartContext';
 
 /**
  * Formatea un número como moneda en pesos argentinos (ARS).
@@ -31,17 +32,15 @@ const getCategoryLabel = (cat) => {
  *
  * @param {Object} props
  * @param {Object|null} props.product - Datos del producto seleccionado
- * @param {Function} [props.onAddToCart] - Callback para agregar el producto al carrito
  * @param {Function} [props.onClearSelection] - Callback opcional para volver a la lista
  */
-function ProductDetail({ product, onAddToCart, onClearSelection }) {
+function ProductDetail({ product, onClearSelection }) {
   const [feedbackVisible, setFeedbackVisible] = useState(false);
+  const { addToCart } = useCart();
 
   const handleAdd = () => {
     if (!product) return;
-    if (onAddToCart) {
-      onAddToCart(product);
-    }
+    addToCart(product);
     setFeedbackVisible(true);
     setTimeout(() => {
       setFeedbackVisible(false);
