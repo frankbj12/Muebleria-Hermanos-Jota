@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -6,13 +7,15 @@ function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <img
-              src="/assets/logo.svg"
-              alt="Hermanos Jota"
-              className="footer-logo"
-              width="60"
-              height="60"
-            />
+            <Link to="/" aria-label="Hermanos Jota — Inicio">
+              <img
+                src="/assets/logo.svg"
+                alt="Hermanos Jota"
+                className="footer-logo"
+                width="60"
+                height="60"
+              />
+            </Link>
             <p className="footer-tagline">Redescubriendo el arte de vivir</p>
           </div>
 
@@ -20,13 +23,13 @@ function Footer() {
             <h4>Navegación</h4>
             <ul>
               <li>
-                <a href="/">Inicio</a>
+                <Link to="/">Inicio</Link>
               </li>
               <li>
-                <a href="/productos">Productos</a>
+                <Link to="/productos">Productos</Link>
               </li>
               <li>
-                <a href="/contacto">Contacto</a>
+                <Link to="/contacto">Contacto</Link>
               </li>
             </ul>
           </div>

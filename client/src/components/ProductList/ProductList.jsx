@@ -1,41 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ProductCard from '../ProductCard/ProductCard';
-import {
-  fetchProducts,
-  fetchFeaturedProducts,
-  fetchProductsError,
-} from '../../data/products';
 
-function ProductList({ onSelectProduct, onAddToCart }) {
-  const [mockProducts, setMockProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Detectamos la ruta para saber si filtramos solo los destacados
-  const isHome =
-    window.location.pathname === '/' ||
-    window.location.pathname === '/index.html';
-
-  useEffect(() => {
-    // TIP: Para probar el estado de error, se puede cambiar fetchFn por fetchProductsError
-    const fetchFn = isHome ? fetchFeaturedProducts : fetchProducts;
-    //const fetchFn = fetchProductsError;
-
-    fetchFn()
-      .then((data) => {
-        setMockProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [isHome]);
-
-  const title = isHome ? 'Piezas Destacadas' : 'Catálogo Completo';
-  const subtitle = isHome
-    ? 'Diseñadas para quedarse'
-    : 'Todos nuestros muebles';
+function ProductList({ products = [], loading = false, error = null }) {
+  const title = 'Catálogo Completo';
+  const subtitle = 'Todos nuestros muebles';
 
   // Estado 1: Cargando
   if (loading) {
@@ -147,7 +115,7 @@ function ProductList({ onSelectProduct, onAddToCart }) {
         <p className="section-intro fade-in visible">{subtitle}</p>
 
         <div className="products-grid" id="products-grid">
-          {mockProducts.map((product, index) => (
+          {products.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
         </div>

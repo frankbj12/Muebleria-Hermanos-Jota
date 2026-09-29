@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 function Navbar({ cartCount = 0 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,10 @@ function Navbar({ cartCount = 0 }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname, location.search]);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -26,14 +32,14 @@ function Navbar({ cartCount = 0 }) {
       id="site-header"
     >
       <div className="header-container">
-        <a href="/" className="logo" aria-label="Hermanos Jota — Inicio">
+        <Link to="/" className="logo" aria-label="Hermanos Jota — Inicio">
           <img
             src="/assets/logo.svg"
             alt="Hermanos Jota"
             width="60"
             height="60"
           />
-        </a>
+        </Link>
 
         <nav
           className={`main-nav ${isMenuOpen ? 'open' : ''}`}
@@ -42,26 +48,26 @@ function Navbar({ cartCount = 0 }) {
         >
           <ul className="nav-list">
             <li>
-              <a href="/" className="nav-link" aria-current="page">
+              <NavLink to="/" end className="nav-link">
                 Inicio
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href="/productos" className="nav-link">
+              <NavLink to="/productos" className="nav-link">
                 Productos
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href="/contacto" className="nav-link">
+              <NavLink to="/contacto" className="nav-link">
                 Contacto
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>
 
         <div className="header-actions">
-          <a
-            href="/carrito"
+          <Link
+            to="/carrito"
             className="cart-link"
             id="cart-link"
             aria-label="Carrito de compras"
@@ -84,7 +90,7 @@ function Navbar({ cartCount = 0 }) {
             <span className="cart-count" id="cart-count" aria-hidden="true">
               {cartCount}
             </span>
-          </a>
+          </Link>
         </div>
 
         <button

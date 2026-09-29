@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import ProductCard from '../ProductCard/ProductCard';
 
 /**
@@ -110,9 +111,9 @@ function Home({ products = [], loading = false, error = null }) {
             Muebles artesanales que honran la tradición y abrazan el futuro.
             Madera noble, diseño atemporal, compromiso sustentable.
           </p>
-          <a href="/productos" className="btn btn-primary">
+          <Link to="/productos" className="btn btn-primary">
             Explorar colección
-          </a>
+          </Link>
         </div>
 
         {/* Botón flotante para el audio del Hero */}
@@ -270,9 +271,9 @@ function Home({ products = [], loading = false, error = null }) {
           </div>
 
           <div className="section-cta fade-in visible">
-            <a href="/productos" className="btn btn-secondary">
+            <Link to="/productos" className="btn btn-secondary">
               Ver toda la colección
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -287,7 +288,7 @@ function Home({ products = [], loading = false, error = null }) {
           <div className="redes-layout">
             <div className="redes-info fade-in visible">
               <span className="redes-badge">Comunidad & Experiencias</span>
-              <h2 id="titulo-redes" class="section-title">
+                <h2 id="titulo-redes" className="section-title">
                 Hermanos Jota en tu hogar
               </h2>
               <p className="section-intro">

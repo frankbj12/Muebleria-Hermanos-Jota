@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function ProductCard({ product, index = 0 }) {
   const formatPrice = (price) => {
@@ -23,9 +24,9 @@ function ProductCard({ product, index = 0 }) {
       className={`product-card ${delayClass}`}
       id={`product-card-${product.id}`}
     >
-      <a href={`/producto?id=${product.id}`} className="product-card-image">
+      <Link to={`/producto?id=${product.id}`} className="product-card-image">
         <img src={`/${product.image}`} alt={product.name} loading="lazy" />
-      </a>
+      </Link>
       <div className="product-card-body">
         <span className="product-card-category">
           {getCategoryLabel(product.category)}
@@ -36,7 +37,7 @@ function ProductCard({ product, index = 0 }) {
           <span className="product-card-price">
             {formatPrice(product.price)}
           </span>
-          <a href={`/producto?id=${product.id}`} className="product-card-link">
+          <Link to={`/producto?id=${product.id}`} className="product-card-link">
             Ver detalle
             <svg
               viewBox="0 0 24 24"
@@ -50,7 +51,7 @@ function ProductCard({ product, index = 0 }) {
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </article>
