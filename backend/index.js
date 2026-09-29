@@ -5,9 +5,27 @@ import { loggerMiddleware } from './middlewares/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const CLIENT_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
 app.use(express.json());
 app.use(loggerMiddleware);
+app.use((req, res, next) => {
+  if (req.headers.origin === CLIENT_ORIGIN) {
+    res.setHeader('Access-Control-Allow-Origin', CLIENT_ORIGIN);
+    res.setHeader('Vary', 'Origin');
+  }
+
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type, Authorization'
+    );
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 app.use('/api/productos', productosRouter);
 
