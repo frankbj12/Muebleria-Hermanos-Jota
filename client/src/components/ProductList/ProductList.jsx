@@ -1,126 +1,134 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 
-function ProductList({ products = [], loading = false, error = null }) {
-  const title = 'Catálogo Completo';
-  const subtitle = 'Todos nuestros muebles';
+const CATEGORIES = [
+  { value: 'todos', label: 'Todos' },
+  { value: 'living', label: 'Living' },
+  { value: 'comedor', label: 'Comedor' },
+  { value: 'dormitorio', label: 'Dormitorio' },
+  { value: 'almacenamiento', label: 'Almacenamiento' },
+  { value: 'trabajo', label: 'Trabajo' },
+];
 
-  // Estado 1: Cargando
-  if (loading) {
-    return (
-      <section className="featured-products" id="featured-products">
+function ProductList({ products = [], loading = false, error = null }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('todos');
+
+  const handleReset = () => {
+    setSearchQuery('');
+    setActiveFilter('todos');
+  };
+
+  const filteredProducts = products.filter((prod) => {
+    const matchCategory =
+      activeFilter === 'todos' || prod.category === activeFilter;
+    const query = searchQuery.toLowerCase();
+    const matchSearch =
+      !query ||
+      prod.name.toLowerCase().includes(query) ||
+      prod.description.toLowerCase().includes(query);
+    return matchCategory && matchSearch;
+  });
+
+  return (
+    <>
+      {/* Banner superior */}
+      <section className="page-banner">
         <div className="container">
-          <h2 className="section-title fade-in visible">{title}</h2>
-          <div className="products-grid" id="products-grid">
-            <div
-              style={{
-                textAlign: 'center',
-                gridColumn: '1 / -1',
-                padding: '4rem 2rem',
-              }}
-            >
-              <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
-              <svg
-                style={{
-                  animation: 'spin 1s linear infinite',
-                  width: '40px',
-                  height: '40px',
-                  color: '#B5A598',
-                  margin: '0 auto 1rem',
-                }}
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  strokeOpacity="0.25"
-                ></circle>
-                <path
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              <p style={{ color: '#555', fontSize: '1.1rem' }}>
-                Preparando el catálogo...
-              </p>
-            </div>
-          </div>
+          <h1 className="section-title">Nuestra Colección</h1>
+          <p className="section-intro">
+            Cada pieza diseñada para convertirse en parte de tu historia
+          </p>
         </div>
       </section>
-    );
-  }
 
-  // Estado 2: Error
-  if (error) {
-    return (
-      <section className="featured-products" id="featured-products">
+      {/* Catálogo */}
+      <section className="catalog" id="catalog">
         <div className="container">
-          <h2 className="section-title fade-in visible">{title}</h2>
-          <div className="products-grid" id="products-grid">
-            <div
-              style={{
-                textAlign: 'center',
-                gridColumn: '1 / -1',
-                padding: '3rem 2rem',
-                backgroundColor: '#FDF7F7',
-                borderRadius: '12px',
-                border: '1px solid #F5C6C6',
-              }}
-            >
+          {/* Controles de búsqueda y filtros */}
+          <div className="catalog-controls">
+            <div className="catalog-search">
               <svg
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  color: '#D65C5C',
-                  margin: '0 auto 1rem',
-                }}
+                className="catalog-search-icon"
+                viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
               </svg>
-              <h3
-                style={{
-                  color: '#A03A3A',
-                  marginBottom: '0.5rem',
-                  fontSize: '1.25rem',
-                }}
-              >
-                Ups, ocurrió un inconveniente
-              </h3>
-              <p style={{ color: '#B94A4A' }}>{error}</p>
+              <input
+                type="search"
+                className="catalog-search-input"
+                id="catalog-search"
+                placeholder="Buscar productos…"
+                aria-label="Buscar productos"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
+
+            <div
+              className="catalog-filters"
+              id="catalog-filters"
+              role="group"
+              aria-label="Filtrar por categoría"
+            >
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.value}
+                  className={`filter-btn${activeFilter === cat.value ? ' active' : ''}`}
+                  data-filter={cat.value}
+                  onClick={() => setActiveFilter(cat.value)}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid de productos */}
+          <div className="catalog-grid" id="catalog-grid">
+            {loading && (
+              <p className="products-loading" role="status">
+                Cargando productos…
+              </p>
+            )}
+
+            {!loading && error && (
+              <div className="catalog-empty">
+                <p>{error}</p>
+              </div>
+            )}
+
+            {!loading && !error && filteredProducts.length === 0 && (
+              <div className="catalog-empty">
+                <p>
+                  No se encontraron productos que coincidan con tu búsqueda.
+                </p>
+                <button
+                  className="btn btn-secondary"
+                  id="btn-reset-filters"
+                  onClick={handleReset}
+                >
+                  Limpiar filtros
+                </button>
+              </div>
+            )}
+
+            {!loading &&
+              !error &&
+              filteredProducts.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
           </div>
         </div>
       </section>
-    );
-  }
-
-  // Estado 3: Éxito (Datos recibidos)
-  return (
-    <section className="featured-products" id="featured-products">
-      <div className="container">
-        <h2 className="section-title fade-in visible">{title}</h2>
-        <p className="section-intro fade-in visible">{subtitle}</p>
-
-        <div className="products-grid" id="products-grid">
-          {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
-        </div>
-      </div>
-    </section>
+    </>
   );
 }
 

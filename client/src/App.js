@@ -63,7 +63,9 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={<Home products={products} loading={loading} error={error} />}
+                element={
+                  <Home products={products} loading={loading} error={error} />
+                }
               />
               <Route
                 path="/productos"
@@ -122,7 +124,9 @@ function ProductRoute({ products, loading, error }) {
         <div className="container">
           <div className="catalog-empty">
             <h1>
-              {error ? 'No se pudo cargar el producto' : 'Producto no encontrado'}
+              {error
+                ? 'No se pudo cargar el producto'
+                : 'Producto no encontrado'}
             </h1>
             <p>{error || 'El producto solicitado no existe.'}</p>
             <Link to="/productos" className="btn btn-secondary">
@@ -143,73 +147,150 @@ function ProductRoute({ products, loading, error }) {
 }
 
 function CartPage() {
-  const { cart, removeFromCart } = useCart();
-  const total = cart.reduce(
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const subtotal = cart.reduce(
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
   );
   const formatPrice = (price) => `$ ${price.toLocaleString('es-AR')}`;
 
+  const subtitle =
+    cart.length === 0
+      ? 'Tu carrito está actualmente vacío'
+      : 'Revisá tus productos antes de continuar';
+
+  const handleCheckout = () => {
+    alert(
+      '¡Gracias por tu interés! La funcionalidad de pago estará disponible próximamente.'
+    );
+  };
+
+  const handleClearCart = () => {
+    if (window.confirm('¿Estás seguro de que deseás vaciar el carrito?')) {
+      clearCart();
+    }
+  };
+
   return (
-    <section className="cart-section">
-      <div className="container">
-        <h1 className="section-title">Carrito</h1>
+    <>
+      {/* Banner superior */}
+      <section className="page-banner">
+        <div className="container">
+          <h1 className="section-title">Tu Carrito</h1>
+          <p className="section-intro" id="cart-subtitle">
+            {subtitle}
+          </p>
+        </div>
+      </section>
 
-        {cart.length === 0 ? (
-          <div className="cart-empty">
-            <h2>Tu carrito está vacío</h2>
-            <p>Explorá la colección y encontrá tu próxima pieza favorita.</p>
-            <Link to="/productos" className="btn btn-primary">
-              Ver productos
-            </Link>
-          </div>
-        ) : (
-          <div className="cart-layout">
-            <div className="cart-items">
-              {cart.map((item) => (
-                <article className="cart-item" key={item.id}>
-                  <Link
-                    to={`/producto?id=${item.id}`}
-                    className="cart-item-image"
-                    aria-label={`Ver ${item.name}`}
-                  >
-                    <img src={`/${item.image}`} alt={item.name} />
-                  </Link>
-                  <div className="cart-item-info">
-                    <h2>{item.name}</h2>
-                    <p className="cart-item-price">{formatPrice(item.price)}</p>
-                  </div>
-                  <div className="cart-item-actions">
-                    <span>
-                      {item.quantity || 1}{' '}
-                      {(item.quantity || 1) === 1 ? 'unidad' : 'unidades'}
-                    </span>
-                    <button
-                      type="button"
-                      className="cart-remove-btn"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      Quitar
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <aside className="cart-summary">
-              <h2>Resumen</h2>
-              <div className="cart-summary-total">
-                <span>Total</span>
-                <span>{formatPrice(total)}</span>
-              </div>
-              <Link to="/productos" className="btn btn-secondary">
-                Seguir comprando
+      {/* Contenido del carrito */}
+      <section className="cart-section" id="cart-section">
+        <div className="container" id="cart-container">
+          {cart.length === 0 ? (
+            <div className="cart-empty">
+              <div className="cart-empty-icon">🛋️</div>
+              <h2>Aún no agregaste piezas a tu carrito</h2>
+              <p>
+                Explorá nuestro catálogo de muebles artesanales y encontrá la
+                pieza ideal para tu hogar.
+              </p>
+              <Link to="/productos" className="btn btn-primary">
+                Explorar catálogo
               </Link>
-            </aside>
-          </div>
-        )}
-      </div>
-    </section>
+            </div>
+          ) : (
+            <div className="cart-layout">
+              <div className="cart-items">
+                {cart.map((item) => (
+                  <article
+                    className="cart-item"
+                    key={item.id}
+                    id={`cart-item-${item.id}`}
+                  >
+                    <Link
+                      to={`/producto?id=${item.id}`}
+                      className="cart-item-image"
+                      aria-label={`Ver ${item.name}`}
+                    >
+                      <img src={`/${item.image}`} alt={item.name} />
+                    </Link>
+                    <div className="cart-item-info">
+                      <h2>{item.name}</h2>
+                      <span className="cart-item-price">
+                        {formatPrice(item.price)}
+                      </span>
+                    </div>
+                    <div className="cart-item-actions">
+                      <div className="qty-control">
+                        <button
+                          className="qty-btn"
+                          aria-label="Disminuir cantidad"
+                          onClick={() => updateQuantity(item.id, -1)}
+                        >
+                          -
+                        </button>
+                        <span className="qty-value">{item.quantity || 1}</span>
+                        <button
+                          className="qty-btn"
+                          aria-label="Aumentar cantidad"
+                          onClick={() => updateQuantity(item.id, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="cart-remove-btn"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <aside className="cart-summary">
+                <h3>Resumen del Pedido</h3>
+                <div className="cart-summary-row">
+                  <span>Subtotal</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <div className="cart-summary-row">
+                  <span>Envío (CABA y GBA)</span>
+                  <span
+                    style={{ color: 'var(--salvia-dark)', fontWeight: 500 }}
+                  >
+                    Gratis
+                  </span>
+                </div>
+                <div className="cart-summary-total">
+                  <span>Total</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  id="btn-checkout"
+                  onClick={handleCheckout}
+                >
+                  Iniciar compra
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  id="btn-clear-cart"
+                  style={{ marginTop: '0.5rem', width: '100%' }}
+                  onClick={handleClearCart}
+                >
+                  Vaciar carrito
+                </button>
+              </aside>
+            </div>
+          )}
+        </div>
+      </section>
+    </>
   );
 }
 

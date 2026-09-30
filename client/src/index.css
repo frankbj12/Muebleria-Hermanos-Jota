@@ -1141,6 +1141,17 @@ h4 {
 
 .page-banner .section-title {
   margin-bottom: var(--space-sm);
+  position: relative;
+}
+
+.page-banner .section-title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background-color: var(--siena);
+  margin: var(--space-md) auto 0;
+  border-radius: 1px;
 }
 
 .page-banner .section-intro {
@@ -1253,11 +1264,38 @@ h4 {
 }
 
 /* =============================================
+   BREADCRUMB DE PRODUCTO
+   ============================================= */
+
+.product-breadcrumb {
+  padding: calc(var(--header-height) + var(--space-lg)) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--gris);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.product-breadcrumb a {
+  color: var(--siena);
+  transition: color var(--transition-fast);
+}
+
+.product-breadcrumb a:hover {
+  color: var(--siena-dark);
+}
+
+.product-breadcrumb span {
+  margin: 0 var(--space-xs);
+}
+
+/* =============================================
    DETALLE DE PRODUCTO
    ============================================= */
 
 .product-detail {
-  padding: calc(var(--header-height) + var(--space-2xl)) 0 var(--space-section);
+  padding: var(--space-section) 0;
   background-color: var(--blanco-calido);
 }
 
@@ -1401,6 +1439,10 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+  background-color: var(--blanco);
+  padding: var(--space-2xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-card);
 }
 
 .form-group {
@@ -1447,6 +1489,18 @@ h4 {
   min-height: 1.6em;
   font-size: var(--fs-sm);
   font-weight: 500;
+  animation: fadeInUp var(--transition-base) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-feedback-error {
@@ -1477,6 +1531,18 @@ h4 {
   display: flex;
   gap: var(--space-md);
   align-items: flex-start;
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+.contact-info-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.contact-info-card--action {
+  border-left: 3px solid var(--siena);
 }
 
 .contact-info-card .card-icon {
@@ -1524,6 +1590,8 @@ h4 {
   overflow: hidden;
   aspect-ratio: 16 / 9;
   background-color: var(--alabastro);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-borde);
 }
 
 .contact-map iframe {

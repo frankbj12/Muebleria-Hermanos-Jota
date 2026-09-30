@@ -23,23 +23,39 @@ test('navigates between views and product detail without reloading', async () =>
   render(<App />);
 
   await screen.findByRole('heading', { name: 'Redescubrí el arte de vivir' });
-  await userEvent.click(screen.getByRole('link', { name: 'Explorar colección' }));
-  expect(await screen.findByRole('heading', { name: 'Catálogo Completo' })).toBeInTheDocument();
+  await userEvent.click(
+    screen.getByRole('link', { name: 'Explorar colección' })
+  );
+  expect(
+    await screen.findByRole('heading', { name: 'Nuestra Colección' })
+  ).toBeInTheDocument();
 
   await userEvent.click(screen.getByRole('link', { name: /Ver detalle/ }));
-  expect(await screen.findByRole('heading', { name: 'Butaca Mendoza' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('heading', { name: 'Butaca Mendoza' })
+  ).toBeInTheDocument();
   expect(window.location.search).toBe('?id=1');
 
-  await userEvent.click(screen.getByRole('button', { name: 'Añadir al Carrito' }));
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Añadir al Carrito' })
+  );
   expect(document.querySelector('#cart-count')).toHaveTextContent('1');
-  await userEvent.click(screen.getByRole('link', { name: 'Carrito de compras' }));
-  expect(await screen.findByRole('heading', { name: 'Butaca Mendoza' })).toBeInTheDocument();
-  expect(screen.getByText('1 unidad')).toBeInTheDocument();
+  await userEvent.click(
+    screen.getByRole('link', { name: 'Carrito de compras' })
+  );
+  expect(
+    await screen.findByRole('heading', { name: 'Butaca Mendoza' })
+  ).toBeInTheDocument();
+  expect(document.querySelector('.qty-value')).toHaveTextContent('1');
 
-  await userEvent.click(screen.getByRole('button', { name: 'Quitar' }));
-  expect(await screen.findByText('Tu carrito está vacío')).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Eliminar' }));
+  expect(
+    await screen.findByText('Aún no agregaste piezas a tu carrito')
+  ).toBeInTheDocument();
   expect(document.querySelector('#cart-count')).toHaveTextContent('0');
 
   await userEvent.click(screen.getAllByRole('link', { name: 'Contacto' })[0]);
-  expect(await screen.findByRole('heading', { name: 'Contacto' })).toBeInTheDocument();
+  expect(
+    await screen.findByRole('heading', { name: 'Contacto' })
+  ).toBeInTheDocument();
 });

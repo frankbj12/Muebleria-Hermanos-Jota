@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 /**
@@ -96,18 +97,15 @@ function ProductDetail({ product, onClearSelection }) {
       <div className="container">
         {onClearSelection && (
           <nav
-            className="product-breadcrumb"
-            style={{ marginBottom: '1.5rem' }}
+            className="product-breadcrumb container"
             aria-label="Ruta de navegación"
+            style={{ padding: '0 0 var(--space-lg)' }}
           >
-            <button
-              type="button"
-              onClick={onClearSelection}
-              className="btn btn-secondary"
-              style={{ padding: '0.4rem 0.8rem', fontSize: 'var(--fs-sm)' }}
-            >
-              ← Volver al catálogo
-            </button>
+            <Link to="/">Inicio</Link>
+            <span>›</span>
+            <Link to="/productos">Productos</Link>
+            <span>›</span>
+            <span id="breadcrumb-name">{name}</span>
           </nav>
         )}
 

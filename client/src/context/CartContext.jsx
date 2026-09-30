@@ -27,13 +27,37 @@ export function CartProvider({ children }) {
     setCart((items) => items.filter((item) => item.id !== productId));
   };
 
+  const updateQuantity = (productId, delta) => {
+    setCart((items) => {
+      const updated = items.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: (item.quantity || 1) + delta }
+          : item
+      );
+      return updated.filter((item) => (item.quantity || 1) > 0);
+    });
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const cartCount = cart.reduce(
     (total, item) => total + (item.quantity || 1),
     0
   );
 
   return (
-    <CartContext.Provider value={{ cart, cartCount, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        cartCount,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
