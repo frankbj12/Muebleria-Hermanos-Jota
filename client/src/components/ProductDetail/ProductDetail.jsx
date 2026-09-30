@@ -99,7 +99,6 @@ function ProductDetail({ product, onClearSelection }) {
           <nav
             className="product-breadcrumb container"
             aria-label="Ruta de navegación"
-            style={{ padding: '0 0 var(--space-lg)' }}
           >
             <Link to="/">Inicio</Link>
             <span>›</span>
