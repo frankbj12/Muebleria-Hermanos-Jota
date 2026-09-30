@@ -1449,7 +1449,7 @@ h4 {
   flex-direction: column;
   gap: var(--space-lg);
   background-color: var(--blanco);
-  padding: var(--space-2xl);
+  padding: clamp(var(--space-lg), 5vw, var(--space-2xl));
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-card);
 }
@@ -1536,13 +1536,15 @@ h4 {
 .contact-info-card {
   background-color: var(--alabastro-light);
   border-radius: var(--border-radius-lg);
-  padding: var(--space-xl);
+  padding: clamp(var(--space-md), 3vw, var(--space-xl));
   display: flex;
-  gap: var(--space-md);
+  gap: clamp(var(--space-sm), 2vw, var(--space-md));
   align-items: flex-start;
   transition:
     box-shadow var(--transition-base),
     transform var(--transition-base);
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .contact-info-card:hover {
@@ -1809,10 +1811,6 @@ h4 {
     grid-template-columns: 1fr 1fr;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .form-row {
     grid-template-columns: 1fr 1fr;
   }
@@ -1829,6 +1827,10 @@ h4 {
 @media (min-width: 1024px) {
   .catalog-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
