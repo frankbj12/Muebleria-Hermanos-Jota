@@ -4,6 +4,7 @@ import App from './App';
 
 test('navigates between views and product detail without reloading', async () => {
   window.history.pushState({}, '', '/');
+  const scrollTo = jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   jest.spyOn(global, 'fetch').mockResolvedValue({
     ok: true,
     json: async () => [
@@ -23,9 +24,11 @@ test('navigates between views and product detail without reloading', async () =>
   render(<App />);
 
   await screen.findByRole('heading', { name: 'Redescubrí el arte de vivir' });
+  scrollTo.mockClear();
   await userEvent.click(
     screen.getByRole('link', { name: 'Explorar colección' })
   );
+  expect(scrollTo).toHaveBeenCalledWith(0, 0);
   expect(
     await screen.findByRole('heading', { name: 'Nuestra Colección' })
   ).toBeInTheDocument();

@@ -4,6 +4,7 @@ import {
   Link,
   Route,
   Routes,
+  useLocation,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
@@ -56,6 +57,7 @@ function App() {
           v7_relativeSplatPath: true,
         }}
       >
+        <ScrollToTop />
         <div className="App">
           <Navbar />
 
@@ -98,6 +100,16 @@ function App() {
       </BrowserRouter>
     </CartProvider>
   );
+}
+
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.search]);
+
+  return null;
 }
 
 function ProductRoute({ products, loading, error }) {
