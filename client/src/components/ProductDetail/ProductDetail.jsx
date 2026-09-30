@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useToast } from '../../context/ToastContext';
 
 /**
  * Formatea un número como moneda en pesos argentinos (ARS).
@@ -36,16 +37,13 @@ const getCategoryLabel = (cat) => {
  * @param {Function} [props.onClearSelection] - Callback opcional para volver a la lista
  */
 function ProductDetail({ product, onClearSelection }) {
-  const [feedbackVisible, setFeedbackVisible] = useState(false);
   const { addToCart } = useCart();
+  const { addToast } = useToast();
 
   const handleAdd = () => {
     if (!product) return;
     addToCart(product);
-    setFeedbackVisible(true);
-    setTimeout(() => {
-      setFeedbackVisible(false);
-    }, 3000);
+    addToast('¡Producto añadido al carrito con éxito!', 'success');
   };
 
   if (!product) {
@@ -143,19 +141,7 @@ function ProductDetail({ product, onClearSelection }) {
               )}
             </div>
 
-            {feedbackVisible && (
-              <div
-                id="add-to-cart-feedback"
-                style={{
-                  color: 'var(--salvia-dark)',
-                  fontWeight: 500,
-                  marginTop: '0.75rem',
-                }}
-                role="status"
-              >
-                ✓ ¡Producto añadido al carrito con éxito!
-              </div>
-            )}
+
 
             {specs && Object.keys(specs).length > 0 && (
               <div className="product-specs">

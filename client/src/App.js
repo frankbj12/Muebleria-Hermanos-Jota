@@ -17,6 +17,7 @@ import ProductDetail from './components/ProductDetail/ProductDetail';
 import ContactForm from './components/ContactForm/ContactForm';
 import Home from './components/Home/Home';
 import { CartProvider, useCart } from './context/CartContext';
+import { useToast } from './context/ToastContext';
 
 function App() {
   // Estados para productos obtenidos desde la API (GET /api/productos)
@@ -160,6 +161,7 @@ function ProductRoute({ products, loading, error }) {
 
 function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { addToast } = useToast();
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
@@ -172,8 +174,9 @@ function CartPage() {
       : 'Revisá tus productos antes de continuar';
 
   const handleCheckout = () => {
-    alert(
-      '¡Gracias por tu interés! La funcionalidad de pago estará disponible próximamente.'
+    addToast(
+      '¡Gracias por tu interés! La funcionalidad de pago estará disponible próximamente.',
+      'info'
     );
   };
 

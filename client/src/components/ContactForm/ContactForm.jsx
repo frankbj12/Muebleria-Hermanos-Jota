@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useToast } from '../../context/ToastContext';
 
 /**
  * Componente ContactForm
@@ -10,11 +11,8 @@ function ContactForm() {
   const [email, setEmail] = useState('');
   const [asunto, setAsunto] = useState('');
   const [mensaje, setMensaje] = useState('');
+  const { addToast } = useToast();
 
-  const [status, setStatus] = useState({
-    type: 'idle', // 'idle' | 'success' | 'error'
-    message: '',
-  });
   const [sending, setSending] = useState(false);
 
   const validateEmail = (emailStr) => {
@@ -25,29 +23,19 @@ function ContactForm() {
     e.preventDefault();
 
     if (!nombre.trim() || !email.trim() || !asunto.trim() || !mensaje.trim()) {
-      setStatus({
-        type: 'error',
-        message: 'Por favor completá todos los campos requeridos.',
-      });
+      addToast('Por favor completá todos los campos requeridos.', 'error');
       return;
     }
 
     if (!validateEmail(email)) {
-      setStatus({
-        type: 'error',
-        message: 'Ingresá un email válido para poder responderte.',
-      });
+      addToast('Ingresá un email válido para poder responderte.', 'error');
       return;
     }
 
     setSending(true);
-    setStatus({ type: 'idle', message: '' });
 
     setTimeout(() => {
-      setStatus({
-        type: 'success',
-        message: `¡Gracias ${nombre.trim()}! Recibimos tu consulta. Te responderemos a la brevedad.`,
-      });
+      addToast(`¡Gracias ${nombre.trim()}! Recibimos tu consulta. Te responderemos a la brevedad.`, 'success');
       setNombre('');
       setEmail('');
       setAsunto('');
@@ -151,17 +139,6 @@ function ContactForm() {
                 >
                   {sending ? 'Enviando...' : 'Enviar mensaje'}
                 </button>
-
-                {status.message && (
-                  <p
-                    className={`form-feedback form-feedback-${status.type}`}
-                    id="form-feedback"
-                    role="status"
-                    aria-live="polite"
-                  >
-                    {status.message}
-                  </p>
-                )}
               </form>
             </div>
 
