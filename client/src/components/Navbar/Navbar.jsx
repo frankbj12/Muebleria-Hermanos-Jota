@@ -30,7 +30,7 @@ function Navbar() {
 
   return (
     <header
-      className={`site-header ${isScrolled ? 'scrolled' : ''}`}
+      className={`site-header ${location.pathname === '/' ? 'home-page' : ''} ${isScrolled ? 'scrolled' : ''}`}
       id="site-header"
     >
       <div className="header-container">

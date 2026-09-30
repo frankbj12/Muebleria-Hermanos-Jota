@@ -239,6 +239,11 @@ h4 {
     box-shadow var(--transition-base);
 }
 
+.site-header:not(.home-page) {
+  background-color: var(--alabastro-light);
+  box-shadow: var(--shadow-sm);
+}
+
 .site-header::before {
   content: '';
   position: absolute;
@@ -308,10 +313,11 @@ h4 {
   transition: color var(--transition-fast);
 }
 
-.site-header:not(.scrolled) .nav-link {
+.site-header.home-page:not(.scrolled) .nav-link {
   color: var(--blanco);
 }
 
+.site-header:not(.home-page) .nav-link,
 .site-header.scrolled .nav-link {
   color: var(--negro);
 }
@@ -346,10 +352,11 @@ h4 {
   transition: color var(--transition-fast);
 }
 
-.site-header:not(.scrolled) .cart-link {
+.site-header.home-page:not(.scrolled) .cart-link {
   color: var(--blanco);
 }
 
+.site-header:not(.home-page) .cart-link,
 .site-header.scrolled .cart-link {
   color: var(--negro);
 }
