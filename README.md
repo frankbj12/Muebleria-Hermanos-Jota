@@ -1,10 +1,6 @@
 # 🪑Hermanos Jota
 
 
-
-🛠️
-👉
-
 ### Mueblería artesanal · E-commerce
 
 Aplicación web para explorar muebles artesanales de diseño contemporáneo. El proyecto combina una interfaz en React con una API REST construida en Node.js y Express.
@@ -29,16 +25,8 @@ Aplicación web para explorar muebles artesanales de diseño contemporáneo. El 
 | Brian Reil | [@reilbrian](https://github.com/reilbrian) |
 | Camilo Facundo Desza | [@CamiloD2212](https://github.com/CamiloD2212) |
 
-## Experiencia
 
-- **Inicio:** piezas destacadas, contenido de marca y video institucional.
-- **Catálogo:** productos obtenidos desde la API, búsqueda y filtros por categoría.
-- **Detalle:** especificaciones e información del producto seleccionado.
-- **Carrito:** gestión de cantidades, eliminación de productos y cálculo de subtotal, con estado compartido mediante React Context.
-- **Contacto:** formulario controlado con validación del lado del cliente.
-- **Interfaz:** diseño responsive y navegación entre vistas con React Router.
-
-## Tecnologías
+## 🛠️Tecnologías
 
 | Área | Herramientas |
 | --- | --- |
@@ -46,7 +34,7 @@ Aplicación web para explorar muebles artesanales de diseño contemporáneo. El 
 | Servidor | Node.js, Express |
 | Datos | Catálogo local en JavaScript |
 
-## Puesta en marcha
+## 🛠️Puesta en marcha
 
 **Requisitos:** Node.js y npm. El backend y el cliente se ejecutan en paralelo; abrí dos terminales desde la raíz del repositorio.
 
@@ -70,7 +58,7 @@ npm start
 
 El cliente se abrirá en `http://localhost:3000` y consultará la API local. Ambos procesos deben permanecer activos para cargar el catálogo.
 
-## API
+## ⚙API
 
 | Método | Endpoint | Respuesta |
 | --- | --- | --- |
@@ -79,7 +67,7 @@ El cliente se abrirá en `http://localhost:3000` y consultará la API local. Amb
 
 Los datos se encuentran en `backend/data/products.js`. Express configura logging de solicitudes, parseo JSON, CORS para desarrollo local y manejadores de rutas no encontradas y errores.
 
-## Estructura
+## 📂Estructura
 
 ```text
 .
@@ -135,7 +123,7 @@ Los datos se encuentran en `backend/data/products.js`. Express configura logging
 └── README.md                        Documentación del proyecto
 ```
 
-### Cómo se organiza
+### 📜Cómo se organiza
 
 - **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas; `routes/productos.js` consulta el catálogo definido en `data/products.js`.
 - **`client/src/`** contiene la aplicación. `App.js` carga los productos desde la API y define las rutas; `components/` organiza la interfaz por responsabilidad; `context/` comparte el estado del carrito y las notificaciones.
@@ -144,6 +132,6 @@ Los datos se encuentran en `backend/data/products.js`. Express configura logging
 - **Configuración raíz**: `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
 
 
-## Alcance actual
+## ✨Alcance actual
 
 El catálogo se carga desde la API; el detalle se resuelve en el cliente a partir de esa lista. El carrito vive en memoria y se reinicia al recargar la página. El formulario de contacto muestra una confirmación simulada y no envía datos a un servicio. El checkout es informativo y no procesa pagos. MongoDB, autenticación y persistencia no están incluidos en esta etapa.
