@@ -9,23 +9,30 @@ export const ToastProvider = ({ children }) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
-  const addToast = useCallback((message, type = 'success', duration = 5000) => {
-    const id = Date.now() + Math.random();
-    setToasts((prev) => [...prev, { id, message, type }]);
+  const addToast = useCallback(
+    (message, type = 'success', duration = 5000) => {
+      const id = Date.now() + Math.random();
+      setToasts((prev) => [...prev, { id, message, type }]);
 
-    if (duration > 0) {
-      setTimeout(() => {
-        removeToast(id);
-      }, duration);
-    }
-  }, [removeToast]);
+      if (duration > 0) {
+        setTimeout(() => {
+          removeToast(id);
+        }, duration);
+      }
+    },
+    [removeToast]
+  );
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
       <div className="toast-container" aria-live="polite">
         {toasts.map((toast) => (
-          <div key={toast.id} className={`toast toast--${toast.type}`} role="alert">
+          <div
+            key={toast.id}
+            className={`toast toast--${toast.type}`}
+            role="alert"
+          >
             <span className="toast-icon">
               {toast.type === 'success' && '✓'}
               {toast.type === 'error' && '✕'}

@@ -108,7 +108,11 @@ function ProductDetail({ product, onClearSelection }) {
 
         <div className="product-detail-grid" id="product-detail-content">
           <div className="product-gallery">
-            <img src={image} alt={name} loading="lazy" />
+            <img
+              src={image?.startsWith('/') ? image : `/${image}`}
+              alt={name}
+              loading="lazy"
+            />
           </div>
 
           <div className="product-info">
@@ -140,8 +144,6 @@ function ProductDetail({ product, onClearSelection }) {
                 </button>
               )}
             </div>
-
-
 
             {specs && Object.keys(specs).length > 0 && (
               <div className="product-specs">

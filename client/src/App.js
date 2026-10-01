@@ -19,6 +19,12 @@ import Home from './components/Home/Home';
 import { CartProvider, useCart } from './context/CartContext';
 import { useToast } from './context/ToastContext';
 
+const API_URL = process.env.REACT_APP_API_URL
+  ? process.env.REACT_APP_API_URL.endsWith('/api/productos')
+    ? process.env.REACT_APP_API_URL
+    : `${process.env.REACT_APP_API_URL.replace(/\/$/, '')}/api/productos`
+  : 'http://localhost:5000/api/productos';
+
 function App() {
   // Estados para productos obtenidos desde la API (GET /api/productos)
   const [products, setProducts] = useState([]);
@@ -30,7 +36,7 @@ function App() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/productos');
+        const response = await fetch(API_URL);
         if (!response.ok) {
           throw new Error(
             `Error en la petición: ${response.status} ${response.statusText}`

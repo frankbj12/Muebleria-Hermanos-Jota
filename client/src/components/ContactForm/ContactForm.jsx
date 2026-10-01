@@ -35,7 +35,10 @@ function ContactForm() {
     setSending(true);
 
     setTimeout(() => {
-      addToast(`¡Gracias ${nombre.trim()}! Recibimos tu consulta. Te responderemos a la brevedad.`, 'success');
+      addToast(
+        `¡Gracias ${nombre.trim()}! Recibimos tu consulta. Te responderemos a la brevedad.`,
+        'success'
+      );
       setNombre('');
       setEmail('');
       setAsunto('');

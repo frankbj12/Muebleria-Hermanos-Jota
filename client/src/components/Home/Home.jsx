@@ -288,7 +288,7 @@ function Home({ products = [], loading = false, error = null }) {
           <div className="redes-layout">
             <div className="redes-info fade-in visible">
               <span className="redes-badge">Comunidad & Experiencias</span>
-                <h2 id="titulo-redes" className="section-title">
+              <h2 id="titulo-redes" className="section-title">
                 Hermanos Jota en tu hogar
               </h2>
               <p className="section-intro">
