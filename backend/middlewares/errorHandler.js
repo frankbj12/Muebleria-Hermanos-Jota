@@ -1,6 +1,15 @@
-// TODO (Sprint 03-04): Implementar manejador de errores centralizado y manejador de 404
+/**
+ * Middleware centralizado para el manejo de errores.
+ * Captura excepciones y envía una respuesta JSON coherente con el código de estado adecuado.
+ */
 export const errorHandler = (err, req, res, next) => {
-  res
-    .status(err.status || 500)
-    .json({ error: err.message || 'Error interno del servidor' });
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || 'Error interno del servidor';
+
+  // Registrar error en servidor
+  console.error(`[Error ${status}] ${req.method} ${req.originalUrl}:`, err);
+
+  res.status(status).json({
+    error: message,
+  });
 };
