@@ -1,0 +1,14 @@
+{
+  "name": "muebleria-jota-backend",
+  "version": "1.0.0",
+  "description": "Backend API Node.js/Express para Mueblería Hermanos Jota - Sprint 03-04",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

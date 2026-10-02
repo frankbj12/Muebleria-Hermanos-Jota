@@ -1,0 +1,26 @@
+/* Estilos específicos de la aplicación React Hermanos Jota */
+
+.main-content {
+  min-height: 80vh;
+  padding-top: var(--space-xl);
+}
+
+.page-header {
+  text-align: center;
+  margin: var(--space-2xl) 0;
+}
+
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(var(--fs-2xl), 4vw + 1rem, var(--fs-4xl));
+  color: var(--negro);
+  margin-bottom: var(--space-xs);
+}
+
+.page-tagline {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  font-weight: 300;
+  color: var(--gris);
+  letter-spacing: 0.05em;
+}

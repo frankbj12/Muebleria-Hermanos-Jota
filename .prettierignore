@@ -1,0 +1,46 @@
+# Dependencies & Build Outputs
+node_modules
+**/node_modules
+dist
+build
+client/build
+coverage
+
+# Package Lock files
+package-lock.json
+client/package-lock.json
+backend/package-lock.json
+yarn.lock
+pnpm-lock.yaml
+skills-lock.json
+
+# Media and Static Assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.mp4
+*.webm
+*.pdf
+*.webp
+*.avif
+client/public/assets/
+
+# Environment files
+.env
+.env.*
+
+# Documentation, Agent configs & Legacy code
+docs/
+.agents/
+.husky/
+AGENTS.md
+README.md
+
+# Tooling Caches
+.cache
+.eslintcache
+.prettiercache
+.gemini

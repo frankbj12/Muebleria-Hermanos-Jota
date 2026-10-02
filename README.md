@@ -1,143 +1,137 @@
-# 🪑 Hermanos Jota — Mueblería Artesanal
+# 🪑Hermanos Jota
 
-> **Muebles de madera maciza diseñados para durar generaciones.**  
-> Proyecto grupal de e-commerce frontend desarrollado en el marco de la Diplomatura Full Stack del **ITBA**.
+
+### Mueblería artesanal · E-commerce
+
+Aplicación web para explorar muebles artesanales de diseño contemporáneo. El proyecto combina una interfaz en React con una API REST construida en Node.js y Express.
 
 [![Vercel Deployment](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
+## 🌐link de Vercel
+👉[Muebleria Hermanos Jota](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
+
+**Diplomatura Full Stack · ITBA**
 
 ---
 
-## 🌐 Sitio Web en Producción
-
-Visita el proyecto en vivo aquí:  
-👉 **[Hermanos Jota — Muebles artesanales con alma](https://muebleria-hermanos-jota-grupo-13.vercel.app/)**
-
----
-
-## 👥 Integrantes del Equipo
+## 👥Equipo
 
 | Integrante | GitHub |
-| :--- | :--- |
-| **Franco Alegre** | [@frankbj12](https://github.com/frankbj12) |
-| **Miqueas Córdoba** | [@mickx79](https://github.com/mickx79) |
-| **Tomás Cupello** | [@tomassnahuel](https://github.com/tomassnahuel) |
-| **Brian Reil** | [@reilbrian](https://github.com/reilbrian) |
+| --- | --- |
+| Franco Alegre | [@frankbj12](https://github.com/frankbj12) |
+| Tomás Cupello | [@tomassnahuel](https://github.com/tomassnahuel) |
+| Brian Reil | [@reilbrian](https://github.com/reilbrian) |
+| Camilo Facundo Desza | [@CamiloD2212](https://github.com/CamiloD2212) |
 
----
 
-## 📖 Acerca del Proyecto
+## 🛠️Tecnologías
 
-**Hermanos Jota** es un e-commerce concebido para reflejar la identidad visual, calidez y excelencia artesanal de una mueblería boutique de diseño contemporáneo en madera maciza.
+| Área | Herramientas |
+| --- | --- |
+| Cliente | React, React Router, JavaScript, CSS |
+| Servidor | Node.js, Express |
+| Datos | Catálogo local en JavaScript |
 
-El objetivo de esta etapa fue construir una fachada frontend completa, interactiva y responsiva con tecnologías del lado del cliente (**Vanilla HTML5, CSS3 y JavaScript ES6+**), simulando una experiencia de compra real sin dependencias de backend ni frameworks externos.
+## 🛠️Puesta en marcha
 
----
+**Requisitos:** Node.js y npm. El backend y el cliente se ejecutan en paralelo; abrí dos terminales desde la raíz del repositorio.
 
-## ✨ Características y Funcionalidades
+### 1. Iniciar la API
 
-### 🏠 1. Página de Inicio (`index.html`)
-- **Hero Section inmersivo** con llamado a la acción (*CTA*).
-- **Sección de Productos Destacados**: Renderizado dinámico de piezas seleccionadas.
-- **Narrativa de Marca**: Sección de historia, valores artesanales, compromiso con la sustentabilidad y materiales nobles.
-- **Contenido Multimedia**: Integración de video institucional y publicitario.
-- **Garantías y Confianza**: Bloques informativos de envíos a todo el país, cuotas y garantía estructural.
-
-### 🛋️ 2. Catálogo Interactivo (`productos.html`)
-- **Carga dinámica del catálogo**: Consumo de base de datos local estructurada en JavaScript (`data/products.js`).
-- **Filtros por categoría en tiempo real**: Living, Comedor, Dormitorio, Trabajo y Todos.
-- **Buscador en vivo**: Filtrado por coincidencia de texto en nombres y descripciones.
-- **Estados vacíos**: Mensaje interactivo cuando ninguna búsqueda coincide.
-
-### 📦 3. Detalle de Producto (`producto.html`)
-- **Carga dinámica por parámetros de URL** (`?id=...`).
-- **Vista detallada**: Galería con imagen principal en alta calidad, descripción artesanal, medidas, tipo de madera, acabado y garantía.
-- **Botón de adición directa al carrito**.
-
-### 🛒 4. Carrito de Compras (`carrito.html`)
-- **Persistencia en `localStorage`**: Los productos se mantienen guardados entre sesiones y páginas.
-- **Badge en tiempo real**: Contador de productos visibles en el header de navegación.
-- **Gestión completa**: Modificación de cantidades (+ / -), eliminación individual y vaciado de carrito.
-- **Cálculo automático de costos**: Subtotal, costo de envío y total general.
-- **Checkout simulado**: Confirmación mediante mensaje del navegador, sin procesamiento real de pagos.
-
-### ✉️ 5. Página de Contacto (`contacto.html`)
-- **Formulario interactivo**: Validación del lado del cliente de campos obligatorios y formato de email, con feedback en el DOM.
-- **Información del taller & showroom**: Horarios de atención, dirección y canales de comunicación directa.
-
-### 📱 6. Experiencia UI/UX & Responsive Design
-- **Diseño Mobile-First**: Adaptación fluida para smartphones, tablets y pantallas de escritorio.
-- **Navegación Móvil**: Menú hamburguesa interactivo y accesible.
-- **Microinteracciones y Animaciones**: Efectos hover, transiciones suaves y feedback al agregar productos.
-
----
-
-## 🛠️ Stack Tecnológico
-
-- **HTML5 Semántico**: Estructura accesible y optimizada.
-- **CSS3 Moderno**: Variables personalizadas (Design Tokens), CSS Grid, Flexbox, transiciones y animaciones.
-- **JavaScript (ES6+)**: Modular, manipulación del DOM, gestión del estado con Web Storage API (`localStorage`), manipulación de URL (`URLSearchParams`) y validación de formularios.
-- **Git & GitHub**: Control de versiones, trabajo en equipo mediante ramas y pull requests.
-- **Vercel**: Plataforma de integración y despliegue continuo (CI/CD).
-
----
-
-## 📂 Estructura del Proyecto
-
-```text
-muebleria-hermanos-jota/
-│
-├── index.html               # Página de inicio / Hero / Destacados / Historia
-├── productos.html           # Catálogo completo con filtros y búsqueda
-├── producto.html            # Vista de detalle de producto dinámico (?id=...)
-├── carrito.html             # Carrito de compras con persistencia y checkout
-├── contacto.html            # Formulario de contacto y datos del showroom
-├── estilos.css              # Hoja de estilos global, variables y responsive design
-├── script.js                # Lógica principal, carrito, eventos y manipulación del DOM
-├── README.md                # Documentación general del repositorio
-├── AGENTS.md                # Reglas y directrices de desarrollo
-│ 
-├───.agents                  # Fuente de skills a utilizar
-│   └───skills
-│       └───frontend-design
-│               LICENSE.txt
-│               SKILL.md
-│
-├── data/
-│   └── products.js          # Base de datos local de productos en JavaScript
-│
-├── assets/
-│   ├── logo.svg             # Isotipo y logotipo de Hermanos Jota
-│   ├── products/            # Fotografías de productos en alta resolución
-│   │   ├── Aparador Uspallata.png
-│   │   ├── Biblioteca Recoleta.png
-│   │   ├── Butaca Mendoza.png
-│   │   ├── Escritorio Costa.png
-│   │   ├── Mesa Comedor Pampa.png
-│   │   ├── Mesa de Centro Araucaria.png
-│   │   ├── Mesa de Noche Aconcagua.png
-│   │   ├── Silla de Trabajo Belgrano.png
-│   │   ├── Sillas Córdoba.png
-│   │   ├── Sillón Copacabana.png
-│   │   └── Sofá Patagonia.png
-│   └── videos/              # Material audiovisual institucional y publicitario
-│       ├── publicidad IG.mp4
-│       └── Video institucional Hermanos Jota.mp4
-│
-└── docs/
-    ├── brand.md             # Identidad, valores, paleta y tipografía de la marca
-    ├── products.md          # Especificaciones técnicas de los productos
-    └── sprints/
-        └── sprint-01-02.md  # Requisitos y alcance del Sprint 1–2
+```bash
+cd backend
+npm install
+npm run dev
 ```
 
----
+La API estará disponible en `http://localhost:5000`.
 
-## 📌 Estado del Desarrollo
+### 2. Iniciar el cliente
 
-- [x] **Sprint 1 & 2**: Maquetado semántico, diseño visual responsive, catálogo dinámico, vista de detalle, carrito con persistencia local y validación de formularios.
-- [ ] **Próximos Sprints**: Migración progresiva a arquitectura de componentes (React), backend con Node.js/Express y persistencia con MongoDB.
+```bash
+cd client
+npm install
+npm start
+```
 
----
+El cliente se abrirá en `http://localhost:3000` y consultará la API local. Ambos procesos deben permanecer activos para cargar el catálogo.
+
+## ⚙API
+
+| Método | Endpoint | Respuesta |
+| --- | --- | --- |
+| `GET` | `/api/productos` | Catálogo completo en JSON. |
+| `GET` | `/api/productos/:id` | Producto solicitado o `404` si no existe. |
+
+Los datos se encuentran en `backend/data/products.js`. Express configura logging de solicitudes, parseo JSON, CORS para desarrollo local y manejadores de rutas no encontradas y errores.
+
+## 📂Estructura
+
+```text
+.
+├── backend/                         API Node.js y Express
+│   ├── data/
+│   │   └── products.js              Fuente de datos del catálogo
+│   ├── middlewares/
+│   │   ├── errorHandler.js          Respuestas centralizadas de error
+│   │   └── logger.js                Registro de método y URL
+│   ├── routes/
+│   │   └── productos.js             GET /api/productos y GET /:id
+│   ├── index.js                     Configuración y arranque del servidor
+│   └── package.json                 Dependencias y comandos del backend
+│
+├── client/                          Aplicación React
+│   ├── public/
+│   │   ├── assets/                  Imágenes, logo y videos usados por la UI
+│   │   ├── index.html               Documento HTML de entrada de React
+│   │   ├── manifest.json            Metadatos de la aplicación web
+│   │   └── robots.txt               Directivas para rastreadores
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ContactForm/         Formulario y datos de contacto
+│   │   │   ├── Footer/              Pie de página
+│   │   │   ├── Home/                Inicio y selección de destacados
+│   │   │   ├── Navbar/              Navegación y contador del carrito
+│   │   │   ├── ProductCard/         Tarjeta reutilizable de producto
+│   │   │   ├── ProductDetail/       Vista detallada y acción de carrito
+│   │   │   └── ProductList/         Catálogo, búsqueda y filtros
+│   │   ├── context/
+│   │   │   ├── CartContext.jsx      Estado y acciones compartidas del carrito
+│   │   │   └── ToastContext.jsx     Notificaciones de la interfaz
+│   │   ├── App.js                   Fetch del catálogo y rutas de la aplicación
+│   │   ├── index.js                 Montaje de React y proveedores globales
+│   │   ├── index.css                Estilos globales
+│   │   ├── App.test.js              Prueba de navegación y flujo de compra
+│   │   └── setupTests.js            Configuración de las pruebas
+│   └── package.json                 Dependencias y comandos del cliente
+│
+├── assets/                          Copia original de los recursos gráficos
+├── docs/
+│   ├── sprint-01-02-legacy/         Versión anterior archivada (HTML/CSS/JS)
+│   ├── sprints/                     Consignas de los sprints
+│   ├── brand.md                     Manual de marca
+│   └── products.md                  Información del catálogo
+│
+├── .agents/                         Skills e instrucciones auxiliares del agente
+├── .husky/                          Hooks de Git del proyecto
+├── AGENTS.md                        Criterios y reglas de trabajo del repositorio
+├── eslint.config.js                 Configuración de ESLint
+├── commitlint.config.cjs            Reglas para mensajes de commit
+├── package.json                     Herramientas y scripts de la raíz
+└── README.md                        Documentación del proyecto
+```
+
+### 📜Cómo se organiza
+
+- **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas; `routes/productos.js` consulta el catálogo definido en `data/products.js`.
+- **`client/src/`** contiene la aplicación. `App.js` carga los productos desde la API y define las rutas; `components/` organiza la interfaz por responsabilidad; `context/` comparte el estado del carrito y las notificaciones.
+- **`client/public/assets/`** contiene los recursos que el navegador solicita directamente. La carpeta raíz `assets/` conserva los recursos originales del proyecto.
+- **`docs/`** reúne documentación funcional y de marca. `sprint-01-02-legacy/` es una referencia archivada y no forma parte de la aplicación React actual.
+- **Configuración raíz**: `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
+
+
+## ✨Alcance actual
+
+El catálogo se carga desde la API; el detalle se resuelve en el cliente a partir de esa lista. El carrito vive en memoria y se reinicia al recargar la página. El formulario de contacto muestra una confirmación simulada y no envía datos a un servicio. El checkout es informativo y no procesa pagos. MongoDB, autenticación y persistencia no están incluidos en esta etapa.
