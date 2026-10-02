@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node app.js",
+    "start": "node backend/index.js",
+    "build": "npm --prefix client run build",
     "lint": "eslint .",
     "format": "prettier . --write",
     "prepare": "husky"
