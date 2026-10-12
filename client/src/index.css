@@ -313,7 +313,11 @@ h4 {
   transition: color var(--transition-fast);
 }
 
-.site-header.home-page:not(.scrolled) .nav-link {
+.site-header.home-page:not(.scrolled){
+  color: var(--negro);
+}
+
+.nav-link {
   color: var(--blanco);
 }
 

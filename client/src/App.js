@@ -17,7 +17,6 @@ import ProductDetail from './components/ProductDetail/ProductDetail';
 import ContactForm from './components/ContactForm/ContactForm';
 import Home from './components/Home/Home';
 import { CartProvider } from './context/CartContext';
-import { useToast } from './context/ToastContext';
 import CartPage from './components/CartPage/CartPage.jsx';
 
 const API_URL = process.env.REACT_APP_API_URL
