@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter,
   Link,
@@ -18,94 +18,71 @@ import ContactForm from './components/ContactForm/ContactForm';
 import Home from './components/Home/Home';
 import { CartProvider } from './context/CartContext';
 import CartPage from './components/CartPage/CartPage.jsx';
-
-const API_URL = process.env.REACT_APP_API_URL
-  ? process.env.REACT_APP_API_URL.endsWith('/api/productos')
-    ? process.env.REACT_APP_API_URL
-    : `${process.env.REACT_APP_API_URL.replace(/\/$/, '')}/api/productos`
-  : 'http://localhost:5000/api/productos';
+import { ProductsProvider, useProducts } from './context/ProductsContext';
 
 function App() {
-  // Estados para productos obtenidos desde la API (GET /api/productos)
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  // Fetch de productos al montar el componente (conectar con backend de Express)
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error(
-            `Error en la petición: ${response.status} ${response.statusText}`
-          );
-        }
-        const data = await response.json();
-        setProducts(data);
-        setError(null);
-      } catch (err) {
-        // En caso de que el backend aún no esté corriendo en este sprint, capturamos el error
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
   return (
     <CartProvider>
-      <BrowserRouter
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}
-      >
-        <ScrollToTop />
-        <div className="App">
-          <Navbar />
-
-          <main>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home products={products} loading={loading} error={error} />
-                }
-              />
-              <Route
-                path="/productos"
-                element={
-                  <ProductList
-                    products={products}
-                    loading={loading}
-                    error={error}
-                  />
-                }
-              />
-              <Route
-                path="/producto"
-                element={
-                  <ProductRoute
-                    products={products}
-                    loading={loading}
-                    error={error}
-                  />
-                }
-              />
-              <Route path="/contacto" element={<ContactForm />} />
-              <Route path="/carrito" element={<CartPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </main>
-
-          <Footer />
-        </div>
-      </BrowserRouter>
+      <ProductsProvider>
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
+          <AppLayout />
+        </BrowserRouter>
+      </ProductsProvider>
     </CartProvider>
+  );
+}
+
+function AppLayout() {
+  const { products, loading, error } = useProducts();
+
+  return (
+    <>
+      <ScrollToTop />
+      <div className="App">
+        <Navbar />
+
+        <main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Home products={products} loading={loading} error={error} />
+              }
+            />
+            <Route
+              path="/productos"
+              element={
+                <ProductList
+                  products={products}
+                  loading={loading}
+                  error={error}
+                />
+              }
+            />
+            <Route
+              path="/producto"
+              element={
+                <ProductRoute
+                  products={products}
+                  loading={loading}
+                  error={error}
+                />
+              }
+            />
+            <Route path="/contacto" element={<ContactForm />} />
+            <Route path="/carrito" element={<CartPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }
 

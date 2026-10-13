@@ -56,7 +56,7 @@ npm install
 npm start
 ```
 
-El cliente se abrirá en `http://localhost:3000` y consultará la API local. Ambos procesos deben permanecer activos para cargar el catálogo.
+El cliente se abrirá en `http://localhost:3000` y consultará la API local. Ambos procesos deben permanecer activos para cargar el catálogo. Para usar otro backend, definir `REACT_APP_API_URL` en `client/.env.local` antes de iniciar el cliente. Puede ser el origen de la API (por ejemplo, `https://api.ejemplo.com`) o la ruta completa de productos (`https://api.ejemplo.com/api/productos`). En Vercel, configurar la variable con la URL pública del backend y volver a desplegar.
 
 ## ⚙API
 
@@ -99,12 +99,15 @@ Los datos se encuentran en `backend/data/products.js`. Express configura logging
 │   │   │   └── ProductList/         Catálogo, búsqueda y filtros
 │   │   ├── context/
 │   │   │   ├── CartContext.jsx      Estado y acciones compartidas del carrito
+│   │   │   ├── ProductsContext.jsx  Estado, carga y actualización del catálogo
+│   │   │   ├── ProductsContext.test.jsx Prueba de actualización tras un alta
 │   │   │   └── ToastContext.jsx     Notificaciones de la interfaz
-│   │   ├── App.js                   Fetch del catálogo y rutas de la aplicación
+│   │   ├── services/
+│   │   │   ├── productosApi.js      Acceso HTTP a los endpoints de productos
+│   │   │   └── productosApi.test.js Pruebas del servicio HTTP
+│   │   ├── App.js                   Rutas de la aplicación
 │   │   ├── index.js                 Montaje de React y proveedores globales
 │   │   ├── index.css                Estilos globales
-│   │   ├── App.test.js              Prueba de navegación y flujo de compra
-│   │   └── setupTests.js            Configuración de las pruebas
 │   └── package.json                 Dependencias y comandos del cliente
 │
 ├── assets/                          Copia original de los recursos gráficos
@@ -126,7 +129,7 @@ Los datos se encuentran en `backend/data/products.js`. Express configura logging
 ### 📜Cómo se organiza
 
 - **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas; `routes/productos.js` consulta el catálogo definido en `data/products.js`.
-- **`client/src/`** contiene la aplicación. `App.js` carga los productos desde la API y define las rutas; `components/` organiza la interfaz por responsabilidad; `context/` comparte el estado del carrito y las notificaciones.
+- **`client/src/`** contiene la aplicación. `App.js` define las rutas; `services/productosApi.js` centraliza las peticiones HTTP y `ProductsContext.jsx` gestiona el estado/refetch del catálogo; `components/` organiza la interfaz por responsabilidad.
 - **`client/public/assets/`** contiene los recursos que el navegador solicita directamente. La carpeta raíz `assets/` conserva los recursos originales del proyecto.
 - **`docs/`** reúne documentación funcional y de marca. `sprint-01-02-legacy/` es una referencia archivada y no forma parte de la aplicación React actual.
 - **Configuración raíz**: `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
