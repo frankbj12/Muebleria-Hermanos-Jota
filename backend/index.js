@@ -1,26 +1,33 @@
+import 'dotenv/config'; // Primera línea para garantizar carga de variables
 import express from 'express';
+import { connectDB } from './config/db.js';
 import productosRouter from './routes/productos.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const CLIENT_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const rawClientOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
+const CLIENT_ORIGIN = rawClientOrigin.replace(/\/$/, ''); // Normalizar quitando trailing slash
+
+// Conectar a la base de datos
+connectDB();
 
 // Middlewares globales
 app.use(express.json());
 app.use(loggerMiddleware);
 
-// Configuración de CORS permisiva para desarrollo y respetando origen configurado
+// Middleware de CORS robustecido
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
   if (origin) {
-    // Permitir el origen configurado o cualquier localhost en desarrollo
+    const normalizedOrigin = origin.replace(/\/$/, '');
     if (
-      origin === CLIENT_ORIGIN ||
-      /^http:\/\/localhost(:\d+)?$/.test(origin) ||
-      /^http:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)
+      normalizedOrigin === CLIENT_ORIGIN ||
+      /^https?:\/\/localhost(:\d+)?$/.test(normalizedOrigin) ||
+      /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(normalizedOrigin) ||
+      /\.vercel\.app$/.test(normalizedOrigin) // Permite previsualizaciones de Vercel
     ) {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Vary', 'Origin');
@@ -40,6 +47,11 @@ app.use((req, res, next) => {
   }
 
   next();
+});
+
+// Ruta de comprobación de salud (Healthcheck)
+app.use('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
 // Rutas de productos: soporte para /api/productos y /productos según consignas y rúbrica
