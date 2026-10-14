@@ -1,0 +1,53 @@
+import mongoose from 'mongoose';
+
+const productSchema = new mongoose.Schema(
+  {
+    nombre: {
+      type: String,
+      required: [true, 'El nombre del producto es obligatorio'],
+      trim: true,
+    },
+    descripcion: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    precio: {
+      type: Number,
+      required: [true, 'El precio es obligatorio'],
+      min: [0, 'El precio no puede ser negativo'],
+    },
+    stock: {
+      type: Number,
+      default: 0,
+      min: [0, 'El stock no puede ser negativo'],
+    },
+    imagenUrl: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    // Campos de compatibilidad con la UI actual acordados en la Fase 0
+    categoria: {
+      type: String,
+      trim: true,
+      default: 'general',
+    },
+    destacado: {
+      type: Boolean,
+      default: false,
+    },
+    specs: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+const Product = mongoose.model('Product', productSchema);
+
+export default Product;

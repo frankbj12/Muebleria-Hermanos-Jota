@@ -1,0 +1,164 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Mueblería Hermanos Jota - Sprint 05-06 CRUD API",
+  "collectionId": "col-muebleria-sprint-05-06",
+  "dateExported": "2026-10-13",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "req-get-all",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "1. GET - Listar todos los productos",
+      "url": "http://localhost:5000/api/productos",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": []
+    },
+    {
+      "_id": "req-get-filter",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "2. GET - Filtrar productos por categoría",
+      "url": "http://localhost:5000/api/productos?categoria=living",
+      "method": "GET",
+      "sortNum": 20000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [],
+      "params": [
+        {
+          "name": "categoria",
+          "value": "living",
+          "isPath": false
+        }
+      ]
+    },
+    {
+      "_id": "req-post-create",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "3. POST - Crear nuevo producto (201)",
+      "url": "http://localhost:5000/api/productos",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre\": \"Mesa Ratona Delta\",\n  \"descripcion\": \"Mesa ratona en petiribí macizo con bordes biselados y acabado al aceite.\",\n  \"precio\": 450000,\n  \"stock\": 8,\n  \"imagenUrl\": \"assets/products/Mesa de Centro Araucaria.png\",\n  \"categoria\": \"living\",\n  \"destacado\": true\n}"
+      }
+    },
+    {
+      "_id": "req-get-by-id",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "4. GET - Obtener producto por ID (_id)",
+      "url": "http://localhost:5000/api/productos/:id",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [],
+      "params": [
+        {
+          "name": "id",
+          "value": "REEMPLAZAR_CON_ID_CREADO",
+          "isPath": true
+        }
+      ]
+    },
+    {
+      "_id": "req-put-update",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "5. PUT - Actualizar producto por ID (200)",
+      "url": "http://localhost:5000/api/productos/:id",
+      "method": "PUT",
+      "sortNum": 50000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [
+        {
+          "name": "id",
+          "value": "REEMPLAZAR_CON_ID_CREADO",
+          "isPath": true
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"precio\": 480000,\n  \"stock\": 12,\n  \"destacado\": false\n}"
+      }
+    },
+    {
+      "_id": "req-delete",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "6. DELETE - Eliminar producto por ID (200)",
+      "url": "http://localhost:5000/api/productos/:id",
+      "method": "DELETE",
+      "sortNum": 60000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [],
+      "params": [
+        {
+          "name": "id",
+          "value": "REEMPLAZAR_CON_ID_CREADO",
+          "isPath": true
+        }
+      ]
+    },
+    {
+      "_id": "req-err-400-val",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "7. POST (Error 400) - Error de validación (campos requeridos faltantes)",
+      "url": "http://localhost:5000/api/productos",
+      "method": "POST",
+      "sortNum": 70000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"descripcion\": \"Sin nombre ni precio para forzar error 400\"\n}"
+      }
+    },
+    {
+      "_id": "req-err-400-cast",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "8. GET (Error 400) - ID Inválido (CastError de ObjectId)",
+      "url": "http://localhost:5000/api/productos/id-invalido-123",
+      "method": "GET",
+      "sortNum": 80000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": []
+    },
+    {
+      "_id": "req-err-404",
+      "colId": "col-muebleria-sprint-05-06",
+      "name": "9. GET (Error 404) - ID inexistente en la base de datos",
+      "url": "http://localhost:5000/api/productos/64b1f2e8f1d2a3c4b5e6f7a8",
+      "method": "GET",
+      "sortNum": 90000,
+      "created": "2026-10-13",
+      "modified": "2026-10-13",
+      "headers": []
+    }
+  ]
+}
