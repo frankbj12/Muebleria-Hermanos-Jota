@@ -45,8 +45,39 @@ const productSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+// Virtuals para compatibilidad con la UI actual del frontend (campos en inglés e id)
+productSchema.virtual('id').get(function () {
+  return this._id ? this._id.toHexString() : undefined;
+});
+
+productSchema.virtual('name').get(function () {
+  return this.nombre;
+});
+
+productSchema.virtual('description').get(function () {
+  return this.descripcion;
+});
+
+productSchema.virtual('price').get(function () {
+  return this.precio;
+});
+
+productSchema.virtual('image').get(function () {
+  return this.imagenUrl;
+});
+
+productSchema.virtual('category').get(function () {
+  return this.categoria;
+});
+
+productSchema.virtual('featured').get(function () {
+  return this.destacado;
+});
 
 const Product = mongoose.model('Product', productSchema);
 
