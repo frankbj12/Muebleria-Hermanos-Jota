@@ -1,6 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
+jest.mock('react-router-dom', () => require('react-router'));
+
+import { MemoryRouter, Route, Routes } from 'react-router';
 import productosApi from '../../services/productosApi';
 import ProductDetailRoute from './ProductDetailRoute';
 
