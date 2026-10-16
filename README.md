@@ -90,24 +90,25 @@ Los datos se encuentran en `backend/data/products.js`. Express configura logging
 │   │   └── robots.txt               Directivas para rastreadores
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── Cart/                Vista e ítem reutilizable del carrito
 │   │   │   ├── ContactForm/         Formulario y datos de contacto
 │   │   │   ├── Footer/              Pie de página
 │   │   │   ├── Home/                Inicio y selección de destacados
 │   │   │   ├── Navbar/              Navegación y contador del carrito
 │   │   │   ├── ProductCard/         Tarjeta reutilizable de producto
-│   │   │   ├── ProductDetail/       Vista detallada y acción de carrito
+│   │   │   ├── ProductDetail/       Detalle dinámico y pruebas de ruta
 │   │   │   └── ProductList/         Catálogo, búsqueda y filtros
 │   │   ├── context/
 │   │   │   ├── CartContext.jsx      Estado y acciones compartidas del carrito
 │   │   │   ├── ProductsContext.jsx  Estado, carga y actualización del catálogo
 │   │   │   ├── ProductsContext.test.jsx Prueba de actualización tras un alta
 │   │   │   └── ToastContext.jsx     Notificaciones de la interfaz
-│   │   ├── services/
-│   │   │   ├── productosApi.js      Acceso HTTP a los endpoints de productos
-│   │   │   └── productosApi.test.js Pruebas del servicio HTTP
 │   │   ├── App.js                   Rutas de la aplicación
 │   │   ├── index.js                 Montaje de React y proveedores globales
 │   │   ├── index.css                Estilos globales
+│   │   ├── services/
+│   │   │   ├── productosApi.js      Acceso HTTP a los endpoints de productos
+│   │   │   └── productosApi.test.js Pruebas del servicio HTTP
 │   └── package.json                 Dependencias y comandos del cliente
 │
 ├── assets/                          Copia original de los recursos gráficos

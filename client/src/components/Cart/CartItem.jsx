@@ -29,7 +29,7 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
   return (
     <article className="cart-item" id={`cart-item-${item.id}`}>
       <Link
-        to={`/producto?id=${item.id}`}
+        to={`/productos/${item.id}`}
         className="cart-item-image"
         aria-label={`Ver detalle de ${item.name}`}
       >

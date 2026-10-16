@@ -24,7 +24,7 @@ function ProductCard({ product, index = 0 }) {
       className={`product-card ${delayClass}`}
       id={`product-card-${product.id}`}
     >
-      <Link to={`/producto?id=${product.id}`} className="product-card-image">
+      <Link to={`/productos/${product.id}`} className="product-card-image">
         <img src={`/${product.image}`} alt={product.name} loading="lazy" />
       </Link>
       <div className="product-card-body">
@@ -37,7 +37,7 @@ function ProductCard({ product, index = 0 }) {
           <span className="product-card-price">
             {formatPrice(product.price)}
           </span>
-          <Link to={`/producto?id=${product.id}`} className="product-card-link">
+          <Link to={`/productos/${product.id}`} className="product-card-link">
             Ver detalle
             <svg
               viewBox="0 0 24 24"
