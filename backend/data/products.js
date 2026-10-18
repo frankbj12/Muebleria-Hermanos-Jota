@@ -11,6 +11,7 @@ const PRODUCTS = [
     description:
       'Aparador de seis puertas fabricado en nogal sostenible con tiradores metálicos en acabado latón. Su silueta minimalista realza el veteado natural de la madera.',
     price: 1890000,
+    stock: 6,
     image: 'assets/products/Aparador Uspallata.png',
     category: 'almacenamiento',
     featured: false,
@@ -28,6 +29,7 @@ const PRODUCTS = [
     description:
       'Sistema modular de estantes abierto que combina estructura de acero Sage Green y repisas en roble claro. Perfecta para colecciones y objetos de diseño.',
     price: 1450000,
+    stock: 2,
     image: 'assets/products/Biblioteca Recoleta.png',
     category: 'almacenamiento',
     featured: false,
@@ -45,6 +47,7 @@ const PRODUCTS = [
     description:
       'Butaca tapizada en bouclé Dusty Rose con base de madera de guatambú. El respaldo curvo abraza el cuerpo y ofrece máximo confort.',
     price: 890000,
+    stock: 0,
     image: 'assets/products/Butaca Mendoza.png',
     category: 'living',
     featured: true,
@@ -62,6 +65,7 @@ const PRODUCTS = [
     description:
       'Sillón lounge en cuero cognac con base giratoria en acero. Inspirado en la estética brasilera moderna de los 60, combina comodidad excepcional con un diseño icónico.',
     price: 1250000,
+    stock: 8,
     image: 'assets/products/Sillón Copacabana.png',
     category: 'living',
     featured: false,
@@ -79,6 +83,7 @@ const PRODUCTS = [
     description:
       'Mesa de centro con sobre circular de mármol Patagonia y base de tres patas en madera de nogal. Minimalismo que se convierte en punto focal.',
     price: 780000,
+    stock: 0,
     image: 'assets/products/Mesa de Centro Araucaria.png',
     category: 'living',
     featured: false,
@@ -96,6 +101,7 @@ const PRODUCTS = [
     description:
       'Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®. Diseño limpio y funcional para cualquier estilo de dormitorio.',
     price: 420000,
+    stock: 12,
     image: 'assets/products/Mesa de Noche Aconcagua.png',
     category: 'dormitorio',
     featured: false,
@@ -113,6 +119,7 @@ const PRODUCTS = [
     description:
       'Sofá de tres cuerpos tapizado en lino natural con patas cónicas de madera. Espuma de alta resiliencia con plumón reciclado para comodidad duradera.',
     price: 2350000,
+    stock: 3,
     image: 'assets/products/Sofá Patagonia.png',
     category: 'living',
     featured: true,
@@ -130,6 +137,7 @@ const PRODUCTS = [
     description:
       'Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Se adapta de 6 a 10 comensales para reuniones íntimas o grandes celebraciones.',
     price: 1950000,
+    stock: 5,
     image: 'assets/products/Mesa Comedor Pampa.png',
     category: 'comedor',
     featured: true,
@@ -147,6 +155,7 @@ const PRODUCTS = [
     description:
       'Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular. Diseño ergonómico y materiales de calidad para el uso diario.',
     price: 1120000,
+    stock: 4,
     image: 'assets/products/Sillas Córdoba.png',
     category: 'comedor',
     featured: false,
@@ -164,6 +173,7 @@ const PRODUCTS = [
     description:
       'Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Funcionalidad moderna con estética minimalista y sostenible.',
     price: 950000,
+    stock: 0,
     image: 'assets/products/Escritorio Costa.png',
     category: 'trabajo',
     featured: true,
@@ -181,6 +191,7 @@ const PRODUCTS = [
     description:
       'Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Máximo confort para largas jornadas.',
     price: 680000,
+    stock: 7,
     image: 'assets/products/Silla de Trabajo Belgrano.png',
     category: 'trabajo',
     featured: false,
