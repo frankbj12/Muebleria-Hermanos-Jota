@@ -2356,3 +2356,804 @@ h4 {
     }
   }
 }
+
+/* ==========================================================================
+   Panel de Administración /admin (Estilo Moderno & Manual de Marca Hermanos Jota)
+   ========================================================================== */
+.admin-panel-section {
+  /* Separación suficiente para que el header fijo (120px) no tape el contenido */
+  padding-top: calc(var(--header-height) + var(--space-2xl));
+  padding-bottom: var(--space-4xl);
+  background-color: var(--alabastro-light);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(245, 230, 211, 0.6) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(212, 164, 55, 0.06) 0%, transparent 40%);
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid rgba(160, 82, 45, 0.15);
+  flex-wrap: wrap;
+}
+
+.admin-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(160, 82, 45, 0.1);
+  color: var(--siena);
+  border: 1px solid rgba(160, 82, 45, 0.2);
+  margin-bottom: var(--space-sm);
+}
+
+.admin-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  color: var(--negro);
+  margin: 0 0 var(--space-xs);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.admin-subtitle {
+  color: var(--gris);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  margin: 0;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.btn-admin-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--siena);
+  color: var(--blanco) !important;
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-full);
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(160, 82, 45, 0.25);
+  transition: all var(--transition-fast);
+  border: 1px solid var(--siena);
+}
+
+.btn-admin-cta:hover {
+  background-color: var(--siena-dark);
+  border-color: var(--siena-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(160, 82, 45, 0.35);
+}
+
+/* Grilla de Métricas (KPIs de Inventario Modernos & Clickeables) */
+.admin-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
+}
+
+.admin-metric-card {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  background-color: var(--blanco);
+  border: 1px solid rgba(92, 61, 42, 0.08);
+  border-radius: 14px;
+  padding: var(--space-lg);
+  box-shadow: 0 2px 10px rgba(59, 36, 20, 0.04);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.admin-metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--card-accent, var(--siena));
+}
+
+.admin-metric-card--total { --card-accent: var(--siena); --active-bg: #faf4ed; }
+.admin-metric-card--success { --card-accent: var(--salvia); --active-bg: #f4f8f2; }
+.admin-metric-card--warning { --card-accent: var(--oro); --active-bg: #fdfaf0; }
+.admin-metric-card--danger { --card-accent: var(--rosa); --active-bg: #faf0ee; }
+
+.admin-metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(59, 36, 20, 0.1);
+  border-color: rgba(92, 61, 42, 0.18);
+}
+
+.admin-metric-card--active {
+  background-color: var(--active-bg, #faf6f0) !important;
+  border-color: var(--card-accent, var(--siena)) !important;
+  box-shadow: 0 0 0 2px var(--card-accent, var(--siena)), 0 8px 24px rgba(59, 36, 20, 0.08) !important;
+  transform: translateY(-2px);
+}
+
+.admin-metric-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-metric-icon-wrapper--total {
+  background-color: rgba(160, 82, 45, 0.1);
+  color: var(--siena);
+}
+
+.admin-metric-icon-wrapper--success {
+  background-color: rgba(135, 169, 107, 0.15);
+  color: var(--salvia-dark);
+}
+
+.admin-metric-icon-wrapper--warning {
+  background-color: rgba(212, 164, 55, 0.15);
+  color: #9c7318;
+}
+
+.admin-metric-icon-wrapper--danger {
+  background-color: rgba(196, 122, 109, 0.15);
+  color: #a14337;
+}
+
+.admin-metric-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-metric-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  margin-bottom: 4px;
+}
+
+.admin-metric-value {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--negro);
+  margin-bottom: 4px;
+}
+
+.admin-metric-value--success { color: var(--salvia-dark); }
+.admin-metric-value--warning { color: #9c7318; }
+.admin-metric-value--danger { color: #a14337; }
+
+.admin-metric-hint {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+}
+
+/* Barra de herramientas: Búsqueda y Filtros */
+.admin-toolbar {
+  background-color: var(--blanco);
+  border: 1px solid rgba(92, 61, 42, 0.08);
+  border-radius: 12px;
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  box-shadow: 0 1px 4px rgba(59, 36, 20, 0.03);
+  flex-wrap: wrap;
+}
+
+.admin-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+}
+
+.admin-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--gris);
+  pointer-events: none;
+}
+
+.admin-search-input {
+  width: 100%;
+  padding: 10px 36px 10px 42px;
+  font-size: var(--fs-sm);
+  border: 1px solid #dfd8cf;
+  border-radius: 8px;
+  background-color: var(--alabastro-light);
+  color: var(--negro);
+  font-family: var(--font-body);
+  transition: all var(--transition-fast);
+}
+
+.admin-search-input:focus {
+  outline: none;
+  border-color: var(--siena);
+  background-color: var(--blanco);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+
+.admin-search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gris);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.admin-search-clear:hover {
+  color: var(--negro);
+}
+
+.admin-filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.admin-filter-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gris);
+}
+
+.admin-select {
+  padding: 10px 18px;
+  font-size: var(--fs-sm);
+  border: 1px solid #dfd8cf;
+  border-radius: 8px;
+  background-color: var(--alabastro-light);
+  color: var(--negro);
+  font-family: var(--font-body);
+  cursor: pointer;
+  min-width: 0;
+  max-width: 100%;
+  transition: all var(--transition-fast);
+}
+
+.admin-select:focus {
+  outline: none;
+  border-color: var(--siena);
+  background-color: var(--blanco);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
+}
+
+/* Chip de Filtro Activo de Stock */
+.admin-active-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(160, 82, 45, 0.1);
+  border: 1px solid rgba(160, 82, 45, 0.25);
+  color: var(--siena);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.admin-active-filter-chip strong {
+  color: var(--siena-dark);
+}
+
+.admin-active-filter-close {
+  background: none;
+  border: none;
+  color: var(--siena);
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 2px;
+  font-weight: bold;
+  transition: transform var(--transition-fast);
+}
+
+.admin-active-filter-close:hover {
+  transform: scale(1.2);
+  color: var(--siena-dark);
+}
+
+.admin-results-counter {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  font-weight: 500;
+}
+
+.admin-results-counter strong {
+  color: var(--negro);
+}
+
+/* Tabla de Productos estilo Django con Estética Hermanos Jota */
+.admin-table-container {
+  background-color: var(--blanco);
+  border: 1px solid rgba(92, 61, 42, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(59, 36, 20, 0.05);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--fs-sm);
+}
+
+.admin-table thead {
+  background-color: var(--alabastro);
+  border-bottom: 2px solid #e5dbcd;
+}
+
+.admin-table th {
+  padding: 16px 20px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--negro-suave);
+  white-space: nowrap;
+}
+
+/* Botones de ordenamiento en cabeceras th */
+.admin-th-sort-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--negro-suave);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--transition-fast);
+}
+
+.admin-th-sort-btn:hover {
+  color: var(--siena);
+}
+
+.admin-sort-icon {
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.admin-sort-icon--inactive {
+  color: var(--gris);
+  opacity: 0.45;
+}
+
+.admin-th-sort-btn:hover .admin-sort-icon--inactive {
+  opacity: 0.9;
+  color: var(--siena);
+}
+
+.admin-sort-icon--active {
+  color: var(--siena);
+  opacity: 1;
+}
+
+.admin-id-cell {
+  white-space: nowrap;
+}
+
+.admin-id-badge {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--negro-suave);
+  background-color: rgba(59, 36, 20, 0.06);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.admin-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(92, 61, 42, 0.06);
+  vertical-align: middle;
+}
+
+.admin-table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(245, 230, 211, 0.25);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Celdas de producto */
+.admin-thumb-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f0e9df;
+  border: 1px solid rgba(92, 61, 42, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.admin-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-fast);
+}
+
+.admin-thumb-wrapper:hover .admin-thumb-img {
+  transform: scale(1.08);
+}
+
+.admin-product-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 320px;
+}
+
+.admin-product-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-product-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.admin-product-slug {
+  font-size: 0.75rem;
+  color: var(--gris);
+  font-family: monospace;
+  letter-spacing: 0.02em;
+}
+
+.admin-product-desc-snippet {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.admin-featured-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(212, 164, 55, 0.16);
+  color: #9c7318;
+  border: 1px solid rgba(212, 164, 55, 0.35);
+}
+
+.admin-category-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: var(--alabastro-light);
+  border: 1px solid rgba(160, 82, 45, 0.15);
+  font-size: var(--fs-xs);
+  color: var(--siena-dark);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-price {
+  font-weight: 700;
+  color: var(--negro);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  white-space: nowrap;
+}
+
+.stock-indicator-dot {
+  font-size: 0.65rem;
+  margin-right: 4px;
+}
+
+/* Botones de acción */
+.admin-actions-cell {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.admin-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.admin-action-btn--view {
+  color: var(--salvia-dark);
+  border-color: rgba(135, 169, 107, 0.35);
+  background-color: rgba(135, 169, 107, 0.1);
+}
+
+.admin-action-btn--view:hover {
+  background-color: var(--salvia);
+  color: var(--blanco);
+  border-color: var(--salvia);
+}
+
+.admin-action-btn--edit {
+  color: var(--siena);
+  border-color: rgba(160, 82, 45, 0.35);
+  background-color: rgba(160, 82, 45, 0.08);
+}
+
+.admin-action-btn--edit:hover {
+  background-color: var(--siena);
+  color: var(--blanco);
+  border-color: var(--siena);
+}
+
+.admin-action-btn--delete {
+  color: #a14337;
+  border-color: rgba(196, 122, 109, 0.35);
+  background-color: rgba(196, 122, 109, 0.1);
+}
+
+.admin-action-btn--delete:hover {
+  background-color: var(--rosa);
+  color: var(--blanco);
+  border-color: var(--rosa);
+}
+
+.admin-empty-state {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+  color: var(--gris);
+}
+
+.admin-empty-state svg {
+  margin-bottom: var(--space-sm);
+  color: var(--siena-light);
+}
+
+.admin-empty-state h3 {
+  font-family: var(--font-display);
+  color: var(--negro);
+  margin-bottom: var(--space-xs);
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+
+  .admin-header-text {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+  }
+
+  .btn-admin-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .admin-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-md);
+    gap: var(--space-md);
+  }
+
+  .admin-search-wrapper {
+    flex: none;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .admin-search-input {
+    width: 100%;
+  }
+
+  .admin-filter-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .admin-filter-label {
+    font-size: var(--fs-xs);
+  }
+
+  .admin-select {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .admin-active-filters-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .admin-active-filter-chip {
+    max-width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .admin-results-counter {
+    text-align: center;
+    width: 100%;
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .admin-panel-section {
+    padding-top: calc(var(--header-height) + var(--space-md));
+    padding-bottom: var(--space-2xl);
+  }
+
+  .admin-title {
+    font-size: 1.65rem;
+  }
+
+  .admin-subtitle {
+    font-size: var(--fs-sm);
+  }
+
+  .admin-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .admin-metric-card {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .admin-metric-icon-wrapper {
+    width: 42px;
+    height: 42px;
+  }
+
+  .admin-metric-value {
+    font-size: 1.8rem;
+  }
+
+  .admin-metric-hint {
+    font-size: 0.7rem;
+  }
+
+  .admin-toolbar {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .admin-search-wrapper {
+    flex: none;
+    width: 100%;
+    height: auto;
+  }
+
+  .admin-search-icon {
+    left: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .admin-search-input {
+    font-size: var(--fs-sm);
+    padding: 10px 32px 10px 36px;
+  }
+
+  .admin-select {
+    font-size: var(--fs-sm);
+    padding: 9px 12px;
+  }
+}
+
+

@@ -17,6 +17,7 @@ import Home from './components/Home/Home';
 import { CartProvider } from './context/CartContext';
 import CartPage from './components/Cart/CartPage';
 import { ProductsProvider, useProducts } from './context/ProductsContext';
+import AdminPanel from './components/Admin/AdminPanel';
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function AppLayout() {
             <Route path="/productos/:id" element={<ProductDetailRoute />} />
             <Route path="/contacto" element={<ContactForm />} />
             <Route path="/carrito" element={<CartPage />} />
+            <Route path="/admin" element={<AdminPanel />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
