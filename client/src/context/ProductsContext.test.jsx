@@ -15,7 +15,7 @@ jest.mock('../services/productosApi', () => ({
 
 function ProductsHarness() {
   const { products, createProduct } = useProducts();
-  const product = { nombre: 'Mesa nueva', precio: 100 };
+  const product = { name: 'Mesa nueva', price: 100 };
 
   return (
     <>
@@ -33,7 +33,7 @@ describe('ProductsProvider', () => {
   });
 
   it('carga productos y refresca la lista después de crear uno', async () => {
-    const createdProduct = { _id: 'product-1', nombre: 'Mesa nueva' };
+    const createdProduct = { id: 'product-1', name: 'Mesa nueva' };
     productosApi.getAll
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([createdProduct]);
@@ -55,8 +55,8 @@ describe('ProductsProvider', () => {
       expect(screen.getByTestId('product-count').textContent).toBe('1');
     });
     expect(productosApi.create).toHaveBeenCalledWith({
-      nombre: 'Mesa nueva',
-      precio: 100,
+      name: 'Mesa nueva',
+      price: 100,
     });
     expect(productosApi.getAll).toHaveBeenCalledTimes(2);
   });
