@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useToast } from '../../context/ToastContext';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 const formatPrice = (price) => {
   if (typeof price !== 'number') return '$ 0';
@@ -135,8 +136,12 @@ function AdminPanel() {
 
   // Filtrado reactivo (búsqueda + categoría + multi-selección de stock)
   const filteredProducts = products.filter((product) => {
-    const nameMatch = product.name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const descMatch = product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const nameMatch = product.name
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const descMatch = product.description
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase());
     const matchesSearch = nameMatch || descMatch;
 
     const matchesCategory =
@@ -170,10 +175,14 @@ function AdminPanel() {
       if (!isNaN(numA) && !isNaN(numB)) {
         comparison = numA - numB;
       } else {
-        comparison = String(idA).localeCompare(String(idB), undefined, { numeric: true });
+        comparison = String(idA).localeCompare(String(idB), undefined, {
+          numeric: true,
+        });
       }
     } else if (key === 'name') {
-      comparison = (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' });
+      comparison = (a.name || '').localeCompare(b.name || '', 'es', {
+        sensitivity: 'base',
+      });
     } else if (key === 'price') {
       const priceA = typeof a.price === 'number' ? a.price : 0;
       const priceB = typeof b.price === 'number' ? b.price : 0;
@@ -203,7 +212,10 @@ function AdminPanel() {
   };
 
   return (
-    <section className="admin-panel-section" aria-label="Panel de Administración">
+    <section
+      className="admin-panel-section"
+      aria-label="Panel de Administración"
+    >
       <div className="container">
         {/* Cabecera del panel estilo Hermanos Jota */}
         <header className="admin-header">
@@ -211,11 +223,16 @@ function AdminPanel() {
             <span className="admin-badge">Panel de Administración</span>
             <h1 className="admin-title">Inventario y Catálogo</h1>
             <p className="admin-subtitle">
-              Administrá los muebles artesanales, controlá el stock disponible y gestioná altas y modificaciones de la colección.
+              Administrá los muebles artesanales, controlá el stock disponible y
+              gestioná altas y modificaciones de la colección.
             </p>
           </div>
           <div className="admin-header-actions">
-            <Link to="/admin/crear-producto" className="btn-admin-cta" id="btn-admin-create">
+            <Link
+              to="/admin/crear-producto"
+              className="btn-admin-cta"
+              id="btn-admin-create"
+            >
               <svg
                 width="18"
                 height="18"
@@ -236,7 +253,11 @@ function AdminPanel() {
         </header>
 
         {/* Tarjetas de métricas interactivas (Filtros de Stock con un clic y multi-selección) */}
-        <div className="admin-metrics-grid" role="region" aria-label="Filtrar catálogo por estado de stock">
+        <div
+          className="admin-metrics-grid"
+          role="region"
+          aria-label="Filtrar catálogo por estado de stock"
+        >
           {/* Total Productos */}
           <button
             type="button"
@@ -266,7 +287,12 @@ function AdminPanel() {
             </div>
             <div className="admin-metric-content">
               <span className="admin-metric-label">Total Productos</span>
-              <strong className="admin-metric-value" data-testid="metric-total-count">{totalCount}</strong>
+              <strong
+                className="admin-metric-value"
+                data-testid="metric-total-count"
+              >
+                {totalCount}
+              </strong>
               <span className="admin-metric-hint">Catálogo Hermanos Jota</span>
             </div>
           </button>
@@ -299,8 +325,12 @@ function AdminPanel() {
             </div>
             <div className="admin-metric-content">
               <span className="admin-metric-label">En Stock Normal</span>
-              <strong className="admin-metric-value admin-metric-value--success">{inStockCount}</strong>
-              <span className="admin-metric-hint">&gt; 3 unidades disponibles</span>
+              <strong className="admin-metric-value admin-metric-value--success">
+                {inStockCount}
+              </strong>
+              <span className="admin-metric-hint">
+                &gt; 3 unidades disponibles
+              </span>
             </div>
           </button>
 
@@ -333,8 +363,12 @@ function AdminPanel() {
             </div>
             <div className="admin-metric-content">
               <span className="admin-metric-label">Stock Bajo</span>
-              <strong className="admin-metric-value admin-metric-value--warning">{lowStockCount}</strong>
-              <span className="admin-metric-hint">1 a 3 unidades restantes</span>
+              <strong className="admin-metric-value admin-metric-value--warning">
+                {lowStockCount}
+              </strong>
+              <span className="admin-metric-hint">
+                1 a 3 unidades restantes
+              </span>
             </div>
           </button>
 
@@ -342,7 +376,9 @@ function AdminPanel() {
           <button
             type="button"
             className={`admin-metric-card admin-metric-card--danger ${
-              stockFilters.includes('agotado') ? 'admin-metric-card--active' : ''
+              stockFilters.includes('agotado')
+                ? 'admin-metric-card--active'
+                : ''
             }`}
             onClick={() => toggleStockFilter('agotado')}
             aria-pressed={stockFilters.includes('agotado')}
@@ -367,7 +403,9 @@ function AdminPanel() {
             </div>
             <div className="admin-metric-content">
               <span className="admin-metric-label">Sin Stock</span>
-              <strong className="admin-metric-value admin-metric-value--danger">{outOfStockCount}</strong>
+              <strong className="admin-metric-value admin-metric-value--danger">
+                {outOfStockCount}
+              </strong>
               <span className="admin-metric-hint">Agotados actualmente</span>
             </div>
           </button>
@@ -411,7 +449,10 @@ function AdminPanel() {
           </div>
 
           <div className="admin-filter-group">
-            <label htmlFor="admin-category-select" className="admin-filter-label">
+            <label
+              htmlFor="admin-category-select"
+              className="admin-filter-label"
+            >
               Categoría:
             </label>
             <select
@@ -438,11 +479,16 @@ function AdminPanel() {
                   filter === 'normal'
                     ? 'Normal (>3)'
                     : filter === 'bajo'
-                    ? 'Bajo (1-3)'
-                    : 'Sin Stock (0)';
+                      ? 'Bajo (1-3)'
+                      : 'Sin Stock (0)';
                 return (
-                  <div key={filter} className={`admin-active-filter-chip admin-active-filter-chip--${filter}`}>
-                    <span>Stock: <strong>{label}</strong></span>
+                  <div
+                    key={filter}
+                    className={`admin-active-filter-chip admin-active-filter-chip--${filter}`}
+                  >
+                    <span>
+                      Stock: <strong>{label}</strong>
+                    </span>
                     <button
                       type="button"
                       onClick={() => toggleStockFilter(filter)}
@@ -459,7 +505,8 @@ function AdminPanel() {
 
           <div className="admin-results-counter">
             <span>
-              Mostrando <strong>{sortedAndFilteredProducts.length}</strong> de {products.length} muebles
+              Mostrando <strong>{sortedAndFilteredProducts.length}</strong> de{' '}
+              {products.length} muebles
             </span>
           </div>
         </div>
@@ -472,7 +519,11 @@ function AdminPanel() {
         )}
 
         {error && (
-          <div className="out-of-stock-alert" role="alert" style={{ margin: '1.5rem 0' }}>
+          <div
+            className="out-of-stock-alert"
+            role="alert"
+            style={{ margin: '1.5rem 0' }}
+          >
             <strong>Error de conexión:</strong> {error}
           </div>
         )}
@@ -498,8 +549,12 @@ function AdminPanel() {
                   <line x1="8" y1="11" x2="14" y2="11" />
                 </svg>
                 <h3>No se encontraron productos</h3>
-                <p>No hay muebles que coincidan con los filtros seleccionados.</p>
-                {(searchTerm || categoryFilter !== 'todos' || stockFilters.length > 0) && (
+                <p>
+                  No hay muebles que coincidan con los filtros seleccionados.
+                </p>
+                {(searchTerm ||
+                  categoryFilter !== 'todos' ||
+                  stockFilters.length > 0) && (
                   <button
                     type="button"
                     className="btn btn-secondary"
@@ -526,12 +581,18 @@ function AdminPanel() {
                         aria-label="Ordenar por ID"
                       >
                         <span>ID</span>
-                        <SortIcon columnKey="id" currentKey={sortConfig.key} direction={sortConfig.direction} />
+                        <SortIcon
+                          columnKey="id"
+                          currentKey={sortConfig.key}
+                          direction={sortConfig.direction}
+                        />
                       </button>
                     </th>
 
                     {/* Columna Foto */}
-                    <th scope="col" style={{ width: '76px' }}>Mueble</th>
+                    <th scope="col" style={{ width: '76px' }}>
+                      Mueble
+                    </th>
 
                     {/* Columna Nombre Ordenable */}
                     <th scope="col">
@@ -542,7 +603,11 @@ function AdminPanel() {
                         aria-label="Ordenar por Nombre"
                       >
                         <span>Nombre &amp; Detalle</span>
-                        <SortIcon columnKey="name" currentKey={sortConfig.key} direction={sortConfig.direction} />
+                        <SortIcon
+                          columnKey="name"
+                          currentKey={sortConfig.key}
+                          direction={sortConfig.direction}
+                        />
                       </button>
                     </th>
 
@@ -558,7 +623,11 @@ function AdminPanel() {
                         aria-label="Ordenar por Precio"
                       >
                         <span>Precio</span>
-                        <SortIcon columnKey="price" currentKey={sortConfig.key} direction={sortConfig.direction} />
+                        <SortIcon
+                          columnKey="price"
+                          currentKey={sortConfig.key}
+                          direction={sortConfig.direction}
+                        />
                       </button>
                     </th>
 
@@ -571,12 +640,18 @@ function AdminPanel() {
                         aria-label="Ordenar por Disponibilidad de Stock"
                       >
                         <span>Disponibilidad</span>
-                        <SortIcon columnKey="stock" currentKey={sortConfig.key} direction={sortConfig.direction} />
+                        <SortIcon
+                          columnKey="stock"
+                          currentKey={sortConfig.key}
+                          direction={sortConfig.direction}
+                        />
                       </button>
                     </th>
 
                     {/* Acciones */}
-                    <th scope="col" style={{ textAlign: 'right' }}>Acciones</th>
+                    <th scope="col" style={{ textAlign: 'right' }}>
+                      Acciones
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -598,12 +673,14 @@ function AdminPanel() {
                         <td>
                           <div className="admin-thumb-wrapper">
                             <img
-                              src={product.image?.startsWith('/') ? product.image : `/${product.image}`}
+                              src={getProductImageUrl(product.image)}
                               alt={product.name}
                               className="admin-thumb-img"
+                              referrerPolicy="no-referrer"
                               onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = '/assets/placeholder-furniture.png';
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src =
+                                  '/assets/placeholder-furniture.png';
                               }}
                             />
                           </div>
@@ -613,9 +690,14 @@ function AdminPanel() {
                         <td>
                           <div className="admin-product-meta">
                             <div className="admin-product-name-row">
-                              <strong className="admin-product-name">{product.name}</strong>
+                              <strong className="admin-product-name">
+                                {product.name}
+                              </strong>
                               {product.featured && (
-                                <span className="admin-featured-pill" title="Pieza destacada en página principal">
+                                <span
+                                  className="admin-featured-pill"
+                                  title="Pieza destacada en página principal"
+                                >
                                   ★ Destacado
                                 </span>
                               )}
@@ -639,7 +721,9 @@ function AdminPanel() {
 
                         {/* Precio */}
                         <td>
-                          <span className="admin-price">{formatPrice(product.price)}</span>
+                          <span className="admin-price">
+                            {formatPrice(product.price)}
+                          </span>
                         </td>
 
                         {/* Stock */}
@@ -650,16 +734,21 @@ function AdminPanel() {
                                 isOutOfStock
                                   ? 'stock-badge--out'
                                   : isLowStock
-                                  ? 'stock-badge--low'
-                                  : 'stock-badge--in'
+                                    ? 'stock-badge--low'
+                                    : 'stock-badge--in'
                               }`}
                             >
-                              <span className="stock-indicator-dot" aria-hidden="true">●</span>
+                              <span
+                                className="stock-indicator-dot"
+                                aria-hidden="true"
+                              >
+                                ●
+                              </span>
                               {isOutOfStock
                                 ? 'Sin stock (0)'
                                 : isLowStock
-                                ? `¡Bajo! (${stock})`
-                                : `${stock} disponibles`}
+                                  ? `¡Bajo! (${stock})`
+                                  : `${stock} disponibles`}
                             </span>
                           ) : (
                             <span className="admin-no-stock-data">—</span>

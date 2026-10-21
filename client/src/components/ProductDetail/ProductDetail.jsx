@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 /**
  * Formatea un número como moneda en pesos argentinos (ARS).
@@ -130,9 +131,14 @@ function ProductDetail({ product, onClearSelection }) {
         <div className="product-detail-grid" id="product-detail-content">
           <div className="product-gallery">
             <img
-              src={image?.startsWith('/') ? image : `/${image}`}
+              src={getProductImageUrl(image)}
               alt={name}
               loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/assets/placeholder-furniture.png';
+              }}
             />
           </div>
 
@@ -149,10 +155,10 @@ function ProductDetail({ product, onClearSelection }) {
                     isOutOfStock
                       ? 'stock-badge--out'
                       : isMaxInCart
-                      ? 'stock-badge--low'
-                      : isLowStock
-                      ? 'stock-badge--low'
-                      : 'stock-badge--in'
+                        ? 'stock-badge--low'
+                        : isLowStock
+                          ? 'stock-badge--low'
+                          : 'stock-badge--in'
                   }`}
                   id="product-detail-stock-badge"
                   data-testid="product-detail-stock"
@@ -160,12 +166,12 @@ function ProductDetail({ product, onClearSelection }) {
                   {isOutOfStock
                     ? 'Sin stock'
                     : isMaxInCart
-                    ? `Límite en carrito (${stock} de ${stock})`
-                    : inCartQty > 0
-                    ? `${remainingStock} disponibles (${inCartQty} en carrito)`
-                    : remainingStock <= 3
-                    ? `¡Últimas ${remainingStock} unidades!`
-                    : `${remainingStock} unidades disponibles`}
+                      ? `Límite en carrito (${stock} de ${stock})`
+                      : inCartQty > 0
+                        ? `${remainingStock} disponibles (${inCartQty} en carrito)`
+                        : remainingStock <= 3
+                          ? `¡Últimas ${remainingStock} unidades!`
+                          : `${remainingStock} unidades disponibles`}
                 </span>
               )}
             </div>
@@ -180,7 +186,8 @@ function ProductDetail({ product, onClearSelection }) {
                 role="alert"
                 id="out-of-stock-alert"
               >
-                <strong>Aviso:</strong> Este mueble se encuentra temporalmente agotado. No es posible agregarlo al carrito en este momento.
+                <strong>Aviso:</strong> Este mueble se encuentra temporalmente
+                agotado. No es posible agregarlo al carrito en este momento.
               </div>
             )}
 
@@ -190,7 +197,9 @@ function ProductDetail({ product, onClearSelection }) {
                 role="alert"
                 id="max-stock-alert"
               >
-                <strong>Stock máximo alcanzado:</strong> Ya tenés en tu carrito todas las unidades disponibles ({stock} de {stock}) de este mueble.
+                <strong>Stock máximo alcanzado:</strong> Ya tenés en tu carrito
+                todas las unidades disponibles ({stock} de {stock}) de este
+                mueble.
               </div>
             )}
 
@@ -206,8 +215,8 @@ function ProductDetail({ product, onClearSelection }) {
                 {isOutOfStock
                   ? 'Sin stock'
                   : isMaxInCart
-                  ? 'Máximo en carrito'
-                  : 'Añadir al Carrito'}
+                    ? 'Máximo en carrito'
+                    : 'Añadir al Carrito'}
               </button>
               {onClearSelection && (
                 <button

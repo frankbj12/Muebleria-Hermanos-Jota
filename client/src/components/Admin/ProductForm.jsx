@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useToast } from '../../context/ToastContext';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 const CATEGORIES = [
   { value: 'living', label: 'Living & Sala' },
@@ -12,17 +13,61 @@ const CATEGORIES = [
 ];
 
 const CATALOG_GALLERY = [
-  { name: 'Aparador Uspallata', path: 'assets/products/Aparador Uspallata.png', category: 'almacenamiento' },
-  { name: 'Biblioteca Recoleta', path: 'assets/products/Biblioteca Recoleta.png', category: 'almacenamiento' },
-  { name: 'Butaca Mendoza', path: 'assets/products/Butaca Mendoza.png', category: 'living' },
-  { name: 'Mesa Comedor Pampa', path: 'assets/products/Mesa Comedor Pampa.png', category: 'comedor' },
-  { name: 'Sillón Copacabana', path: 'assets/products/Sillón Copacabana.png', category: 'living' },
-  { name: 'Escritorio Costa', path: 'assets/products/Escritorio Costa.png', category: 'trabajo' },
-  { name: 'Mesa de Centro Araucaria', path: 'assets/products/Mesa de Centro Araucaria.png', category: 'living' },
-  { name: 'Mesa de Noche Aconcagua', path: 'assets/products/Mesa de Noche Aconcagua.png', category: 'dormitorio' },
-  { name: 'Silla de Trabajo Belgrano', path: 'assets/products/Silla de Trabajo Belgrano.png', category: 'trabajo' },
-  { name: 'Sillas Córdoba', path: 'assets/products/Sillas Córdoba.png', category: 'comedor' },
-  { name: 'Sofá Patagonia', path: 'assets/products/Sofá Patagonia.png', category: 'living' },
+  {
+    name: 'Aparador Uspallata',
+    path: 'assets/products/Aparador Uspallata.png',
+    category: 'almacenamiento',
+  },
+  {
+    name: 'Biblioteca Recoleta',
+    path: 'assets/products/Biblioteca Recoleta.png',
+    category: 'almacenamiento',
+  },
+  {
+    name: 'Butaca Mendoza',
+    path: 'assets/products/Butaca Mendoza.png',
+    category: 'living',
+  },
+  {
+    name: 'Mesa Comedor Pampa',
+    path: 'assets/products/Mesa Comedor Pampa.png',
+    category: 'comedor',
+  },
+  {
+    name: 'Sillón Copacabana',
+    path: 'assets/products/Sillón Copacabana.png',
+    category: 'living',
+  },
+  {
+    name: 'Escritorio Costa',
+    path: 'assets/products/Escritorio Costa.png',
+    category: 'trabajo',
+  },
+  {
+    name: 'Mesa de Centro Araucaria',
+    path: 'assets/products/Mesa de Centro Araucaria.png',
+    category: 'living',
+  },
+  {
+    name: 'Mesa de Noche Aconcagua',
+    path: 'assets/products/Mesa de Noche Aconcagua.png',
+    category: 'dormitorio',
+  },
+  {
+    name: 'Silla de Trabajo Belgrano',
+    path: 'assets/products/Silla de Trabajo Belgrano.png',
+    category: 'trabajo',
+  },
+  {
+    name: 'Sillas Córdoba',
+    path: 'assets/products/Sillas Córdoba.png',
+    category: 'comedor',
+  },
+  {
+    name: 'Sofá Patagonia',
+    path: 'assets/products/Sofá Patagonia.png',
+    category: 'living',
+  },
 ];
 
 const formatPrice = (value) => {
@@ -34,7 +79,12 @@ const formatPrice = (value) => {
 function ProductForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { products, loading: productsLoading, createProduct, updateProduct } = useProducts();
+  const {
+    products,
+    loading: productsLoading,
+    createProduct,
+    updateProduct,
+  } = useProducts();
   const { addToast } = useToast();
   const fileInputRef = useRef(null);
 
@@ -74,9 +124,7 @@ function ProductForm() {
     if (!isEdit) return;
 
     if (!productsLoading && products.length > 0) {
-      const found = products.find(
-        (p) => String(p.id ?? p._id) === String(id)
-      );
+      const found = products.find((p) => String(p.id ?? p._id) === String(id));
 
       if (found) {
         setFormData({
@@ -108,7 +156,9 @@ function ProductForm() {
         }
 
         // Si la imagen coincide con la galería, activar la pestaña de galería, si no, URL
-        const inGallery = CATALOG_GALLERY.some((item) => item.path === found.image);
+        const inGallery = CATALOG_GALLERY.some(
+          (item) => item.path === found.image
+        );
         if (inGallery) {
           setImageSourceTab('gallery');
         } else if (found.image?.startsWith('data:image')) {
@@ -189,7 +239,10 @@ function ProductForm() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      addToast('El archivo seleccionado debe ser una imagen (PNG, JPG, WEBP).', 'error');
+      addToast(
+        'El archivo seleccionado debe ser una imagen (PNG, JPG, WEBP).',
+        'error'
+      );
       return;
     }
 
@@ -249,7 +302,8 @@ function ProductForm() {
     if (!formData.description.trim()) {
       newErrors.description = 'La descripción del mueble es obligatoria.';
     } else if (formData.description.trim().length < 10) {
-      newErrors.description = 'La descripción debe tener al menos 10 caracteres.';
+      newErrors.description =
+        'La descripción debe tener al menos 10 caracteres.';
     }
 
     setErrors(newErrors);
@@ -260,7 +314,10 @@ function ProductForm() {
     e.preventDefault();
 
     if (!validate()) {
-      addToast('Por favor corregí los campos requeridos en el formulario.', 'error');
+      addToast(
+        'Por favor corregí los campos requeridos en el formulario.',
+        'error'
+      );
       return;
     }
 
@@ -273,7 +330,8 @@ function ProductForm() {
     // Construir especificaciones filtrando solo las que el usuario haya completado (opcionales)
     const finalSpecs = {};
     if (specs.medidas.trim()) finalSpecs.medidas = specs.medidas.trim();
-    if (specs.materiales.trim()) finalSpecs.materiales = specs.materiales.trim();
+    if (specs.materiales.trim())
+      finalSpecs.materiales = specs.materiales.trim();
     if (specs.acabado.trim()) finalSpecs.acabado = specs.acabado.trim();
 
     customSpecs.forEach((specItem) => {
@@ -307,12 +365,16 @@ function ProductForm() {
         addToast(`"${payload.name}" fue actualizado con éxito.`, 'success');
       } else {
         await createProduct(payload);
-        addToast(`"${payload.name}" fue agregado al catálogo con éxito.`, 'success');
+        addToast(
+          `"${payload.name}" fue agregado al catálogo con éxito.`,
+          'success'
+        );
       }
       navigate('/admin');
     } catch (err) {
       addToast(
-        err.message || 'No se pudo guardar el producto. Verificá la conexión con la API.',
+        err.message ||
+          'No se pudo guardar el producto. Verificá la conexión con la API.',
         'error'
       );
     } finally {
@@ -323,10 +385,22 @@ function ProductForm() {
   // Estado si el producto a editar no existe
   if (isEdit && notFound) {
     return (
-      <section className="admin-panel-section" aria-label="Producto no encontrado">
+      <section
+        className="admin-panel-section"
+        aria-label="Producto no encontrado"
+      >
         <div className="container">
-          <div className="admin-form-card" style={{ textAlign: 'center', padding: '3rem 1.5rem' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--negro)', marginBottom: '1rem' }}>
+          <div
+            className="admin-form-card"
+            style={{ textAlign: 'center', padding: '3rem 1.5rem' }}
+          >
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                color: 'var(--negro)',
+                marginBottom: '1rem',
+              }}
+            >
               Mueble no encontrado
             </h2>
             <p style={{ color: 'var(--gris)', marginBottom: '2rem' }}>
@@ -361,10 +435,14 @@ function ProductForm() {
   const isLowStock = hasPreviewStock && previewStock > 0 && previewStock <= 3;
 
   const currentCategory = CATEGORIES.find((c) => c.value === formData.category);
-  const displayImage = formData.image.trim() || '/assets/placeholder-furniture.png';
+  const displayImage =
+    formData.image.trim() || '/assets/placeholder-furniture.png';
 
   return (
-    <section className="admin-panel-section" aria-label={isEdit ? 'Editar Producto' : 'Crear Producto'}>
+    <section
+      className="admin-panel-section"
+      aria-label={isEdit ? 'Editar Producto' : 'Crear Producto'}
+    >
       <div className="container">
         {/* Breadcrumb de navegación */}
         <nav className="admin-breadcrumb" aria-label="Ruta de navegación">
@@ -446,7 +524,11 @@ function ProductForm() {
                     aria-describedby={errors.name ? 'error-name' : undefined}
                   />
                   {errors.name && (
-                    <span className="admin-form-error-msg" id="error-name" role="alert">
+                    <span
+                      className="admin-form-error-msg"
+                      id="error-name"
+                      role="alert"
+                    >
                       {errors.name}
                     </span>
                   )}
@@ -456,7 +538,10 @@ function ProductForm() {
                 <div className="admin-form-grid-2">
                   {/* Categoría */}
                   <div className="admin-form-group">
-                    <label htmlFor="product-category" className="admin-form-label">
+                    <label
+                      htmlFor="product-category"
+                      className="admin-form-label"
+                    >
                       Categoría <span className="admin-required">*</span>
                     </label>
                     <select
@@ -482,10 +567,16 @@ function ProductForm() {
 
                   {/* Destacado con etiqueta propia y altura alineada */}
                   <div className="admin-form-group">
-                    <label className="admin-form-label" htmlFor="product-featured">
+                    <label
+                      className="admin-form-label"
+                      htmlFor="product-featured"
+                    >
                       Visibilidad en Portada (Opcional)
                     </label>
-                    <label className="admin-form-checkbox-card" htmlFor="product-featured">
+                    <label
+                      className="admin-form-checkbox-card"
+                      htmlFor="product-featured"
+                    >
                       <input
                         type="checkbox"
                         id="product-featured"
@@ -507,7 +598,8 @@ function ProductForm() {
                   {/* Precio */}
                   <div className="admin-form-group">
                     <label htmlFor="product-price" className="admin-form-label">
-                      Precio en ARS ($) <span className="admin-required">*</span>
+                      Precio en ARS ($){' '}
+                      <span className="admin-required">*</span>
                     </label>
                     <div className="admin-input-prefix-wrapper">
                       <span className="admin-input-prefix">$</span>
@@ -525,11 +617,17 @@ function ProductForm() {
                         }`}
                         required
                         aria-invalid={Boolean(errors.price)}
-                        aria-describedby={errors.price ? 'error-price' : undefined}
+                        aria-describedby={
+                          errors.price ? 'error-price' : undefined
+                        }
                       />
                     </div>
                     {errors.price && (
-                      <span className="admin-form-error-msg" id="error-price" role="alert">
+                      <span
+                        className="admin-form-error-msg"
+                        id="error-price"
+                        role="alert"
+                      >
                         {errors.price}
                       </span>
                     )}
@@ -552,10 +650,16 @@ function ProductForm() {
                       className={`admin-form-input ${errors.stock ? 'admin-form-input--error' : ''}`}
                       required
                       aria-invalid={Boolean(errors.stock)}
-                      aria-describedby={errors.stock ? 'error-stock' : undefined}
+                      aria-describedby={
+                        errors.stock ? 'error-stock' : undefined
+                      }
                     />
                     {errors.stock && (
-                      <span className="admin-form-error-msg" id="error-stock" role="alert">
+                      <span
+                        className="admin-form-error-msg"
+                        id="error-stock"
+                        role="alert"
+                      >
                         {errors.stock}
                       </span>
                     )}
@@ -564,8 +668,12 @@ function ProductForm() {
 
                 {/* Descripción */}
                 <div className="admin-form-group">
-                  <label htmlFor="product-description" className="admin-form-label">
-                    Descripción Artesanal <span className="admin-required">*</span>
+                  <label
+                    htmlFor="product-description"
+                    className="admin-form-label"
+                  >
+                    Descripción Artesanal{' '}
+                    <span className="admin-required">*</span>
                   </label>
                   <textarea
                     id="product-description"
@@ -579,10 +687,16 @@ function ProductForm() {
                     }`}
                     required
                     aria-invalid={Boolean(errors.description)}
-                    aria-describedby={errors.description ? 'error-description' : undefined}
+                    aria-describedby={
+                      errors.description ? 'error-description' : undefined
+                    }
                   />
                   {errors.description && (
-                    <span className="admin-form-error-msg" id="error-description" role="alert">
+                    <span
+                      className="admin-form-error-msg"
+                      id="error-description"
+                      role="alert"
+                    >
                       {errors.description}
                     </span>
                   )}
@@ -613,7 +727,11 @@ function ProductForm() {
                 </h2>
 
                 {/* Pestañas para elegir la forma de cargar la imagen */}
-                <div className="admin-img-tabs" role="tablist" aria-label="Métodos de selección de imagen">
+                <div
+                  className="admin-img-tabs"
+                  role="tablist"
+                  aria-label="Métodos de selección de imagen"
+                >
                   <button
                     type="button"
                     role="tab"
@@ -646,10 +764,18 @@ function ProductForm() {
                 {/* Contenido Pestaña 1: Galería Visual con miniaturas */}
                 {imageSourceTab === 'gallery' && (
                   <div className="admin-img-tab-content">
-                    <p className="admin-form-hint" style={{ marginBottom: '12px' }}>
-                      Elegí una fotografía existente de la colección artesanal de Hermanos Jota con ayuda visual:
+                    <p
+                      className="admin-form-hint"
+                      style={{ marginBottom: '12px' }}
+                    >
+                      Elegí una fotografía existente de la colección artesanal
+                      de Hermanos Jota con ayuda visual:
                     </p>
-                    <div className="admin-gallery-grid" role="group" aria-label="Galería visual de muebles">
+                    <div
+                      className="admin-gallery-grid"
+                      role="group"
+                      aria-label="Galería visual de muebles"
+                    >
                       {CATALOG_GALLERY.map((item) => {
                         const isSelected = formData.image === item.path;
                         return (
@@ -667,16 +793,22 @@ function ProductForm() {
                                 className="admin-gallery-img"
                                 onError={(e) => {
                                   e.target.onerror = null;
-                                  e.target.src = '/assets/placeholder-furniture.png';
+                                  e.target.src =
+                                    '/assets/placeholder-furniture.png';
                                 }}
                               />
                               {isSelected && (
-                                <div className="admin-gallery-selected-badge" aria-label="Seleccionado">
+                                <div
+                                  className="admin-gallery-selected-badge"
+                                  aria-label="Seleccionado"
+                                >
                                   ✓
                                 </div>
                               )}
                             </div>
-                            <span className="admin-gallery-title">{item.name}</span>
+                            <span className="admin-gallery-title">
+                              {item.name}
+                            </span>
                           </button>
                         );
                       })}
@@ -687,15 +819,21 @@ function ProductForm() {
                 {/* Contenido Pestaña 2: Subir archivo local */}
                 {imageSourceTab === 'upload' && (
                   <div className="admin-img-tab-content">
-                    <p className="admin-form-hint" style={{ marginBottom: '12px' }}>
-                      Seleccioná una imagen desde tu dispositivo (JPG, PNG, WEBP). Se procesará de inmediato para el catálogo:
+                    <p
+                      className="admin-form-hint"
+                      style={{ marginBottom: '12px' }}
+                    >
+                      Seleccioná una imagen desde tu dispositivo (JPG, PNG,
+                      WEBP). Se procesará de inmediato para el catálogo:
                     </p>
                     <div
                       className="admin-dropzone"
                       onClick={() => fileInputRef.current?.click()}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => e.key === 'Enter' && fileInputRef.current?.click()}
+                      onKeyDown={(e) =>
+                        e.key === 'Enter' && fileInputRef.current?.click()
+                      }
                     >
                       <input
                         type="file"
@@ -720,7 +858,9 @@ function ProductForm() {
                         <polyline points="17 8 12 3 7 8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
                       </svg>
-                      <strong>Hacé clic acá para elegir una imagen de tus archivos</strong>
+                      <strong>
+                        Hacé clic acá para elegir una imagen de tus archivos
+                      </strong>
                       <span>o arrastrá un archivo PNG, JPG o WEBP</span>
                     </div>
 
@@ -745,7 +885,10 @@ function ProductForm() {
                 {imageSourceTab === 'url' && (
                   <div className="admin-img-tab-content">
                     <div className="admin-form-group">
-                      <label htmlFor="product-image" className="admin-form-label">
+                      <label
+                        htmlFor="product-image"
+                        className="admin-form-label"
+                      >
                         Ruta relativa o URL de la imagen
                       </label>
                       <input
@@ -758,8 +901,82 @@ function ProductForm() {
                         className="admin-form-input"
                       />
                       <p className="admin-form-hint">
-                        Podés ingresar un enlace web directo a la fotografía o una ruta interna del proyecto.
+                        Podés ingresar un enlace web directo a la fotografía
+                        (http/https) o una ruta interna del proyecto.
                       </p>
+
+                      {/* Mini vista previa inmediata del enlace ingresado */}
+                      {formData.image.trim() && (
+                        <div
+                          style={{
+                            marginTop: '1rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '1rem',
+                            padding: '0.75rem 1rem',
+                            background: '#f9f9f9',
+                            borderRadius: '8px',
+                            border: '1px solid #e2e8f0',
+                          }}
+                        >
+                          <img
+                            key={formData.image.trim()}
+                            src={getProductImageUrl(formData.image)}
+                            alt="Vista previa del enlace"
+                            style={{
+                              width: '56px',
+                              height: '56px',
+                              objectFit: 'cover',
+                              borderRadius: '6px',
+                              border: '1px solid #cbd5e1',
+                              backgroundColor: '#fff',
+                            }}
+                            referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src =
+                                '/assets/placeholder-furniture.png';
+                            }}
+                          />
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <strong
+                              style={{
+                                display: 'block',
+                                fontSize: '0.85rem',
+                                color: '#1e293b',
+                              }}
+                            >
+                              Vista previa del enlace
+                            </strong>
+                            <span
+                              style={{
+                                display: 'block',
+                                fontSize: '0.75rem',
+                                color: '#64748b',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              {formData.image.trim()}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            style={{
+                              padding: '0.35rem 0.75rem',
+                              fontSize: '0.8rem',
+                              whiteSpace: 'nowrap',
+                            }}
+                            onClick={() =>
+                              setFormData((prev) => ({ ...prev, image: '' }))
+                            }
+                          >
+                            Limpiar
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -794,15 +1011,20 @@ function ProductForm() {
                 </div>
 
                 <p className="admin-form-hint" style={{ marginBottom: '16px' }}>
-                  Cada tipo de mueble puede tener sus propias características (medidas, peso, rotación, tapizado o capacidad).
-                  Completá solo las que apliquen a esta pieza artesanal:
+                  Cada tipo de mueble puede tener sus propias características
+                  (medidas, peso, rotación, tapizado o capacidad). Completá solo
+                  las que apliquen a esta pieza artesanal:
                 </p>
 
                 {/* Especificaciones estándar opcionales */}
                 <div className="admin-form-grid-3">
                   <div className="admin-form-group">
-                    <label htmlFor="product-medidas" className="admin-form-label">
-                      Medidas <small className="admin-label-optional">(Opcional)</small>
+                    <label
+                      htmlFor="product-medidas"
+                      className="admin-form-label"
+                    >
+                      Medidas{' '}
+                      <small className="admin-label-optional">(Opcional)</small>
                     </label>
                     <input
                       type="text"
@@ -816,8 +1038,12 @@ function ProductForm() {
                   </div>
 
                   <div className="admin-form-group">
-                    <label htmlFor="product-materiales" className="admin-form-label">
-                      Materiales <small className="admin-label-optional">(Opcional)</small>
+                    <label
+                      htmlFor="product-materiales"
+                      className="admin-form-label"
+                    >
+                      Materiales{' '}
+                      <small className="admin-label-optional">(Opcional)</small>
                     </label>
                     <input
                       type="text"
@@ -831,8 +1057,12 @@ function ProductForm() {
                   </div>
 
                   <div className="admin-form-group">
-                    <label htmlFor="product-acabado" className="admin-form-label">
-                      Acabado <small className="admin-label-optional">(Opcional)</small>
+                    <label
+                      htmlFor="product-acabado"
+                      className="admin-form-label"
+                    >
+                      Acabado{' '}
+                      <small className="admin-label-optional">(Opcional)</small>
                     </label>
                     <input
                       type="text"
@@ -855,13 +1085,19 @@ function ProductForm() {
                     {customSpecs.map((item) => (
                       <div key={item.id} className="admin-custom-spec-row">
                         <div className="admin-custom-spec-col">
-                          <label className="admin-form-label-sr">Propiedad</label>
+                          <label className="admin-form-label-sr">
+                            Propiedad
+                          </label>
                           <input
                             type="text"
                             placeholder="Propiedad (ej: Peso, Rotación, Tapizado)"
                             value={item.key}
                             onChange={(e) =>
-                              handleUpdateCustomSpec(item.id, 'key', e.target.value)
+                              handleUpdateCustomSpec(
+                                item.id,
+                                'key',
+                                e.target.value
+                              )
                             }
                             className="admin-form-input"
                           />
@@ -873,7 +1109,11 @@ function ProductForm() {
                             placeholder="Valor (ej: 42 kg, 360°, Bouclé Rose)"
                             value={item.value}
                             onChange={(e) =>
-                              handleUpdateCustomSpec(item.id, 'value', e.target.value)
+                              handleUpdateCustomSpec(
+                                item.id,
+                                'value',
+                                e.target.value
+                              )
                             }
                             className="admin-form-input"
                           />
@@ -906,7 +1146,10 @@ function ProductForm() {
 
               {/* Botones de acción del formulario */}
               <div className="admin-form-actions">
-                <Link to="/admin" className="btn btn-secondary admin-btn-cancel">
+                <Link
+                  to="/admin"
+                  className="btn btn-secondary admin-btn-cancel"
+                >
                   Cancelar
                 </Link>
                 <button
@@ -937,7 +1180,9 @@ function ProductForm() {
                         <polyline points="17 21 17 13 7 13 7 21" />
                         <polyline points="7 3 7 8 15 8" />
                       </svg>
-                      <span>{isEdit ? 'Guardar Cambios' : 'Publicar Mueble'}</span>
+                      <span>
+                        {isEdit ? 'Guardar Cambios' : 'Publicar Mueble'}
+                      </span>
                     </>
                   )}
                 </button>
@@ -946,7 +1191,10 @@ function ProductForm() {
           </div>
 
           {/* Columna Lateral: Vista Previa en Tiempo Real */}
-          <aside className="admin-preview-column" aria-label="Vista previa en tiempo real">
+          <aside
+            className="admin-preview-column"
+            aria-label="Vista previa en tiempo real"
+          >
             <div className="admin-preview-sticky">
               <div className="admin-preview-badge">
                 <span className="admin-preview-dot" aria-hidden="true" />
@@ -957,12 +1205,14 @@ function ProductForm() {
                 {/* Imagen y badges flotantes */}
                 <div className="admin-preview-img-wrapper">
                   <img
-                    src={displayImage.startsWith('data:') || displayImage.startsWith('http') || displayImage.startsWith('/') ? displayImage : `/${displayImage}`}
+                    key={formData.image.trim()}
+                    src={getProductImageUrl(formData.image)}
                     alt={formData.name || 'Vista previa del mueble'}
                     className="admin-preview-img"
+                    referrerPolicy="no-referrer"
                     onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/assets/placeholder-furniture.png';
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/assets/placeholder-furniture.png';
                     }}
                   />
                   {formData.featured && (
@@ -976,16 +1226,18 @@ function ProductForm() {
                         isOutOfStock
                           ? 'stock-badge--out'
                           : isLowStock
-                          ? 'stock-badge--low'
-                          : 'stock-badge--in'
+                            ? 'stock-badge--low'
+                            : 'stock-badge--in'
                       }`}
                     >
-                      <span className="stock-indicator-dot" aria-hidden="true">●</span>
+                      <span className="stock-indicator-dot" aria-hidden="true">
+                        ●
+                      </span>
                       {isOutOfStock
                         ? 'Sin stock (0)'
                         : isLowStock
-                        ? `¡Bajo! (${previewStock})`
-                        : `${previewStock} disponibles`}
+                          ? `¡Bajo! (${previewStock})`
+                          : `${previewStock} disponibles`}
                     </span>
                   )}
                 </div>
@@ -1029,7 +1281,10 @@ function ProductForm() {
                       {customSpecs.map((item) => {
                         if (!item.key.trim() || !item.value.trim()) return null;
                         return (
-                          <div key={item.id} className="admin-preview-spec-item">
+                          <div
+                            key={item.id}
+                            className="admin-preview-spec-item"
+                          >
                             <span style={{ textTransform: 'capitalize' }}>
                               {item.key}:
                             </span>{' '}
@@ -1041,7 +1296,9 @@ function ProductForm() {
                   )}
 
                   <div className="admin-preview-footer">
-                    <span className="admin-preview-price-label">Precio Catálogo</span>
+                    <span className="admin-preview-price-label">
+                      Precio Catálogo
+                    </span>
                     <strong className="admin-preview-price">
                       {formatPrice(formData.price)}
                     </strong>
@@ -1066,7 +1323,8 @@ function ProductForm() {
                   <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
                 <span>
-                  Los cambios que realices se sincronizan en vivo con esta tarjeta de presentación.
+                  Los cambios que realices se sincronizan en vivo con esta
+                  tarjeta de presentación.
                 </span>
               </div>
             </div>

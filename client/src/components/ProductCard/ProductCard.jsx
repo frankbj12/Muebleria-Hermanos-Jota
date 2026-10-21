@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 function ProductCard({ product, index = 0 }) {
   const formatPrice = (price) => {
@@ -30,7 +31,16 @@ function ProductCard({ product, index = 0 }) {
       id={`product-card-${product.id}`}
     >
       <Link to={`/productos/${product.id}`} className="product-card-image">
-        <img src={`/${product.image}`} alt={product.name} loading="lazy" />
+        <img
+          src={getProductImageUrl(product.image)}
+          alt={product.name}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/assets/placeholder-furniture.png';
+          }}
+        />
         {isOutOfStock && (
           <span className="product-card-image-badge">Sin stock</span>
         )}
@@ -46,16 +56,16 @@ function ProductCard({ product, index = 0 }) {
                 isOutOfStock
                   ? 'stock-badge--out'
                   : isLowStock
-                  ? 'stock-badge--low'
-                  : 'stock-badge--in'
+                    ? 'stock-badge--low'
+                    : 'stock-badge--in'
               }`}
               data-testid={`stock-badge-${product.id}`}
             >
               {isOutOfStock
                 ? 'Sin stock'
                 : isLowStock
-                ? `¡Últimas ${product.stock}!`
-                : `${product.stock} disponibles`}
+                  ? `¡Últimas ${product.stock}!`
+                  : `${product.stock} disponibles`}
             </span>
           )}
         </div>

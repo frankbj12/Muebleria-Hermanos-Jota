@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getProductImageUrl } from '../../utils/imageUrl';
 
 /**
  * Componente CartItem
@@ -34,9 +35,14 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
         aria-label={`Ver detalle de ${item.name}`}
       >
         <img
-          src={item.image?.startsWith('/') ? item.image : `/${item.image}`}
+          src={getProductImageUrl(item.image)}
           alt={item.name}
           loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = '/assets/placeholder-furniture.png';
+          }}
         />
       </Link>
 

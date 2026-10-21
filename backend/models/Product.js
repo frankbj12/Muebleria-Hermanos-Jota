@@ -8,16 +8,19 @@ const productSchema = new mongoose.Schema(
     },
     name: {
       type: String,
+      alias: 'nombre',
       required: [true, 'El nombre del producto es obligatorio'],
       trim: true,
     },
     description: {
       type: String,
+      alias: 'descripcion',
       trim: true,
       default: '',
     },
     price: {
       type: Number,
+      alias: 'precio',
       required: [true, 'El precio es obligatorio'],
       min: [0, 'El precio no puede ser negativo'],
     },
@@ -28,17 +31,20 @@ const productSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      alias: 'imagenUrl',
       trim: true,
       default: '',
     },
     // Campos de compatibilidad con la UI actual acordados en la Fase 0
     category: {
       type: String,
+      alias: 'categoria',
       trim: true,
       default: 'general',
     },
     featured: {
       type: Boolean,
+      alias: 'destacado',
       default: false,
     },
     specs: {

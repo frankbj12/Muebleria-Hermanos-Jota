@@ -54,17 +54,35 @@ export const getProductoById = async (req, res, next) => {
  */
 export const createProducto = async (req, res, next) => {
   try {
+    const name = req.body.name || req.body.nombre;
+    const description = req.body.description || req.body.descripcion || '';
+    const price =
+      req.body.price !== undefined ? req.body.price : req.body.precio;
+    const stock = req.body.stock !== undefined ? req.body.stock : 0;
+    const image = req.body.image || req.body.imagenUrl || '';
+    const category = req.body.category || req.body.categoria || 'general';
+    const featured =
+      req.body.featured !== undefined
+        ? req.body.featured
+        : req.body.destacado !== undefined
+          ? req.body.destacado
+          : false;
+
     const datos = {
       ...req.body,
-      nombre: req.body.nombre || req.body.name,
-      descripcion: req.body.descripcion || req.body.description,
-      precio: req.body.precio !== undefined ? req.body.precio : req.body.price,
-      imagenUrl: req.body.imagenUrl || req.body.image,
-      categoria: req.body.categoria || req.body.category,
-      destacado:
-        req.body.destacado !== undefined
-          ? req.body.destacado
-          : req.body.featured,
+      name,
+      nombre: name,
+      description,
+      descripcion: description,
+      price,
+      precio: price,
+      stock,
+      image,
+      imagenUrl: image,
+      category,
+      categoria: category,
+      featured,
+      destacado: featured,
     };
 
     const nuevoProducto = await Product.create(datos);
@@ -85,18 +103,50 @@ export const updateProducto = async (req, res, next) => {
       ...req.body,
     };
 
-    if (req.body.name && !req.body.nombre)
-      datosActualizados.nombre = req.body.name;
-    if (req.body.description && !req.body.descripcion)
-      datosActualizados.descripcion = req.body.description;
-    if (req.body.price !== undefined && req.body.precio === undefined)
-      datosActualizados.precio = req.body.price;
-    if (req.body.image && !req.body.imagenUrl)
-      datosActualizados.imagenUrl = req.body.image;
-    if (req.body.category && !req.body.categoria)
-      datosActualizados.categoria = req.body.category;
-    if (req.body.featured !== undefined && req.body.destacado === undefined)
-      datosActualizados.destacado = req.body.featured;
+    if (req.body.name || req.body.nombre) {
+      const val = req.body.name || req.body.nombre;
+      datosActualizados.name = val;
+      datosActualizados.nombre = val;
+    }
+    if (
+      req.body.description !== undefined ||
+      req.body.descripcion !== undefined
+    ) {
+      const val =
+        req.body.description !== undefined
+          ? req.body.description
+          : req.body.descripcion;
+      datosActualizados.description = val;
+      datosActualizados.descripcion = val;
+    }
+    if (req.body.price !== undefined || req.body.precio !== undefined) {
+      const val =
+        req.body.price !== undefined ? req.body.price : req.body.precio;
+      datosActualizados.price = val;
+      datosActualizados.precio = val;
+    }
+    if (req.body.stock !== undefined) {
+      datosActualizados.stock = req.body.stock;
+    }
+    if (req.body.image !== undefined || req.body.imagenUrl !== undefined) {
+      const val =
+        req.body.image !== undefined ? req.body.image : req.body.imagenUrl;
+      datosActualizados.image = val;
+      datosActualizados.imagenUrl = val;
+    }
+    if (req.body.category || req.body.categoria) {
+      const val = req.body.category || req.body.categoria;
+      datosActualizados.category = val;
+      datosActualizados.categoria = val;
+    }
+    if (req.body.featured !== undefined || req.body.destacado !== undefined) {
+      const val =
+        req.body.featured !== undefined
+          ? req.body.featured
+          : req.body.destacado;
+      datosActualizados.featured = val;
+      datosActualizados.destacado = val;
+    }
 
     const productoActualizado = await Product.findByIdAndUpdate(
       id,

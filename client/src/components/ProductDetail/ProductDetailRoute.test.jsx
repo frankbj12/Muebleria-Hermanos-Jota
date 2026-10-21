@@ -1,9 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('react-router-dom', () => require('react-router'));
-
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import productosApi from '../../services/productosApi';
 import ProductDetailRoute from './ProductDetailRoute';
 
@@ -14,9 +12,13 @@ jest.mock('../../services/productosApi', () => ({
   },
 }));
 
-jest.mock('./ProductDetail', () => function MockProductDetail({ product }) {
-  return <h1>{product.name}</h1>;
-});
+jest.mock(
+  './ProductDetail',
+  () =>
+    function MockProductDetail({ product }) {
+      return <h1>{product.name}</h1>;
+    }
+);
 
 describe('ProductDetailRoute', () => {
   afterEach(() => {
