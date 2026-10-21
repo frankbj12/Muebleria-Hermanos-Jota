@@ -435,8 +435,6 @@ function ProductForm() {
   const isLowStock = hasPreviewStock && previewStock > 0 && previewStock <= 3;
 
   const currentCategory = CATEGORIES.find((c) => c.value === formData.category);
-  const displayImage =
-    formData.image.trim() || '/assets/placeholder-furniture.png';
 
   return (
     <section
