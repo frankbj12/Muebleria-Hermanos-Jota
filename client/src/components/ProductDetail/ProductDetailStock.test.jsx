@@ -5,6 +5,10 @@ import ProductDetail from './ProductDetail';
 import { CartProvider, useCart } from '../../context/CartContext';
 import { ToastProvider } from '../../context/ToastContext';
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 describe('ProductDetail - Disponibilidad y Control de Stock', () => {
   const baseProduct = {
     id: 20,

@@ -1,9 +1,40 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 export const CartContext = createContext(null);
+const CART_STORAGE_KEY = 'hermanos-jota-cart';
+
+function readCartFromStorage() {
+  try {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (!storedCart) return [];
+
+    const cart = JSON.parse(storedCart);
+    if (!Array.isArray(cart)) {
+      throw new Error('El contenido guardado del carrito no es una lista.');
+    }
+
+    return cart;
+  } catch (error) {
+    console.error('No se pudo recuperar el carrito guardado:', error);
+    return [];
+  }
+}
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(readCartFromStorage);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch (error) {
+      console.error('No se pudo guardar el carrito:', error);
+    }
+  }, [cart]);
 
   const addToCart = (product) => {
     if (!product) return false;
