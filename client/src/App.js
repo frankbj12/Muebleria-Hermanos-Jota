@@ -18,6 +18,7 @@ import { CartProvider } from './context/CartContext';
 import CartPage from './components/Cart/CartPage';
 import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
+import ProductForm from './components/Admin/ProductForm';
 
 function App() {
   return (
@@ -67,6 +68,11 @@ function AppLayout() {
             <Route path="/contacto" element={<ContactForm />} />
             <Route path="/carrito" element={<CartPage />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin/crear-producto" element={<ProductForm />} />
+            <Route
+              path="/admin/editar-producto/:id"
+              element={<ProductForm />}
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

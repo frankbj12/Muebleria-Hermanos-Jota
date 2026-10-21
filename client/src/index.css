@@ -3156,4 +3156,774 @@ h4 {
   }
 }
 
+/* ==========================================================================
+   Formulario de Producto /admin/crear-producto y /admin/editar-producto/:id
+   ========================================================================== */
+.admin-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+  font-size: var(--fs-sm);
+}
+
+.admin-breadcrumb-link {
+  color: var(--siena);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.admin-breadcrumb-link:hover {
+  color: var(--siena-dark);
+  text-decoration: underline;
+}
+
+.admin-breadcrumb-separator {
+  color: var(--gris);
+  opacity: 0.6;
+}
+
+.admin-breadcrumb-current {
+  color: var(--negro-suave);
+  font-weight: 500;
+}
+
+.admin-form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr);
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.admin-form-card {
+  background-color: var(--blanco);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(160, 82, 45, 0.12);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2xl);
+}
+
+.admin-form-fieldset {
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px dashed rgba(160, 82, 45, 0.18);
+}
+
+.admin-form-fieldset:last-of-type {
+  border-bottom: none;
+  margin-bottom: var(--space-lg);
+  padding-bottom: 0;
+}
+
+.admin-form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  color: var(--negro);
+  margin-bottom: var(--space-lg);
+}
+
+.admin-form-section-title svg {
+  color: var(--siena);
+  flex-shrink: 0;
+}
+
+.admin-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-md);
+}
+
+.admin-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.admin-form-label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--negro);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.admin-required {
+  color: var(--rosa);
+  font-weight: 700;
+}
+
+.admin-label-optional {
+  font-weight: 400;
+  color: var(--gris);
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+
+.admin-form-input,
+.admin-form-select,
+.admin-form-textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--negro);
+  background-color: var(--blanco);
+  border: 1.5px solid rgba(92, 61, 42, 0.2);
+  border-radius: var(--border-radius);
+  padding: 12px 14px;
+  transition: all var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.admin-form-select {
+  height: 48px;
+}
+
+.admin-form-input:focus,
+.admin-form-select:focus,
+.admin-form-textarea:focus {
+  border-color: var(--siena);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.16);
+}
+
+.admin-form-input--error {
+  border-color: #c47a6d !important;
+  background-color: #fff9f8;
+  box-shadow: 0 0 0 3px rgba(196, 122, 109, 0.16) !important;
+}
+
+.admin-form-error-msg {
+  display: block;
+  font-size: var(--fs-xs);
+  color: #a14337;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.admin-form-hint {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.admin-form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  align-items: start;
+}
+
+.admin-form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  align-items: start;
+}
+
+.admin-input-prefix-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.admin-input-prefix {
+  position: absolute;
+  left: 14px;
+  font-weight: 700;
+  color: var(--gris);
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.admin-form-input--prefixed {
+  padding-left: 32px;
+}
+
+/* Checkbox / Card Destacado */
+.admin-form-checkbox-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  background-color: var(--alabastro-light);
+  border: 1.5px solid rgba(92, 61, 42, 0.2);
+  padding: 8px 14px;
+  border-radius: var(--border-radius);
+  height: 48px;
+  box-sizing: border-box;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.admin-form-checkbox-card:hover {
+  background-color: rgba(245, 230, 211, 0.6);
+  border-color: var(--siena-light);
+}
+
+.admin-form-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--siena);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.admin-form-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.admin-form-checkbox-text strong {
+  font-size: 0.85rem;
+  color: var(--negro);
+}
+
+.admin-form-checkbox-text small {
+  font-size: 0.72rem;
+  color: var(--gris);
+}
+
+/* =========================================================
+   Pestañas y Selector de Imagen (Galería + Subida + URL)
+   ========================================================= */
+.admin-img-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid rgba(160, 82, 45, 0.15);
+  padding-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-img-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 8px 14px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--gris);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-img-tab-btn:hover {
+  color: var(--siena-dark);
+  background-color: rgba(245, 230, 211, 0.4);
+}
+
+.admin-img-tab-btn--active {
+  color: var(--siena-dark);
+  background-color: var(--alabastro);
+  font-weight: 700;
+}
+
+/* Galería visual */
+.admin-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  max-height: 290px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid rgba(160, 82, 45, 0.15);
+  border-radius: var(--border-radius);
+  background-color: var(--blanco-calido);
+}
+
+.admin-gallery-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--blanco);
+  border: 1.5px solid rgba(92, 61, 42, 0.15);
+  border-radius: var(--border-radius);
+  padding: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.admin-gallery-card:hover {
+  border-color: var(--siena);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-gallery-card--selected {
+  border-color: var(--siena) !important;
+  background-color: rgba(245, 230, 211, 0.35);
+  box-shadow: 0 0 0 2px var(--siena);
+}
+
+.admin-gallery-thumb-box {
+  position: relative;
+  width: 100%;
+  height: 75px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #f0e9df;
+  margin-bottom: 6px;
+}
+
+.admin-gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-gallery-selected-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--siena);
+  color: var(--blanco);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-gallery-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--negro);
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Dropzone de subida local */
+.admin-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(160, 82, 45, 0.35);
+  background-color: var(--alabastro-light);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  gap: 6px;
+}
+
+.admin-dropzone:hover {
+  border-color: var(--siena);
+  background-color: rgba(245, 230, 211, 0.6);
+}
+
+.admin-dropzone svg {
+  color: var(--siena);
+  margin-bottom: 4px;
+}
+
+.admin-dropzone strong {
+  font-size: var(--fs-sm);
+  color: var(--negro);
+}
+
+.admin-dropzone span {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+}
+
+.admin-upload-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--blanco);
+  border: 1px solid rgba(160, 82, 45, 0.15);
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  margin-top: 10px;
+}
+
+.admin-upload-file-tag {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--negro-suave);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 280px;
+}
+
+.admin-upload-clear-btn {
+  background: transparent;
+  border: none;
+  color: #a14337;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-upload-clear-btn:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Especificaciones Técnicas (Opcionales & Dinámicas)
+   ========================================================= */
+.admin-form-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.admin-optional-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(135, 169, 107, 0.15);
+  color: var(--salvia-dark);
+  border: 1px solid rgba(135, 169, 107, 0.3);
+}
+
+.admin-custom-specs-list {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(160, 82, 45, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-custom-specs-heading {
+  font-size: var(--fs-xs);
+  color: var(--negro-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-custom-spec-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-form-label-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.admin-spec-remove-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--border-radius);
+  background-color: rgba(196, 122, 109, 0.12);
+  color: #a14337;
+  border: 1px solid rgba(196, 122, 109, 0.25);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.admin-spec-remove-btn:hover {
+  background-color: var(--rosa);
+  color: var(--blanco);
+  border-color: var(--rosa);
+}
+
+.admin-btn-add-spec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px dashed var(--siena);
+  color: var(--siena-dark);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-btn-add-spec:hover {
+  background-color: rgba(245, 230, 211, 0.45);
+  border-color: var(--siena-dark);
+}
+
+/* Acciones del formulario */
+.admin-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(160, 82, 45, 0.12);
+}
+
+.admin-btn-cancel {
+  text-decoration: none;
+}
+
+.admin-btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--blanco);
+  border-radius: 50%;
+  animation: admin-spin 0.8s linear infinite;
+}
+
+@keyframes admin-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Panel Lateral: Vista Previa en Vivo
+   ========================================================================== */
+.admin-preview-sticky {
+  position: sticky;
+  top: calc(var(--header-height) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.admin-preview-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--salvia-dark);
+  background-color: rgba(135, 169, 107, 0.15);
+  border: 1px solid rgba(135, 169, 107, 0.3);
+  padding: 6px 14px;
+  border-radius: var(--border-radius-full);
+}
+
+.admin-preview-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--salvia-dark);
+  box-shadow: 0 0 0 2px rgba(135, 169, 107, 0.4);
+}
+
+.admin-preview-card {
+  background-color: var(--blanco);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(160, 82, 45, 0.12);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.admin-preview-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-color: #f0e9df;
+  overflow: hidden;
+}
+
+.admin-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base);
+}
+
+.admin-preview-featured-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--border-radius-full);
+  background-color: rgba(212, 164, 55, 0.95);
+  color: var(--blanco);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.admin-preview-stock-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.admin-preview-body {
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.admin-preview-category {
+  align-self: flex-start;
+}
+
+.admin-preview-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  color: var(--negro);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.admin-preview-desc {
+  font-size: var(--fs-sm);
+  color: var(--gris);
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.admin-preview-specs {
+  background-color: var(--alabastro-light);
+  border: 1px solid rgba(160, 82, 45, 0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: var(--negro-suave);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.admin-preview-spec-item span {
+  font-weight: 700;
+  color: var(--siena);
+}
+
+.admin-preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: var(--space-md);
+  margin-top: var(--space-sm);
+  border-top: 1px solid rgba(92, 61, 42, 0.08);
+}
+
+.admin-preview-price-label {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.admin-preview-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--negro);
+}
+
+.admin-preview-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  line-height: 1.4;
+  padding: 0 4px;
+}
+
+.admin-preview-note svg {
+  color: var(--siena-light);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ==========================================================================
+   Responsive: Mobile y Tablet para ProductForm
+   ========================================================================== */
+@media (max-width: 992px) {
+  .admin-form-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .admin-preview-sticky {
+    position: static;
+  }
+
+  .admin-preview-column {
+    order: -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-form-card {
+    padding: var(--space-lg);
+  }
+
+  .admin-form-grid-2,
+  .admin-form-grid-3 {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .admin-custom-spec-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-actions {
+    flex-direction: column-reverse;
+    gap: var(--space-sm);
+  }
+
+  .admin-btn-cancel,
+  .admin-btn-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
 
