@@ -18,12 +18,31 @@ function CartPage() {
   );
   const formatPrice = (price) => `$ ${price.toLocaleString('es-AR')}`;
 
+  const hasOutOfStockItems = cart.some(
+    (item) => typeof item.stock === 'number' && item.stock === 0
+  );
+  const hasExceededStockItems = cart.some(
+    (item) =>
+      typeof item.stock === 'number' &&
+      item.stock > 0 &&
+      (item.quantity || 1) > item.stock
+  );
+  const hasStockIssue = hasOutOfStockItems || hasExceededStockItems;
+
   const subtitle =
     cart.length === 0
       ? 'Tu carrito está actualmente vacío'
       : 'Revisá tus productos antes de continuar';
 
   const handleCheckout = () => {
+    if (hasStockIssue) {
+      toastContext?.addToast?.(
+        'Hay productos sin stock o que superan la disponibilidad en tu carrito.',
+        'error'
+      );
+      return;
+    }
+
     if (toastContext?.addToast) {
       toastContext.addToast(
         '¡Gracias por tu interés! La funcionalidad de pago estará disponible próximamente.',
@@ -102,11 +121,21 @@ function CartPage() {
                   <span>Total</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
+                {hasStockIssue && (
+                  <div
+                    className="out-of-stock-alert"
+                    style={{ marginBottom: '1rem', fontSize: '0.8rem' }}
+                    role="alert"
+                  >
+                    <strong>Atención:</strong> Hay productos en tu carrito que ya no tienen stock disponible. Por favor eliminalos o ajustá sus cantidades para finalizar la compra.
+                  </div>
+                )}
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className={`btn btn-primary ${hasStockIssue ? 'btn-disabled' : ''}`}
                   id="btn-checkout"
                   onClick={handleCheckout}
+                  disabled={hasStockIssue}
                 >
                   Iniciar compra
                 </button>

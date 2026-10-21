@@ -37,14 +37,8 @@ const getCategoryLabel = (cat) => {
  * @param {Function} [props.onClearSelection] - Callback opcional para volver a la lista
  */
 function ProductDetail({ product, onClearSelection }) {
-  const { addToCart } = useCart();
+  const { cart, addToCart } = useCart();
   const { addToast } = useToast();
-
-  const handleAdd = () => {
-    if (!product) return;
-    addToCart(product);
-    addToast('¡Producto añadido al carrito con éxito!', 'success');
-  };
 
   if (!product) {
     return (
@@ -84,7 +78,34 @@ function ProductDetail({ product, onClearSelection }) {
     );
   }
 
-  const { name, category, description, price, image, specs } = product;
+  const { name, category, description, price, image, specs, stock } = product;
+
+  const itemInCart = cart.find((item) => item.id === product.id);
+  const inCartQty = itemInCart ? itemInCart.quantity || 1 : 0;
+  const hasStock = typeof stock === 'number';
+  const isOutOfStock = hasStock && stock === 0;
+  const remainingStock = hasStock ? Math.max(0, stock - inCartQty) : null;
+  const isMaxInCart = hasStock && !isOutOfStock && remainingStock === 0;
+  const isLowStock =
+    hasStock && !isOutOfStock && remainingStock > 0 && remainingStock <= 3;
+
+  const handleAdd = () => {
+    if (!product || isOutOfStock) return;
+    if (isMaxInCart) {
+      addToast(
+        `Ya agregaste todas las unidades disponibles de este mueble (${stock} ${stock === 1 ? 'unidad' : 'unidades'}).`,
+        'warning'
+      );
+      return;
+    }
+
+    const added = addToCart(product);
+    if (added !== false) {
+      addToast('¡Producto añadido al carrito con éxito!', 'success');
+    } else {
+      addToast('No hay más unidades disponibles de este mueble.', 'warning');
+    }
+  };
 
   return (
     <section
@@ -116,23 +137,77 @@ function ProductDetail({ product, onClearSelection }) {
           </div>
 
           <div className="product-info">
-            {category && (
-              <span className="product-card-category">
-                {getCategoryLabel(category)}
-              </span>
-            )}
+            <div className="product-card-meta">
+              {category && (
+                <span className="product-card-category">
+                  {getCategoryLabel(category)}
+                </span>
+              )}
+              {hasStock && (
+                <span
+                  className={`stock-badge stock-badge--lg ${
+                    isOutOfStock
+                      ? 'stock-badge--out'
+                      : isMaxInCart
+                      ? 'stock-badge--low'
+                      : isLowStock
+                      ? 'stock-badge--low'
+                      : 'stock-badge--in'
+                  }`}
+                  id="product-detail-stock-badge"
+                  data-testid="product-detail-stock"
+                >
+                  {isOutOfStock
+                    ? 'Sin stock'
+                    : isMaxInCart
+                    ? `Límite en carrito (${stock} de ${stock})`
+                    : inCartQty > 0
+                    ? `${remainingStock} disponibles (${inCartQty} en carrito)`
+                    : remainingStock <= 3
+                    ? `¡Últimas ${remainingStock} unidades!`
+                    : `${remainingStock} unidades disponibles`}
+                </span>
+              )}
+            </div>
+
             <h1>{name}</h1>
             <p className="product-description">{description}</p>
             <span className="product-price-tag">{formatPrice(price)}</span>
 
+            {isOutOfStock && (
+              <div
+                className="out-of-stock-alert"
+                role="alert"
+                id="out-of-stock-alert"
+              >
+                <strong>Aviso:</strong> Este mueble se encuentra temporalmente agotado. No es posible agregarlo al carrito en este momento.
+              </div>
+            )}
+
+            {isMaxInCart && (
+              <div
+                className="out-of-stock-alert out-of-stock-alert--warning"
+                role="alert"
+                id="max-stock-alert"
+              >
+                <strong>Stock máximo alcanzado:</strong> Ya tenés en tu carrito todas las unidades disponibles ({stock} de {stock}) de este mueble.
+              </div>
+            )}
+
             <div className="product-actions">
               <button
                 type="button"
-                className="btn btn-primary"
+                className={`btn btn-primary ${isOutOfStock || isMaxInCart ? 'btn-disabled' : ''}`}
                 id="btn-add-cart"
                 onClick={handleAdd}
+                disabled={isOutOfStock || isMaxInCart}
+                aria-disabled={isOutOfStock || isMaxInCart}
               >
-                Añadir al Carrito
+                {isOutOfStock
+                  ? 'Sin stock'
+                  : isMaxInCart
+                  ? 'Máximo en carrito'
+                  : 'Añadir al Carrito'}
               </button>
               {onClearSelection && (
                 <button

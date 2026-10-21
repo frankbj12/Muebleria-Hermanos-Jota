@@ -29,7 +29,7 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
   return (
     <article className="cart-item" id={`cart-item-${item.id}`}>
       <Link
-        to={`/producto?id=${item.id}`}
+        to={`/productos/${item.id}`}
         className="cart-item-image"
         aria-label={`Ver detalle de ${item.name}`}
       >
@@ -43,6 +43,29 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
       <div className="cart-item-info">
         <h3>{item.name}</h3>
         <span className="cart-item-price">{formatPrice(item.price)}</span>
+        {typeof item.stock === 'number' && item.stock === 0 && (
+          <span
+            className="stock-badge stock-badge--out"
+            style={{ marginTop: '0.4rem', display: 'inline-flex' }}
+          >
+            Agotado (sin stock)
+          </span>
+        )}
+        {typeof item.stock === 'number' &&
+          item.stock > 0 &&
+          quantity >= item.stock && (
+            <span
+              style={{
+                display: 'block',
+                fontSize: '0.75rem',
+                color: 'var(--gris)',
+                marginTop: '0.35rem',
+                fontWeight: 500,
+              }}
+            >
+              Máximo disponible alcanzado ({item.stock})
+            </span>
+          )}
       </div>
 
       <div className="cart-item-actions">
@@ -67,6 +90,15 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
             className="qty-btn"
             aria-label="Aumentar cantidad"
             onClick={handleIncrease}
+            disabled={
+              typeof item.stock === 'number' &&
+              (item.stock === 0 || quantity >= item.stock)
+            }
+            title={
+              typeof item.stock === 'number' && quantity >= item.stock
+                ? 'Stock máximo disponible alcanzado'
+                : undefined
+            }
           >
             +
           </button>
