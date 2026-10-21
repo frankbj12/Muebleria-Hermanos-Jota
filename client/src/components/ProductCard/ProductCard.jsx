@@ -22,15 +22,16 @@ function ProductCard({ product, index = 0 }) {
   const isOutOfStock = hasStock && product.stock === 0;
   const isLowStock = hasStock && product.stock > 0 && product.stock <= 3;
 
+  const productId = product.id ?? product._id;
   const delayClass = `fade-in visible fade-in-delay-${(index % 4) + 1}`;
   const outOfStockClass = isOutOfStock ? 'product-card--out-of-stock' : '';
 
   return (
     <article
       className={`product-card ${delayClass} ${outOfStockClass}`.trim()}
-      id={`product-card-${product.id}`}
+      id={`product-card-${productId}`}
     >
-      <Link to={`/productos/${product.id}`} className="product-card-image">
+      <Link to={`/productos/${productId}`} className="product-card-image">
         <img
           src={getProductImageUrl(product.image)}
           alt={product.name}
@@ -59,7 +60,7 @@ function ProductCard({ product, index = 0 }) {
                     ? 'stock-badge--low'
                     : 'stock-badge--in'
               }`}
-              data-testid={`stock-badge-${product.id}`}
+              data-testid={`stock-badge-${productId}`}
             >
               {isOutOfStock
                 ? 'Sin stock'
@@ -75,7 +76,7 @@ function ProductCard({ product, index = 0 }) {
           <span className="product-card-price">
             {formatPrice(product.price)}
           </span>
-          <Link to={`/productos/${product.id}`} className="product-card-link">
+          <Link to={`/productos/${productId}`} className="product-card-link">
             Ver detalle
             <svg
               viewBox="0 0 24 24"

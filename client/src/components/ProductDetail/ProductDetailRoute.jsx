@@ -22,7 +22,7 @@ function ProductDetailRoute() {
         const result = await productosApi.getById(id, {
           signal: controller.signal,
         });
-        setProduct(result);
+        setProduct(result ? { ...result, id: result.id ?? result._id } : null);
       } catch (requestError) {
         if (!controller.signal.aborted) {
           setError(requestError);
@@ -51,7 +51,7 @@ function ProductDetailRoute() {
   }
 
   if (error || !product) {
-    const notFound = error?.status === 404;
+    const notFound = error?.status === 404 || error?.status === 400;
 
     return (
       <section className="product-detail" aria-label="Detalle de producto">
@@ -63,8 +63,10 @@ function ProductDetailRoute() {
                 : 'No se pudo cargar el producto'}
             </h1>
             <p>
-              {error?.message ||
-                'El producto solicitado no existe en nuestro catálogo.'}
+              {notFound
+                ? 'El producto solicitado no existe en nuestro catálogo.'
+                : error?.message ||
+                  'El producto solicitado no existe en nuestro catálogo.'}
             </p>
             <Link to="/productos" className="btn btn-secondary">
               Volver al catálogo

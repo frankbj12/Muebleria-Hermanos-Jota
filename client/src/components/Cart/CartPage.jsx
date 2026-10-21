@@ -95,7 +95,7 @@ function CartPage() {
               <div className="cart-items">
                 {cart.map((item) => (
                   <CartItem
-                    key={item.id}
+                    key={item.id ?? item._id}
                     item={item}
                     onUpdateQuantity={updateQuantity}
                     onRemove={removeFromCart}
@@ -127,7 +127,9 @@ function CartPage() {
                     style={{ marginBottom: '1rem', fontSize: '0.8rem' }}
                     role="alert"
                   >
-                    <strong>Atención:</strong> Hay productos en tu carrito que ya no tienen stock disponible. Por favor eliminalos o ajustá sus cantidades para finalizar la compra.
+                    <strong>Atención:</strong> Hay productos en tu carrito que
+                    ya no tienen stock disponible. Por favor eliminalos o ajustá
+                    sus cantidades para finalizar la compra.
                   </div>
                 )}
                 <button

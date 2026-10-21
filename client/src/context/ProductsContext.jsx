@@ -22,9 +22,13 @@ export function ProductsProvider({ children }) {
       if (!Array.isArray(data)) {
         throw new Error('La API no devolvió una lista de productos.');
       }
-      setProducts(data);
+      const normalized = data.map((item) => ({
+        ...item,
+        id: item.id ?? item._id,
+      }));
+      setProducts(normalized);
       setError(null);
-      return data;
+      return normalized;
     } catch (requestError) {
       setError(requestError.message);
       throw requestError;

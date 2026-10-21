@@ -55,6 +55,24 @@ const productSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        if (ret._id) {
+          ret.id = ret._id.toString();
+        }
+        return ret;
+      },
+    },
+    toObject: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        if (ret._id) {
+          ret.id = ret._id.toString();
+        }
+        return ret;
+      },
+    },
   }
 );
 

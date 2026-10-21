@@ -123,7 +123,11 @@ function ProductList({ products = [], loading = false, error = null }) {
             {!loading &&
               !error &&
               filteredProducts.map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
+                <ProductCard
+                  key={product.id ?? product._id}
+                  product={product}
+                  index={index}
+                />
               ))}
           </div>
         </div>

@@ -251,7 +251,11 @@ function Home({ products = [], loading = false, error = null }) {
               !error &&
               featuredProducts.length > 0 &&
               featuredProducts.map((product, index) => (
-                <ProductCard key={product.id} product={product} index={index} />
+                <ProductCard
+                  key={product.id ?? product._id}
+                  product={product}
+                  index={index}
+                />
               ))}
 
             {!loading &&
@@ -263,7 +267,7 @@ function Home({ products = [], loading = false, error = null }) {
                 .slice(0, 3)
                 .map((product, index) => (
                   <ProductCard
-                    key={product.id}
+                    key={product.id ?? product._id}
                     product={product}
                     index={index}
                   />

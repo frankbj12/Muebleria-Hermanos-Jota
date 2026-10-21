@@ -11,7 +11,12 @@ export function CartProvider({ children }) {
       return false;
     }
 
-    const existingItem = cart.find((item) => item.id === product.id);
+    const productId = product.id ?? product._id;
+    if (!productId) return false;
+
+    const existingItem = cart.find(
+      (item) => (item.id ?? item._id) === productId
+    );
     if (
       existingItem &&
       typeof product.stock === 'number' &&
@@ -21,7 +26,9 @@ export function CartProvider({ children }) {
     }
 
     setCart((items) => {
-      const existing = items.find((item) => item.id === product.id);
+      const existing = items.find(
+        (item) => (item.id ?? item._id) === productId
+      );
 
       if (existing) {
         if (
@@ -32,26 +39,28 @@ export function CartProvider({ children }) {
         }
 
         return items.map((item) =>
-          item.id === product.id
+          (item.id ?? item._id) === productId
             ? { ...item, quantity: (item.quantity || 1) + 1 }
             : item
         );
       }
 
-      return [...items, { ...product, quantity: 1 }];
+      return [...items, { ...product, id: productId, quantity: 1 }];
     });
 
     return true;
   };
 
   const removeFromCart = (productId) => {
-    setCart((items) => items.filter((item) => item.id !== productId));
+    setCart((items) =>
+      items.filter((item) => (item.id ?? item._id) !== productId)
+    );
   };
 
   const updateQuantity = (productId, delta) => {
     setCart((items) => {
       const updated = items.map((item) => {
-        if (item.id !== productId) return item;
+        if ((item.id ?? item._id) !== productId) return item;
 
         const currentQty = item.quantity || 1;
         const newQty = currentQty + delta;

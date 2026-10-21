@@ -12,25 +12,26 @@ import { getProductImageUrl } from '../../utils/imageUrl';
  * @param {Function} props.onRemove - Función callback para remover el item: (id) => void
  */
 function CartItem({ item, onUpdateQuantity, onRemove }) {
+  const itemId = item.id ?? item._id;
   const formatPrice = (price) => `$ ${price.toLocaleString('es-AR')}`;
   const quantity = item.quantity || 1;
 
   const handleDecrease = () => {
-    onUpdateQuantity(item.id, -1);
+    onUpdateQuantity(itemId, -1);
   };
 
   const handleIncrease = () => {
-    onUpdateQuantity(item.id, 1);
+    onUpdateQuantity(itemId, 1);
   };
 
   const handleRemove = () => {
-    onRemove(item.id);
+    onRemove(itemId);
   };
 
   return (
-    <article className="cart-item" id={`cart-item-${item.id}`}>
+    <article className="cart-item" id={`cart-item-${itemId}`}>
       <Link
-        to={`/productos/${item.id}`}
+        to={`/productos/${itemId}`}
         className="cart-item-image"
         aria-label={`Ver detalle de ${item.name}`}
       >

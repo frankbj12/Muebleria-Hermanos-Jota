@@ -81,7 +81,8 @@ function ProductDetail({ product, onClearSelection }) {
 
   const { name, category, description, price, image, specs, stock } = product;
 
-  const itemInCart = cart.find((item) => item.id === product.id);
+  const productId = product.id ?? product._id;
+  const itemInCart = cart.find((item) => (item.id ?? item._id) === productId);
   const inCartQty = itemInCart ? itemInCart.quantity || 1 : 0;
   const hasStock = typeof stock === 'number';
   const isOutOfStock = hasStock && stock === 0;
