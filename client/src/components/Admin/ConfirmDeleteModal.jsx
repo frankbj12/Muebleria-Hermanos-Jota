@@ -118,49 +118,81 @@ export function ConfirmDeleteModal({
             disabled={isDeleting}
             aria-label="Cerrar ventana"
           >
-            ✕
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
           </button>
         </div>
 
         {/* Cuerpo */}
         <form onSubmit={handleSubmit} className="admin-modal-body">
-          <div className="admin-modal-warning-box">
-            <p>
-              Estás a punto de eliminar permanentemente {itemType === 'imagen' ? 'la imagen' : 'el producto'}:
-            </p>
-            <p className="admin-modal-item-highlight">
-              {itemName || `este ${itemType}`}
-            </p>
+          <div className="admin-modal-item-card">
+            <span className="admin-modal-item-badge">
+              {itemType === 'imagen' ? 'Imagen en la nube' : 'Mueble del catálogo'}
+            </span>
+            <div className="admin-modal-item-title">
+              {itemName || `Este ${itemType}`}
+            </div>
             {warningMessage && (
-              <p className="admin-modal-warning-extra">{warningMessage}</p>
+              <p className="admin-modal-item-desc">{warningMessage}</p>
             )}
           </div>
 
           <div className="admin-modal-field">
             <label htmlFor="confirm-input" className="admin-modal-label">
               Para confirmar, escribí{' '}
-              <strong className="admin-modal-keyword">"{confirmKeyword}"</strong>{' '}
+              <strong className="admin-modal-keyword">{confirmKeyword}</strong>{' '}
               a continuación:
             </label>
-            <input
-              id="confirm-input"
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder={`Escribí "${confirmKeyword}"`}
-              className="admin-modal-input"
-              disabled={isDeleting}
-              autoComplete="off"
-              spellCheck="false"
-            />
+            <div className="admin-modal-input-wrapper">
+              <input
+                id="confirm-input"
+                ref={inputRef}
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder={`Escribí "${confirmKeyword}"`}
+                className={`admin-modal-input ${isMatch ? 'admin-modal-input--matched' : ''}`}
+                disabled={isDeleting}
+                autoComplete="off"
+                spellCheck="false"
+              />
+              {isMatch && (
+                <span className="admin-modal-input-check" title="Palabra correcta">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Acciones */}
           <div className="admin-modal-actions">
             <button
               type="button"
-              className="btn btn-secondary admin-modal-btn-cancel"
+              className="admin-modal-btn-cancel"
               onClick={onClose}
               disabled={isDeleting}
             >
@@ -168,7 +200,7 @@ export function ConfirmDeleteModal({
             </button>
             <button
               type="submit"
-              className="btn admin-modal-btn-delete"
+              className={`admin-modal-btn-delete ${isMatch && !isDeleting ? 'admin-modal-btn-delete--ready' : ''}`}
               disabled={!isMatch || isDeleting}
             >
               {isDeleting ? (
@@ -192,7 +224,7 @@ export function ConfirmDeleteModal({
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                   </svg>
-                  <span>Entiendo las consecuencias, eliminar</span>
+                  <span>{itemType === 'imagen' ? 'Eliminar imagen' : 'Eliminar producto'}</span>
                 </>
               )}
             </button>
