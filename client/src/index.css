@@ -2930,16 +2930,20 @@ h4 {
 /* Botones de acción */
 .admin-actions-cell {
   display: flex;
+  flex-direction: column;
   gap: 6px;
-  justify-content: flex-end;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .admin-action-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 6px 12px;
+  padding: 5px 12px;
+  width: 90px;
+  box-sizing: border-box;
   font-size: var(--fs-xs);
   font-weight: 600;
   border-radius: 8px;

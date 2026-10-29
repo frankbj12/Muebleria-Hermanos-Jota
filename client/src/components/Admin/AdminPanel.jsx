@@ -82,7 +82,8 @@ function AdminPanel() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('todos');
   const [stockFilters, setStockFilters] = useState([]); // Array con 'normal', 'bajo', 'agotado'. Vacío [] = todos
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+  // Configuración de ordenamiento de columnas (por defecto alfabético por nombre)
+  const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
 
   // Manejador de selección múltiple de stock
   // "Total" es exclusivo: al pulsarlo limpia las demás.
@@ -256,7 +257,7 @@ function AdminPanel() {
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
-              <span>+ Nuevo Producto</span>
+              <span>Nuevo Producto</span>
             </Link>
           </div>
         </header>
@@ -270,9 +271,8 @@ function AdminPanel() {
           {/* Total Productos */}
           <button
             type="button"
-            className={`admin-metric-card admin-metric-card--total ${
-              isAllStock ? 'admin-metric-card--active' : ''
-            }`}
+            className={`admin-metric-card admin-metric-card--total ${isAllStock ? 'admin-metric-card--active' : ''
+              }`}
             onClick={() => toggleStockFilter('todos')}
             aria-pressed={isAllStock}
             title="Ver catálogo completo"
@@ -309,9 +309,8 @@ function AdminPanel() {
           {/* En Stock Normal */}
           <button
             type="button"
-            className={`admin-metric-card admin-metric-card--success ${
-              stockFilters.includes('normal') ? 'admin-metric-card--active' : ''
-            }`}
+            className={`admin-metric-card admin-metric-card--success ${stockFilters.includes('normal') ? 'admin-metric-card--active' : ''
+              }`}
             onClick={() => toggleStockFilter('normal')}
             aria-pressed={stockFilters.includes('normal')}
             title="Filtrar por productos en stock normal (> 3)"
@@ -346,9 +345,8 @@ function AdminPanel() {
           {/* Stock Bajo */}
           <button
             type="button"
-            className={`admin-metric-card admin-metric-card--warning ${
-              stockFilters.includes('bajo') ? 'admin-metric-card--active' : ''
-            }`}
+            className={`admin-metric-card admin-metric-card--warning ${stockFilters.includes('bajo') ? 'admin-metric-card--active' : ''
+              }`}
             onClick={() => toggleStockFilter('bajo')}
             aria-pressed={stockFilters.includes('bajo')}
             title="Filtrar por productos con stock bajo (1 a 3)"
@@ -384,11 +382,10 @@ function AdminPanel() {
           {/* Sin Stock */}
           <button
             type="button"
-            className={`admin-metric-card admin-metric-card--danger ${
-              stockFilters.includes('agotado')
+            className={`admin-metric-card admin-metric-card--danger ${stockFilters.includes('agotado')
                 ? 'admin-metric-card--active'
                 : ''
-            }`}
+              }`}
             onClick={() => toggleStockFilter('agotado')}
             aria-pressed={stockFilters.includes('agotado')}
             title="Filtrar por productos sin stock (0)"
@@ -564,34 +561,34 @@ function AdminPanel() {
                 {(searchTerm ||
                   categoryFilter !== 'todos' ||
                   stockFilters.length > 0) && (
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => {
-                      setSearchTerm('');
-                      setCategoryFilter('todos');
-                      setStockFilters([]);
-                    }}
-                  >
-                    Restablecer todos los filtros
-                  </button>
-                )}
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        setSearchTerm('');
+                        setCategoryFilter('todos');
+                        setStockFilters([]);
+                      }}
+                    >
+                      Restablecer todos los filtros
+                    </button>
+                  )}
               </div>
             ) : (
               <table className="admin-table" id="admin-products-table">
                 <thead>
                   <tr>
-                    {/* Columna ID Ordenable */}
-                    <th scope="col" style={{ width: '80px' }}>
+                    {/* Columna Nombre Ordenable */}
+                    <th scope="col">
                       <button
                         type="button"
                         className="admin-th-sort-btn"
-                        onClick={() => handleSort('id')}
-                        aria-label="Ordenar por ID"
+                        onClick={() => handleSort('name')}
+                        aria-label="Ordenar por Nombre"
                       >
-                        <span>ID</span>
+                        <span>Nombre</span>
                         <SortIcon
-                          columnKey="id"
+                          columnKey="name"
                           currentKey={sortConfig.key}
                           direction={sortConfig.direction}
                         />
@@ -603,21 +600,9 @@ function AdminPanel() {
                       Mueble
                     </th>
 
-                    {/* Columna Nombre Ordenable */}
-                    <th scope="col">
-                      <button
-                        type="button"
-                        className="admin-th-sort-btn"
-                        onClick={() => handleSort('name')}
-                        aria-label="Ordenar por Nombre"
-                      >
-                        <span>Nombre &amp; Detalle</span>
-                        <SortIcon
-                          columnKey="name"
-                          currentKey={sortConfig.key}
-                          direction={sortConfig.direction}
-                        />
-                      </button>
+                    {/* Columna Detalle */}
+                    <th scope="col" style={{ maxWidth: '240px' }}>
+                      Detalle
                     </th>
 
                     {/* Columna Categoría */}
@@ -673,12 +658,24 @@ function AdminPanel() {
 
                     return (
                       <tr key={id} id={`admin-row-${id}`}>
-                        {/* ID numérico o ref */}
-                        <td className="admin-id-cell">
-                          <span className="admin-id-badge">#{id}</span>
+                        {/* 1. Nombre */}
+                        <td>
+                          <div className="admin-product-name-row">
+                            <strong className="admin-product-name">
+                              {product.name}
+                            </strong>
+                            {product.featured && (
+                              <span
+                                className="admin-featured-pill"
+                                title="Pieza destacada en página principal"
+                              >
+                                ★ Destacado
+                              </span>
+                            )}
+                          </div>
                         </td>
 
-                        {/* Foto */}
+                        {/* 2. Mueble (Imagen) */}
                         <td>
                           <div className="admin-thumb-wrapper">
                             <img
@@ -694,30 +691,17 @@ function AdminPanel() {
                           </div>
                         </td>
 
-                        {/* Nombre & Detalle */}
-                        <td>
-                          <div className="admin-product-meta">
-                            <div className="admin-product-name-row">
-                              <strong className="admin-product-name">
-                                {product.name}
-                              </strong>
-                              {product.featured && (
-                                <span
-                                  className="admin-featured-pill"
-                                  title="Pieza destacada en página principal"
-                                >
-                                  ★ Destacado
-                                </span>
-                              )}
-                            </div>
-                            {product.description && (
-                              <p className="admin-product-desc-snippet">
-                                {product.description.length > 70
-                                  ? product.description.slice(0, 70) + '...'
-                                  : product.description}
-                              </p>
-                            )}
-                          </div>
+                        {/* 3. Detalle (después de mueble) */}
+                        <td style={{ maxWidth: '240px' }}>
+                          {product.description ? (
+                            <p className="admin-product-desc-snippet">
+                              {product.description.length > 80
+                                ? product.description.slice(0, 80) + '...'
+                                : product.description}
+                            </p>
+                          ) : (
+                            <span style={{ color: 'var(--color-admin-text-muted, #8c827a)' }}>—</span>
+                          )}
                         </td>
 
                         {/* Categoría */}
@@ -738,13 +722,12 @@ function AdminPanel() {
                         <td>
                           {hasStock ? (
                             <span
-                              className={`stock-badge ${
-                                isOutOfStock
+                              className={`stock-badge ${isOutOfStock
                                   ? 'stock-badge--out'
                                   : isLowStock
                                     ? 'stock-badge--low'
                                     : 'stock-badge--in'
-                              }`}
+                                }`}
                             >
                               <span
                                 className="stock-indicator-dot"

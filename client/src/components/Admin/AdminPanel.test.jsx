@@ -155,22 +155,26 @@ describe('AdminPanel Component', () => {
       </MemoryRouter>
     );
 
-    // Ordenar por Nombre
-    const sortNameBtn = screen.getByRole('button', { name: /Ordenar por Nombre/i });
-    fireEvent.click(sortNameBtn); // Ascendente (A -> Z): Mesa Nogal, Silla Viena, Sillón Bauhaus
-
+    // Por defecto ya está ordenado por Nombre Ascendente (A -> Z): Mesa Nogal, Silla Viena, Sillón Bauhaus
     let rows = screen.getAllByRole('row');
-    // rows[0] es la cabecera thead
     expect(rows[1]).toHaveTextContent('Mesa Nogal');
     expect(rows[2]).toHaveTextContent('Silla Viena');
     expect(rows[3]).toHaveTextContent('Sillón Bauhaus');
 
-    // Clic nuevamente: Descendente (Z -> A): Sillón Bauhaus, Silla Viena, Mesa Nogal
+    // Clic en Nombre: cambia a Descendente (Z -> A): Sillón Bauhaus, Silla Viena, Mesa Nogal
+    const sortNameBtn = screen.getByRole('button', { name: /Ordenar por Nombre/i });
     fireEvent.click(sortNameBtn);
     rows = screen.getAllByRole('row');
     expect(rows[1]).toHaveTextContent('Sillón Bauhaus');
     expect(rows[2]).toHaveTextContent('Silla Viena');
     expect(rows[3]).toHaveTextContent('Mesa Nogal');
+
+    // Clic nuevamente: vuelve a Ascendente (A -> Z)
+    fireEvent.click(sortNameBtn);
+    rows = screen.getAllByRole('row');
+    expect(rows[1]).toHaveTextContent('Mesa Nogal');
+    expect(rows[2]).toHaveTextContent('Silla Viena');
+    expect(rows[3]).toHaveTextContent('Sillón Bauhaus');
 
     // Ordenar por Precio
     const sortPriceBtn = screen.getByRole('button', { name: /Ordenar por Precio/i });
@@ -188,7 +192,7 @@ describe('AdminPanel Component', () => {
       </MemoryRouter>
     );
 
-    const createBtn = screen.getByRole('link', { name: /\+ Nuevo Producto/i });
+    const createBtn = screen.getByRole('link', { name: /Nuevo Producto/i });
     expect(createBtn).toHaveAttribute('href', '/admin/crear-producto');
   });
 });
