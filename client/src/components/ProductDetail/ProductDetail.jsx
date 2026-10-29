@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductImageUrl } from '../../utils/imageUrl';
+import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
 
 /**
  * Formatea un número como moneda en pesos argentinos (ARS).
@@ -138,7 +138,7 @@ function ProductDetail({ product, onClearSelection }) {
               referrerPolicy="no-referrer"
               onError={(e) => {
                 e.currentTarget.onerror = null;
-                e.currentTarget.src = '/assets/placeholder-furniture.png';
+                e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
               }}
             />
           </div>

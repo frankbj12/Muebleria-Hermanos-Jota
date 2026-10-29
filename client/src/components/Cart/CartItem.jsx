@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getProductImageUrl } from '../../utils/imageUrl';
+import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
 
 /**
  * Componente CartItem
@@ -42,7 +42,7 @@ function CartItem({ item, onUpdateQuantity, onRemove }) {
           referrerPolicy="no-referrer"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = '/assets/placeholder-furniture.png';
+            e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
           }}
         />
       </Link>

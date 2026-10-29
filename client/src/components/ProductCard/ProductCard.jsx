@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getProductImageUrl } from '../../utils/imageUrl';
+import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
 
 function ProductCard({ product, index = 0 }) {
   const formatPrice = (price) => {
@@ -39,7 +39,7 @@ function ProductCard({ product, index = 0 }) {
           referrerPolicy="no-referrer"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = '/assets/placeholder-furniture.png';
+            e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
           }}
         />
         {isOutOfStock && (
