@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductImageUrl } from '../../utils/imageUrl';
+import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const formatPrice = (price) => {
   if (typeof price !== 'number') return '$ 0';
@@ -196,18 +197,26 @@ function AdminPanel() {
     return direction === 'asc' ? comparison : -comparison;
   });
 
-  const handleDelete = async (product) => {
-    const confirmed = window.confirm(
-      `¿Estás seguro de que deseás eliminar "${product.name}" del catálogo? Esta acción no se puede deshacer.`
-    );
-    if (!confirmed) return;
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
+  const handleDelete = (product) => {
+    setProductToDelete(product);
+  };
+
+  const handleConfirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+
+    setIsDeleting(true);
     try {
-      const id = product.id ?? product._id;
+      const id = productToDelete.id ?? productToDelete._id;
       await removeProduct(id);
-      addToast(`"${product.name}" fue eliminado del catálogo.`, 'info');
+      addToast(`"${productToDelete.name}" fue eliminado del catálogo.`, 'info');
+      setProductToDelete(null);
     } catch (err) {
       addToast(err.message || 'No se pudo eliminar el producto.', 'error');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -679,8 +688,7 @@ function AdminPanel() {
                               referrerPolicy="no-referrer"
                               onError={(e) => {
                                 e.currentTarget.onerror = null;
-                                e.currentTarget.src =
-                                  '/assets/placeholder-furniture.png';
+                                e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
                               }}
                             />
                           </div>
@@ -815,6 +823,19 @@ function AdminPanel() {
           </div>
         )}
       </div>
+
+      {/* Modal interactivo de confirmación destructiva estilo GitHub */}
+      <ConfirmDeleteModal
+        isOpen={Boolean(productToDelete)}
+        onClose={() => !isDeleting && setProductToDelete(null)}
+        onConfirm={handleConfirmDeleteProduct}
+        title="¿Eliminar producto del catálogo?"
+        itemName={productToDelete?.name}
+        itemType="producto"
+        confirmKeyword="confirmar"
+        isDeleting={isDeleting}
+        warningMessage="Este mueble se quitará de la tienda, del inventario de stock y no podrá ser adquirido por los clientes."
+      />
     </section>
   );
 }
