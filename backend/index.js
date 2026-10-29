@@ -2,6 +2,7 @@ import 'dotenv/config'; // Primera línea para garantizar carga de variables
 import express from 'express';
 import { connectDB } from './config/db.js';
 import productosRouter from './routes/productos.js';
+import uploadRouter from './routes/upload.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 
@@ -53,6 +54,9 @@ app.use((req, res, next) => {
 app.use('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
+
+// Rutas de subida de imágenes a la nube (Vercel Blob)
+app.use('/api/upload', uploadRouter);
 
 // Rutas de productos: soporte para /api/productos y /productos según consignas y rúbrica
 app.use('/api/productos', productosRouter);
