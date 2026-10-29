@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductImageUrl } from '../../utils/imageUrl';
+import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 
 const CATEGORIES = [
   { value: 'living', label: 'Living & Sala' },
@@ -93,6 +94,13 @@ function ProductForm() {
   // Modo de selector de imagen: 'gallery' | 'upload' | 'url'
   const [imageSourceTab, setImageSourceTab] = useState('gallery');
   const [localFileName, setLocalFileName] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Imágenes alojadas en Vercel Blob
+  const [blobImages, setBlobImages] = useState([]);
+  const [loadingBlobs, setLoadingBlobs] = useState(false);
+  const [blobToDelete, setBlobToDelete] = useState(null);
+  const [isDeletingBlob, setIsDeletingBlob] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -118,6 +126,28 @@ function ProductForm() {
   const [submitting, setSubmitting] = useState(false);
   const [productLoaded, setProductLoaded] = useState(!isEdit);
   const [notFound, setNotFound] = useState(false);
+
+  // Cargar lista de imágenes de Vercel Blob
+  const fetchBlobImages = async () => {
+    setLoadingBlobs(true);
+    try {
+      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
+      const res = await fetch(`${cleanApiUrl}/api/upload`);
+      if (res.ok) {
+        const data = await res.json();
+        setBlobImages(data.blobs || []);
+      }
+    } catch (err) {
+      console.error('Error al cargar imágenes de Vercel Blob:', err);
+    } finally {
+      setLoadingBlobs(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlobImages();
+  }, []);
 
   // Cargar datos del producto si estamos en modo edición
   useEffect(() => {
@@ -233,8 +263,8 @@ function ProductForm() {
     }
   };
 
-  // Manejo de subida de imagen local (desde la computadora)
-  const handleFileUpload = (e) => {
+  // Manejo de subida de imagen local (hacia Vercel Blob)
+  const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -246,12 +276,41 @@ function ProductForm() {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target.result;
-      setFormData((prev) => ({ ...prev, image: dataUrl }));
-      setLocalFileName(file.name);
-      addToast(`"${file.name}" cargada desde tus archivos.`, 'info');
+    // Vista previa inmediata con URL local de objeto
+    const localPreview = URL.createObjectURL(file);
+    setFormData((prev) => ({ ...prev, image: localPreview }));
+    setLocalFileName(file.name);
+    setUploadingImage(true);
+    addToast(`Subiendo "${file.name}" a la nube...`, 'info');
+
+    try {
+      const uploadData = new FormData();
+      uploadData.append('image', file);
+
+      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
+
+      const response = await fetch(`${cleanApiUrl}/api/upload`, {
+        method: 'POST',
+        body: uploadData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || 'Error al procesar la subida de la imagen.'
+        );
+      }
+
+      const data = await response.json();
+
+      // Guardamos la URL pública definitiva de Vercel Blob
+      setFormData((prev) => ({ ...prev, image: data.url }));
+      addToast(`"${file.name}" subida exitosamente a la nube.`, 'success');
+
+      // Actualizar la lista de imágenes de Vercel Blob
+      fetchBlobImages();
+
       if (errors.image) {
         setErrors((prev) => {
           const next = { ...prev };
@@ -259,8 +318,19 @@ function ProductForm() {
           return next;
         });
       }
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      addToast(
+        err.message || 'No se pudo subir la imagen al servidor.',
+        'error'
+      );
+      setFormData((prev) => ({ ...prev, image: '' }));
+      setLocalFileName('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleClearImage = () => {
@@ -268,6 +338,48 @@ function ProductForm() {
     setLocalFileName('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
+    }
+  };
+
+  // Helper para obtener nombre limpio de archivo Blob
+  const getBlobName = (blob) => {
+    if (!blob || !blob.pathname) return 'imagen';
+    return blob.pathname.replace(/^products\//, '').replace(/^\d+-/, '');
+  };
+
+  // Confirmar eliminación de una imagen de Vercel Blob
+  const handleConfirmDeleteBlob = async () => {
+    if (!blobToDelete) return;
+    setIsDeletingBlob(true);
+    try {
+      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
+      const response = await fetch(`${cleanApiUrl}/api/upload`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: blobToDelete.url }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || 'Error al eliminar la imagen de Vercel Blob.'
+        );
+      }
+
+      setBlobImages((prev) => prev.filter((b) => b.url !== blobToDelete.url));
+
+      if (formData.image === blobToDelete.url) {
+        setFormData((prev) => ({ ...prev, image: '' }));
+        setLocalFileName('');
+      }
+
+      addToast('Imagen eliminada permanentemente de Vercel Blob.', 'info');
+      setBlobToDelete(null);
+    } catch (err) {
+      addToast(err.message || 'No se pudo eliminar la imagen.', 'error');
+    } finally {
+      setIsDeletingBlob(false);
     }
   };
 
@@ -353,7 +465,7 @@ function ProductForm() {
       category: formData.category,
       price: priceNum,
       stock: stockNum,
-      image: formData.image.trim() || 'assets/placeholder-furniture.png',
+      image: formData.image.trim() || 'assets/products/Imagen Mantenimiento.png',
       description: formData.description.trim(),
       featured: Boolean(formData.featured),
       specs: Object.keys(finalSpecs).length > 0 ? finalSpecs : undefined,
@@ -766,13 +878,101 @@ function ProductForm() {
                       className="admin-form-hint"
                       style={{ marginBottom: '12px' }}
                     >
-                      Elegí una fotografía existente de la colección artesanal
-                      de Hermanos Jota con ayuda visual:
+                      Elegí una fotografía existente de la colección artesanal o de tus imágenes subidas a la nube:
                     </p>
+
+                    {/* Subsección: Imágenes en Vercel Blob */}
+                    <div className="admin-gallery-section-title">
+                      <span>☁️ Imágenes en la Nube (Vercel Blob)</span>
+                      {blobImages.length > 0 && <span>({blobImages.length})</span>}
+                    </div>
+
                     <div
                       className="admin-gallery-grid"
                       role="group"
-                      aria-label="Galería visual de muebles"
+                      aria-label="Imágenes subidas a la nube"
+                      style={{ marginBottom: '16px' }}
+                    >
+                      {loadingBlobs ? (
+                        <div className="admin-gallery-empty-hint">
+                          <span className="admin-spinner" style={{ marginRight: '8px' }} />
+                          Cargando imágenes de Vercel Blob...
+                        </div>
+                      ) : blobImages.length === 0 ? (
+                        <div className="admin-gallery-empty-hint">
+                          No hay imágenes subidas a la nube todavía. Podés subir una desde la pestaña <strong>"Subir desde mi Computadora"</strong>.
+                        </div>
+                      ) : (
+                        blobImages.map((blob) => {
+                          const isSelected = formData.image === blob.url;
+                          const displayName = getBlobName(blob);
+                          return (
+                            <div
+                              key={blob.url}
+                              className={`admin-gallery-card ${isSelected ? 'admin-gallery-card--selected' : ''}`}
+                              onClick={() => handleSelectGalleryImage(blob.url)}
+                              title={`Seleccionar ${displayName}`}
+                              role="button"
+                              tabIndex={0}
+                              onKeyDown={(e) =>
+                                e.key === 'Enter' && handleSelectGalleryImage(blob.url)
+                              }
+                            >
+                              <div className="admin-gallery-thumb-box">
+                                <img
+                                  src={blob.url}
+                                  alt={displayName}
+                                  className="admin-gallery-img"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = FALLBACK_PRODUCT_IMAGE;
+                                  }}
+                                />
+
+                                {/* Botón X circular para eliminar la imagen */}
+                                <button
+                                  type="button"
+                                  className="admin-gallery-delete-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setBlobToDelete(blob);
+                                  }}
+                                  title="Eliminar de Vercel Blob"
+                                  aria-label={`Eliminar imagen ${displayName}`}
+                                >
+                                  ✕
+                                </button>
+
+                                <span className="admin-gallery-blob-badge">Nube</span>
+
+                                {isSelected && (
+                                  <div
+                                    className="admin-gallery-selected-badge"
+                                    style={{ top: 'auto', bottom: '4px', right: '4px' }}
+                                    aria-label="Seleccionado"
+                                  >
+                                    ✓
+                                  </div>
+                                )}
+                              </div>
+                              <span className="admin-gallery-title" title={displayName}>
+                                {displayName}
+                              </span>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+
+                    {/* Subsección: Colección Base Local */}
+                    <div className="admin-gallery-section-title">
+                      <span>🏛️ Colección Base Hermanos Jota ({CATALOG_GALLERY.length})</span>
+                    </div>
+
+                    <div
+                      className="admin-gallery-grid"
+                      role="group"
+                      aria-label="Galería base de muebles"
                     >
                       {CATALOG_GALLERY.map((item) => {
                         const isSelected = formData.image === item.path;
@@ -791,8 +991,7 @@ function ProductForm() {
                                 className="admin-gallery-img"
                                 onError={(e) => {
                                   e.target.onerror = null;
-                                  e.target.src =
-                                    '/assets/placeholder-furniture.png';
+                                  e.target.src = FALLBACK_PRODUCT_IMAGE;
                                 }}
                               />
                               {isSelected && (
@@ -862,15 +1061,29 @@ function ProductForm() {
                       <span>o arrastrá un archivo PNG, JPG o WEBP</span>
                     </div>
 
+                    {uploadingImage && (
+                      <p
+                        className="admin-form-hint"
+                        style={{
+                          color: 'var(--color-primary, #b3541e)',
+                          marginTop: '8px',
+                          fontWeight: 500,
+                        }}
+                      >
+                        ⏳ Subiendo imagen a la nube, aguardá un momento...
+                      </p>
+                    )}
+
                     {localFileName && (
                       <div className="admin-upload-status">
                         <span className="admin-upload-file-tag">
-                          📎 {localFileName}
+                          📎 {localFileName} {uploadingImage ? '(subiendo...)' : '✓'}
                         </span>
                         <button
                           type="button"
                           className="admin-upload-clear-btn"
                           onClick={handleClearImage}
+                          disabled={uploadingImage}
                         >
                           Quitar archivo
                         </button>
@@ -932,8 +1145,7 @@ function ProductForm() {
                             referrerPolicy="no-referrer"
                             onError={(e) => {
                               e.currentTarget.onerror = null;
-                              e.currentTarget.src =
-                                '/assets/placeholder-furniture.png';
+                              e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
                             }}
                           />
                           <div style={{ flex: 1, minWidth: 0 }}>
@@ -1153,13 +1365,18 @@ function ProductForm() {
                 <button
                   type="submit"
                   className="btn btn-primary admin-btn-submit"
-                  disabled={submitting}
+                  disabled={submitting || uploadingImage}
                   id="btn-submit-product"
                 >
                   {submitting ? (
                     <>
                       <span className="admin-spinner" aria-hidden="true" />
                       <span>Guardando mueble...</span>
+                    </>
+                  ) : uploadingImage ? (
+                    <>
+                      <span className="admin-spinner" aria-hidden="true" />
+                      <span>Subiendo imagen...</span>
                     </>
                   ) : (
                     <>
@@ -1210,7 +1427,7 @@ function ProductForm() {
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/assets/placeholder-furniture.png';
+                      e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
                     }}
                   />
                   {formData.featured && (
@@ -1329,6 +1546,19 @@ function ProductForm() {
           </aside>
         </div>
       </div>
+
+      {/* Modal interactivo de confirmación destructiva para eliminar imagen de Vercel Blob */}
+      <ConfirmDeleteModal
+        isOpen={Boolean(blobToDelete)}
+        onClose={() => !isDeletingBlob && setBlobToDelete(null)}
+        onConfirm={handleConfirmDeleteBlob}
+        title="¿Eliminar imagen de Vercel Blob?"
+        itemName={blobToDelete ? getBlobName(blobToDelete) : ''}
+        itemType="imagen"
+        confirmKeyword="confirmar"
+        isDeleting={isDeletingBlob}
+        warningMessage="Esta imagen se borrará de forma permanente de los servidores en la nube de Vercel. Si algún producto del catálogo la está usando, dejará de mostrarse."
+      />
     </section>
   );
 }
