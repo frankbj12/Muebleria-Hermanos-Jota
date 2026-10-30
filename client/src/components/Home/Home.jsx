@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import ProductCard from '../ProductCard/ProductCard';
+import FeaturedCarousel from './FeaturedCarousel';
 
 /**
  * Componente Home
@@ -219,60 +219,15 @@ function Home({ products = [], loading = false, error = null }) {
             Diseñadas para quedarse
           </p>
 
-          <div className="products-grid" id="products-grid">
-            {loading && (
-              <div
-                style={{
-                  textAlign: 'center',
-                  gridColumn: '1 / -1',
-                  padding: '3rem 1rem',
-                }}
-              >
-                <p className="products-loading">
-                  Cargando piezas destacadas...
-                </p>
-              </div>
-            )}
-
-            {error && (
-              <div
-                style={{
-                  textAlign: 'center',
-                  gridColumn: '1 / -1',
-                  padding: '2rem 1rem',
-                  color: '#7a3d1f',
-                }}
-              >
-                <p>No se pudieron cargar los productos en este momento.</p>
-              </div>
-            )}
-
-            {!loading &&
-              !error &&
-              featuredProducts.length > 0 &&
-              featuredProducts.map((product, index) => (
-                <ProductCard
-                  key={product.id ?? product._id}
-                  product={product}
-                  index={index}
-                />
-              ))}
-
-            {!loading &&
-              !error &&
-              featuredProducts.length === 0 &&
-              products.length > 0 &&
-              // Fallback si ningún producto tiene featured: true (muestra los primeros 3)
-              products
-                .slice(0, 3)
-                .map((product, index) => (
-                  <ProductCard
-                    key={product.id ?? product._id}
-                    product={product}
-                    index={index}
-                  />
-                ))}
-          </div>
+          <FeaturedCarousel
+            products={
+              featuredProducts.length > 0
+                ? featuredProducts
+                : products.slice(0, 4)
+            }
+            loading={loading}
+            error={error}
+          />
 
           <div className="section-cta fade-in visible">
             <Link to="/productos" className="btn btn-secondary">

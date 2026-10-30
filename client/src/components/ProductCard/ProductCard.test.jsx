@@ -1,6 +1,19 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+
+jest.mock('react-router-dom', () => {
+  const router = require('react-router');
+  return {
+    ...router,
+    Link: ({ to, children, ...props }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
+  };
+});
+
+import { MemoryRouter } from 'react-router';
 import ProductCard from './ProductCard';
 
 describe('ProductCard - Visualización de Stock', () => {

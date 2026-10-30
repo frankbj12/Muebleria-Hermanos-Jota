@@ -742,6 +742,183 @@ h4 {
 .featured-products {
   padding: var(--space-section) 0;
   background-color: var(--alabastro);
+  position: relative;
+}
+
+/* =============================================
+   CARRUSEL INFINITO DE PIEZAS DESTACADAS
+   ============================================= */
+.featured-carousel-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--space-3xl);
+  overflow: visible;
+}
+
+.featured-carousel-viewport {
+  overflow: hidden;
+  width: 100%;
+  padding: 14px 0 22px 0;
+  position: relative;
+}
+
+.featured-carousel-track {
+  display: flex;
+  align-items: stretch;
+  will-change: transform;
+}
+
+.featured-carousel-slide {
+  flex-shrink: 0;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.featured-carousel-slide .product-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured-carousel-slide .product-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.featured-carousel-slide .product-card-footer {
+  margin-top: auto;
+}
+
+/* Botones flotantes interactivos de navegación */
+.featured-carousel-btn {
+  position: absolute;
+  top: calc(50% - 20px);
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--blanco);
+  border: 1.5px solid rgba(160, 82, 45, 0.2);
+  color: var(--siena);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(42, 37, 33, 0.12);
+  transition: all var(--transition-base);
+  z-index: 10;
+}
+
+.featured-carousel-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.featured-carousel-btn:hover {
+  background-color: var(--siena);
+  color: var(--blanco);
+  border-color: var(--siena);
+  box-shadow: 0 6px 20px rgba(160, 82, 45, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.featured-carousel-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.featured-carousel-btn--prev {
+  left: -20px;
+}
+
+.featured-carousel-btn--next {
+  right: -20px;
+}
+
+/* Paginación con Puntos (Dots) */
+.featured-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--space-md);
+}
+
+.featured-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: rgba(160, 82, 45, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-carousel-dot:hover {
+  background-color: var(--siena-light, #c07a4a);
+}
+
+.featured-carousel-dot--active {
+  width: 26px;
+  background-color: var(--siena);
+  box-shadow: 0 2px 6px rgba(160, 82, 45, 0.35);
+}
+
+/* Breakpoints Responsivos */
+@media (max-width: 1240px) {
+  .featured-carousel-btn--prev {
+    left: -10px;
+  }
+  .featured-carousel-btn--next {
+    right: -10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .featured-carousel-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .featured-carousel-btn--prev {
+    left: -6px;
+  }
+  .featured-carousel-btn--next {
+    right: -6px;
+  }
+}
+
+/* En celulares / pantallas móviles (< 768px):
+   - Ocultamos flechas y dots para que el foco quede 100% en las tarjetas.
+   - Activamos touch-action: pan-y para un scroll vertical natural sin trabas.
+   - Pista táctil interactiva tipo reel continuo (grab / grabbing). */
+@media (max-width: 767px) {
+  .featured-carousel-container {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .featured-carousel-viewport {
+    padding: 10px 0 18px 0;
+  }
+
+  .featured-carousel-track {
+    cursor: grab;
+  }
+
+  .featured-carousel-track:active {
+    cursor: grabbing;
+  }
+
+  .featured-carousel-btn {
+    display: none !important;
+  }
+
+  .featured-carousel-dots {
+    display: none !important;
+  }
 }
 
 .products-grid {
@@ -757,6 +934,9 @@ h4 {
   border-radius: var(--border-radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   transition:
     transform var(--transition-base),
     box-shadow var(--transition-base);
@@ -814,6 +994,9 @@ h4 {
 
 .product-card-body {
   padding: var(--space-lg) var(--space-lg) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .product-card-meta {
@@ -927,9 +1110,9 @@ h4 {
   justify-content: space-between;
   padding-top: var(--space-md);
   border-top: 1px solid var(--alabastro);
-  /* Agregar */
   white-space: nowrap;
   gap: 0.5rem;
+  margin-top: auto;
 }
 
 .product-card-price {
