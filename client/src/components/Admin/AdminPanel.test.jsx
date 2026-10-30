@@ -1,6 +1,20 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+
+jest.mock('react-router-dom', () => {
+  const router = require('react-router');
+  return {
+    ...router,
+    useNavigate: () => jest.fn(),
+    Link: ({ to, children, ...props }) => (
+      <a href={to} {...props}>
+        {children}
+      </a>
+    ),
+  };
+});
+
+import { MemoryRouter } from 'react-router';
 import AdminPanel from './AdminPanel';
 
 const mockProducts = [

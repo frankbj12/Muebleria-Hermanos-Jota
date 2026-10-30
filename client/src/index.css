@@ -3602,6 +3602,106 @@ h4 {
   border: 1px solid rgba(135, 169, 107, 0.3);
 }
 
+/* Medidas compuestas (Ancho × Profundidad × Alto cm) */
+.admin-dimensions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--blanco);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 8px 12px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.admin-dimensions-row:focus-within {
+  border-color: var(--siena);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.12);
+}
+
+.admin-dimensions-row--error {
+  border-color: #c0392b !important;
+  background-color: #fff9f9;
+}
+
+.admin-dim-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.admin-dim-input {
+  width: 100%;
+  text-align: center;
+  border: 1px solid rgba(160, 82, 45, 0.18);
+  border-radius: 6px;
+  padding: 6px 4px;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--negro-suave);
+  background-color: var(--arena-light, #faf7f2);
+  transition: all var(--transition-fast);
+}
+
+.admin-dim-input:focus {
+  background-color: var(--blanco);
+  border-color: var(--siena);
+  outline: none;
+}
+
+.admin-dim-label {
+  font-size: 10px;
+  color: var(--color-text-muted, #7a7269);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+  font-weight: 600;
+}
+
+.admin-dim-symbol {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--siena);
+  user-select: none;
+  margin-bottom: 12px;
+}
+
+.admin-dim-unit {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--siena);
+  background-color: rgba(160, 82, 45, 0.08);
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  user-select: none;
+}
+
+/* Sufijos para inputs métricos (como kg) */
+.admin-input-suffix-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.admin-form-input--suffixed {
+  padding-right: 38px;
+}
+
+.admin-input-suffix {
+  position: absolute;
+  right: 12px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--siena);
+  pointer-events: none;
+  user-select: none;
+}
+
 .admin-custom-specs-list {
   margin-top: 16px;
   padding-top: 14px;
@@ -3620,9 +3720,24 @@ h4 {
 
 .admin-custom-spec-row {
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  grid-template-columns: 170px 1fr auto;
   gap: 10px;
   align-items: center;
+  background-color: #faf7f2;
+  padding: 8px 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(160, 82, 45, 0.12);
+}
+
+.admin-custom-spec-row--otro {
+  grid-template-columns: 170px 1fr 1fr auto;
+}
+
+.admin-spec-select {
+  font-weight: 500;
+  color: var(--negro-suave);
+  background-color: var(--blanco);
+  cursor: pointer;
 }
 
 .admin-form-label-sr {
@@ -3913,7 +4028,8 @@ h4 {
     gap: var(--space-md);
   }
 
-  .admin-custom-spec-row {
+  .admin-custom-spec-row,
+  .admin-custom-spec-row--otro {
     grid-template-columns: 1fr;
   }
 
@@ -4297,4 +4413,315 @@ h4 {
   background: rgba(245, 230, 211, 0.25);
   border-radius: 6px;
   border: 1px dashed rgba(160, 82, 45, 0.25);
+}
+
+/* ==========================================================================
+   Admin Form Wizard / Stepper Component (3 Pasos)
+   ========================================================================== */
+.admin-wizard-nav {
+  position: relative;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(92, 61, 42, 0.12);
+}
+
+.admin-wizard-steps-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-wizard-track {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  right: 40px;
+  height: 2px;
+  background-color: #e8e2d7;
+  z-index: 1;
+}
+
+.admin-wizard-track-fill {
+  position: absolute;
+  top: 20px;
+  left: 40px;
+  height: 2px;
+  background-color: var(--siena, #9e5b32);
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.admin-wizard-step-item {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  outline: none;
+  transition: transform 0.2s ease;
+}
+
+.admin-wizard-step-item:focus-visible .admin-wizard-badge {
+  box-shadow: 0 0 0 3px rgba(158, 91, 50, 0.35);
+}
+
+.admin-wizard-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: #f2ede4;
+  color: #7a7269;
+}
+
+.admin-wizard-badge--active {
+  background-color: var(--siena, #9e5b32) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(158, 91, 50, 0.28);
+  outline: 4px solid #fbf3ee;
+}
+
+.admin-wizard-badge--completed {
+  background-color: var(--siena, #9e5b32) !important;
+  color: #ffffff !important;
+}
+
+.admin-wizard-step-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #7a7269;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+}
+
+.admin-wizard-step-label--active {
+  color: var(--siena, #9e5b32) !important;
+  font-weight: 700;
+}
+
+.admin-wizard-step-label--completed {
+  color: var(--negro, #2a2521);
+}
+
+/* Paneles de contenido del paso */
+.admin-step-content {
+  display: none;
+  opacity: 0;
+}
+
+.admin-step-content--active {
+  display: block;
+  opacity: 1;
+  animation: adminStepFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes adminStepFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header del paso */
+.admin-step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(92, 61, 42, 0.15);
+}
+
+.admin-step-header-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background-color: rgba(158, 91, 50, 0.1);
+  color: var(--siena, #9e5b32);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-step-header-text h2 {
+  font-family: var(--font-heading, 'Playfair Display', Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--negro, #2a2521);
+  margin: 0 0 2px 0;
+  line-height: 1.3;
+}
+
+.admin-step-header-text p {
+  font-size: 0.82rem;
+  color: var(--gris, #7a7269);
+  margin: 0;
+}
+
+/* Acciones de navegación inferior del wizard */
+.admin-wizard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(92, 61, 42, 0.12);
+  flex-wrap: wrap;
+}
+
+.admin-wizard-btn-prev {
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 10px;
+  background-color: #faf7f2;
+  border: 1px solid rgba(92, 61, 42, 0.15);
+  color: #5c3d2a;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.admin-wizard-btn-prev:hover:not(:disabled) {
+  background-color: #f0ebe2;
+  border-color: rgba(92, 61, 42, 0.25);
+  color: #2c1810;
+}
+
+.admin-wizard-btn-prev:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.admin-wizard-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-wizard-btn-cancel {
+  padding: 0 16px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #7a7269;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.admin-wizard-btn-cancel:hover {
+  color: #2a2521;
+}
+
+.admin-wizard-btn-next {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 10px;
+  background-color: var(--siena, #9e5b32);
+  color: #ffffff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  box-shadow: 0 3px 10px rgba(158, 91, 50, 0.25);
+}
+
+.admin-wizard-btn-next:hover {
+  background-color: #82441f;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(158, 91, 50, 0.32);
+}
+
+.admin-wizard-btn-save-direct {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 1px solid rgba(92, 61, 42, 0.22);
+  color: #5c3d2a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.admin-wizard-btn-save-direct:hover:not(:disabled) {
+  background-color: #f7f3ec;
+  border-color: rgba(92, 61, 42, 0.38);
+  color: #2c1810;
+}
+
+.admin-wizard-btn-final-submit {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(158, 91, 50, 0.3);
+}
+
+/* Caja de Garantía y Compromiso Hermanos Jota */
+.admin-craft-guarantee-box {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background-color: #f7f3ec;
+  border: 1px solid rgba(92, 61, 42, 0.12);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.admin-craft-guarantee-icon {
+  color: var(--siena, #9e5b32);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.admin-craft-guarantee-text h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--negro, #2a2521);
+  margin: 0 0 3px 0;
+}
+
+.admin-craft-guarantee-text p {
+  font-size: 0.78rem;
+  color: var(--gris, #7a7269);
+  margin: 0;
+  line-height: 1.45;
 }

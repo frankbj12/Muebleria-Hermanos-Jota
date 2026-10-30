@@ -77,6 +77,66 @@ const formatPrice = (value) => {
   return '$\u00A0' + num.toLocaleString('es-AR');
 };
 
+/**
+ * Normaliza y formatea el objeto specs para mantener consistencia
+ * con el catálogo PRODUCTS de Hermanos Jota.
+ *
+ * @param {Object} formData Datos de especificaciones (ancho, prof, alto, materiales, acabado, peso, customSpecs)
+ * @returns {Object} specs normalizado
+ */
+export function formatSpecs(formData = {}) {
+  const {
+    ancho = '',
+    prof = '',
+    alto = '',
+    materiales = '',
+    acabado = '',
+    peso = '',
+    customSpecs = [],
+  } = formData;
+
+  const specs = {};
+
+  // 1. Medidas compuestas (Ancho × Profundidad × Alto cm)
+  if (ancho && prof && alto) {
+    const clean = (val) => val.toString().trim().replace(/cm/gi, '').trim();
+    specs.medidas = `${clean(ancho)} × ${clean(prof)} × ${clean(alto)} cm`;
+  }
+
+  // 2. Campos fijos
+  if (materiales && materiales.toString().trim()) {
+    specs.materiales = materiales.toString().trim();
+  }
+  if (acabado && acabado.toString().trim()) {
+    specs.acabado = acabado.toString().trim();
+  }
+
+  // 3. Sufijo automático para métricas
+  if (peso && peso.toString().trim()) {
+    const numPeso = peso.toString().replace(/kg/gi, '').trim();
+    specs.peso = `${numPeso} kg`;
+  }
+
+  // 4. Especificaciones dinámicas adicionales
+  if (Array.isArray(customSpecs)) {
+    customSpecs.forEach((item) => {
+      const c = item.clave || item.key;
+      const v = item.valor || item.value;
+      if (c && v && v.toString().trim()) {
+        const k = c.trim().toLowerCase();
+        if (k === 'peso') {
+          const num = v.toString().replace(/kg/gi, '').trim();
+          specs.peso = `${num} kg`;
+        } else {
+          specs[k] = v.toString().trim();
+        }
+      }
+    });
+  }
+
+  return specs;
+}
+
 function ProductForm() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -95,6 +155,7 @@ function ProductForm() {
   const [imageSourceTab, setImageSourceTab] = useState('gallery');
   const [localFileName, setLocalFileName] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Imágenes alojadas en Vercel Blob
   const [blobImages, setBlobImages] = useState([]);
@@ -106,15 +167,17 @@ function ProductForm() {
     name: '',
     category: 'living',
     price: '',
-    stock: '',
+    stock: '0', // Por defecto 0 (sin stock)
     image: '',
     description: '',
     featured: false,
   });
 
-  // Especificaciones base opcionales
+  // Especificaciones base opcionales (Ancho, Profundidad, Alto, Materiales, Acabado)
   const [specs, setSpecs] = useState({
-    medidas: '',
+    ancho: '',
+    prof: '',
+    alto: '',
     materiales: '',
     acabado: '',
   });
@@ -126,6 +189,61 @@ function ProductForm() {
   const [submitting, setSubmitting] = useState(false);
   const [productLoaded, setProductLoaded] = useState(!isEdit);
   const [notFound, setNotFound] = useState(false);
+
+  // Control de Pasos del Wizard (Paso 1: Datos Principales, Paso 2: Fotografía, Paso 3: Ficha Técnica)
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 3;
+
+  const handleNextStep = () => {
+    if (currentStep === 1) {
+      const stepErrors = {};
+      if (!formData.name.trim()) {
+        stepErrors.name = 'El nombre del mueble es obligatorio.';
+      } else if (formData.name.trim().length < 3) {
+        stepErrors.name = 'El nombre debe tener al menos 3 caracteres.';
+      }
+      if (!formData.category) {
+        stepErrors.category = 'Seleccioná una categoría para el mueble.';
+      }
+      const priceNum = Number(formData.price);
+      if (formData.price === '' || isNaN(priceNum) || priceNum <= 0) {
+        stepErrors.price = 'Ingresá un precio válido mayor a 0.';
+      }
+
+      // Stock es opcional (por defecto 0): solo validamos si ingresó algo inválido
+      if (formData.stock !== '') {
+        const stockNum = Number(formData.stock);
+        if (
+          isNaN(stockNum) ||
+          stockNum < 0 ||
+          !Number.isInteger(stockNum)
+        ) {
+          stepErrors.stock =
+            'El stock debe ser un número entero mayor o igual a 0.';
+        }
+      }
+
+      // Descripción es opcional
+
+      if (Object.keys(stepErrors).length > 0) {
+        setErrors((prev) => ({ ...prev, ...stepErrors }));
+        addToast('Completá los campos requeridos antes de avanzar.', 'warning');
+        return;
+      }
+    }
+
+    setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const goToStep = (stepNumber) => {
+    if (stepNumber >= 1 && stepNumber <= totalSteps) {
+      setCurrentStep(stepNumber);
+    }
+  };
 
   // Cargar lista de imágenes de Vercel Blob
   const fetchBlobImages = async () => {
@@ -170,18 +288,62 @@ function ProductForm() {
         // Cargar especificaciones técnicas existentes
         if (found.specs && typeof found.specs === 'object') {
           const { medidas, materiales, acabado, ...rest } = found.specs;
+
+          let ancho = '';
+          let prof = '';
+          let alto = '';
+
+          if (medidas) {
+            const cleanMedidas = medidas.replace(/cm/gi, '').trim();
+            const parts = cleanMedidas.split(/\s*[×xX]\s*/);
+            if (parts.length >= 3) {
+              ancho = parts[0]?.trim() || '';
+              prof = parts[1]?.trim() || '';
+              alto = parts[2]?.trim() || '';
+            } else if (parts.length === 1) {
+              ancho = parts[0]?.trim() || '';
+            }
+          }
+
           setSpecs({
-            medidas: medidas || '',
+            ancho,
+            prof,
+            alto,
             materiales: materiales || '',
             acabado: acabado || '',
           });
 
-          // Cualquier otra especificación específica (ej: peso, capacidad, rotación)
-          const customList = Object.entries(rest).map(([key, value], idx) => ({
-            id: `spec-${Date.now()}-${idx}`,
-            key,
-            value: value || '',
-          }));
+          // Cargar especificaciones secundarias (peso, capacidad, rotación, tapizado, o personalizadas)
+          const customList = Object.entries(rest).map(([key, value], idx) => {
+            const lowerKey = key.toLowerCase();
+            let tipo = 'otro';
+            let clave = key;
+            let val = value !== undefined ? String(value) : '';
+
+            if (lowerKey === 'peso') {
+              tipo = 'peso';
+              clave = 'peso';
+              val = val.replace(/kg/gi, '').trim();
+            } else if (lowerKey === 'capacidad') {
+              tipo = 'capacidad';
+              clave = 'capacidad';
+            } else if (lowerKey === 'tapizado') {
+              tipo = 'tapizado';
+              clave = 'tapizado';
+            } else if (lowerKey === 'rotacion' || lowerKey === 'rotación') {
+              tipo = 'rotacion';
+              clave = key;
+            }
+
+            return {
+              id: `spec-${Date.now()}-${idx}`,
+              tipo,
+              clave,
+              key: clave,
+              valor: val,
+              value: val,
+            };
+          });
           setCustomSpecs(customList);
         }
 
@@ -229,22 +391,76 @@ function ProductForm() {
       ...prev,
       [name]: value,
     }));
+    if (errors.medidas && ['ancho', 'prof', 'alto'].includes(name)) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.medidas;
+        return next;
+      });
+    }
   };
 
-  // Manejo de especificaciones personalizadas opcionales
+  // Manejo de especificaciones secundarias y dinámicas
   const handleAddCustomSpec = () => {
     setCustomSpecs((prev) => [
       ...prev,
-      { id: `spec-${Date.now()}`, key: '', value: '' },
+      {
+        id: `spec-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,
+        tipo: 'peso',
+        clave: 'peso',
+        key: 'peso',
+        valor: '',
+        value: '',
+      },
     ]);
+  };
+
+  const handleSpecTypeChange = (idToUpdate, newTipo) => {
+    setCustomSpecs((prev) =>
+      prev.map((item) => {
+        if (item.id !== idToUpdate) return item;
+        const isOtro = newTipo === 'otro';
+        const clave = isOtro ? '' : newTipo;
+        return {
+          ...item,
+          tipo: newTipo,
+          clave,
+          key: clave,
+        };
+      })
+    );
+    if (errors.customSpecs) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.customSpecs;
+        return next;
+      });
+    }
   };
 
   const handleUpdateCustomSpec = (idToUpdate, field, newValue) => {
     setCustomSpecs((prev) =>
-      prev.map((item) =>
-        item.id === idToUpdate ? { ...item, [field]: newValue } : item
-      )
+      prev.map((item) => {
+        if (item.id !== idToUpdate) return item;
+        const updated = { ...item, [field]: newValue };
+        if (field === 'clave' || field === 'key') {
+          updated.clave = newValue;
+          updated.key = newValue;
+        }
+        if (field === 'valor' || field === 'value') {
+          updated.valor = newValue;
+          updated.value = newValue;
+        }
+        return updated;
+      })
     );
+    if (errors.customSpecs) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.customSpecs;
+        return next;
+      });
+    }
   };
 
   const handleRemoveCustomSpec = (idToRemove) => {
@@ -263,9 +479,8 @@ function ProductForm() {
     }
   };
 
-  // Manejo de subida de imagen local (hacia Vercel Blob)
-  const handleFileUpload = async (e) => {
-    const file = e.target.files?.[0];
+  // Procesa y sube una imagen a Vercel Blob (por click en input o por arrastrar y soltar)
+  const processImageFile = async (file) => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
@@ -330,6 +545,41 @@ function ProductForm() {
       }
     } finally {
       setUploadingImage(false);
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) processImageFile(file);
+  };
+
+  // Manejo de Drag and Drop para subir imágenes arrastrando desde la computadora
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isDragging) setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const file = e.dataTransfer?.files?.[0];
+    if (file) {
+      processImageFile(file);
     }
   };
 
@@ -401,21 +651,53 @@ function ProductForm() {
       newErrors.price = 'Ingresá un precio válido mayor a 0.';
     }
 
-    const stockNum = Number(formData.stock);
-    if (
-      formData.stock === '' ||
-      isNaN(stockNum) ||
-      stockNum < 0 ||
-      !Number.isInteger(stockNum)
-    ) {
-      newErrors.stock = 'El stock debe ser un número entero mayor o igual a 0.';
+    // Stock es opcional (por defecto 0): solo validamos si ingresó algo inválido
+    if (formData.stock !== '') {
+      const stockNum = Number(formData.stock);
+      if (
+        isNaN(stockNum) ||
+        stockNum < 0 ||
+        !Number.isInteger(stockNum)
+      ) {
+        newErrors.stock = 'El stock debe ser un número entero mayor o igual a 0.';
+      }
     }
 
-    if (!formData.description.trim()) {
-      newErrors.description = 'La descripción del mueble es obligatoria.';
-    } else if (formData.description.trim().length < 10) {
-      newErrors.description =
-        'La descripción debe tener al menos 10 caracteres.';
+    // Descripción es opcional
+
+    // Validación de medidas: si ingresó alguna medida, deben completarse ancho, profundidad y alto
+    const hasAnyDim = Boolean(
+      specs.ancho?.trim() || specs.prof?.trim() || specs.alto?.trim()
+    );
+    const hasAllDims = Boolean(
+      specs.ancho?.trim() && specs.prof?.trim() && specs.alto?.trim()
+    );
+    if (hasAnyDim && !hasAllDims) {
+      newErrors.medidas =
+        'Completá los tres valores de medidas (ancho, profundidad y alto) o dejalos vacíos.';
+    }
+
+    // Validación de especificaciones secundarias: si eligió 'otro' y puso valor pero no nombre
+    const hasIncompleteOther = customSpecs.some(
+      (c) =>
+        (c.tipo === 'otro' || (!c.tipo && c.key)) &&
+        !(c.clave || c.key)?.trim() &&
+        (c.valor || c.value)?.trim()
+    );
+    if (hasIncompleteOther) {
+      newErrors.customSpecs =
+        'Completá el nombre de la propiedad en la especificación personalizada.';
+    }
+
+    if (
+      newErrors.name ||
+      newErrors.category ||
+      newErrors.price ||
+      newErrors.stock
+    ) {
+      setCurrentStep(1);
+    } else if (newErrors.medidas || newErrors.customSpecs) {
+      setCurrentStep(3);
     }
 
     setErrors(newErrors);
@@ -436,22 +718,18 @@ function ProductForm() {
     setSubmitting(true);
 
     const priceNum = Number(formData.price);
-    const stockNum = Number(formData.stock);
+    const stockParsed = formData.stock === '' ? 0 : Number(formData.stock);
+    const stockNum = isNaN(stockParsed) || stockParsed < 0 ? 0 : stockParsed;
     const trimmedName = formData.name.trim();
 
-    // Construir especificaciones filtrando solo las que el usuario haya completado (opcionales)
-    const finalSpecs = {};
-    if (specs.medidas.trim()) finalSpecs.medidas = specs.medidas.trim();
-    if (specs.materiales.trim())
-      finalSpecs.materiales = specs.materiales.trim();
-    if (specs.acabado.trim()) finalSpecs.acabado = specs.acabado.trim();
-
-    customSpecs.forEach((specItem) => {
-      const key = specItem.key.trim().toLowerCase();
-      const val = specItem.value.trim();
-      if (key && val) {
-        finalSpecs[key] = val;
-      }
+    // Construir especificaciones normalizadas usando el helper formatSpecs
+    const finalSpecs = formatSpecs({
+      ancho: specs.ancho,
+      prof: specs.prof,
+      alto: specs.alto,
+      materiales: specs.materiales,
+      acabado: specs.acabado,
+      customSpecs,
     });
 
     const payload = {
@@ -465,7 +743,9 @@ function ProductForm() {
       category: formData.category,
       price: priceNum,
       stock: stockNum,
-      image: formData.image.trim() || 'assets/products/Imagen Mantenimiento.png',
+      image:
+        (formData.image || '').trim() ||
+        'assets/products/Imagen Mantenimiento.png',
       description: formData.description.trim(),
       featured: Boolean(formData.featured),
       specs: Object.keys(finalSpecs).length > 0 ? finalSpecs : undefined,
@@ -593,28 +873,154 @@ function ProductForm() {
               id="product-form"
             >
               {/* =========================================================
-                  Sección 1: Información Principal
+                  STEPPER NAV: Barra de Progreso de 3 Pasos
                   ========================================================= */}
-              <div className="admin-form-fieldset">
-                <h2 className="admin-form-section-title">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              <nav className="admin-wizard-nav" aria-label="Progreso de creación">
+                <ol className="admin-wizard-steps-list">
+                  <div className="admin-wizard-track" aria-hidden="true" />
+                  <div
+                    className="admin-wizard-track-fill"
                     aria-hidden="true"
+                    style={{
+                      width:
+                        currentStep === 1
+                          ? '0%'
+                          : currentStep === 2
+                            ? '50%'
+                            : '100%',
+                    }}
+                  />
+
+                  {/* Paso 1 */}
+                  <li
+                    className="admin-wizard-step-item"
+                    onClick={() => goToStep(1)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && goToStep(1)}
                   >
-                    <path d="M20 7h-9" />
-                    <path d="M14 17H5" />
-                    <circle cx="17" cy="17" r="3" />
-                    <circle cx="7" cy="7" r="3" />
-                  </svg>
-                  Datos Principales
-                </h2>
+                    <div
+                      className={`admin-wizard-badge ${
+                        currentStep === 1
+                          ? 'admin-wizard-badge--active'
+                          : currentStep > 1
+                            ? 'admin-wizard-badge--completed'
+                            : ''
+                      }`}
+                    >
+                      {currentStep > 1 ? '✓' : '1'}
+                    </div>
+                    <span
+                      className={`admin-wizard-step-label ${
+                        currentStep === 1
+                          ? 'admin-wizard-step-label--active'
+                          : currentStep > 1
+                            ? 'admin-wizard-step-label--completed'
+                            : ''
+                      }`}
+                    >
+                      Datos Principales
+                    </span>
+                  </li>
+
+                  {/* Paso 2 */}
+                  <li
+                    className="admin-wizard-step-item"
+                    onClick={() => goToStep(2)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && goToStep(2)}
+                  >
+                    <div
+                      className={`admin-wizard-badge ${
+                        currentStep === 2
+                          ? 'admin-wizard-badge--active'
+                          : currentStep > 2
+                            ? 'admin-wizard-badge--completed'
+                            : ''
+                      }`}
+                    >
+                      {currentStep > 2 ? '✓' : '2'}
+                    </div>
+                    <span
+                      className={`admin-wizard-step-label ${
+                        currentStep === 2
+                          ? 'admin-wizard-step-label--active'
+                          : currentStep > 2
+                            ? 'admin-wizard-step-label--completed'
+                            : ''
+                      }`}
+                    >
+                      Fotografía
+                    </span>
+                  </li>
+
+                  {/* Paso 3 */}
+                  <li
+                    className="admin-wizard-step-item"
+                    onClick={() => goToStep(3)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && goToStep(3)}
+                  >
+                    <div
+                      className={`admin-wizard-badge ${
+                        currentStep === 3 ? 'admin-wizard-badge--active' : ''
+                      }`}
+                    >
+                      3
+                    </div>
+                    <span
+                      className={`admin-wizard-step-label ${
+                        currentStep === 3
+                          ? 'admin-wizard-step-label--active'
+                          : ''
+                      }`}
+                    >
+                      Ficha Técnica
+                    </span>
+                  </li>
+                </ol>
+              </nav>
+
+              {/* =========================================================
+                  PASO 1: Datos Principales (Identidad de la Pieza)
+                  ========================================================= */}
+              <div
+                className={`admin-step-content ${currentStep === 1 ? 'admin-step-content--active' : ''}`}
+                id="step-1"
+              >
+                <div className="admin-step-header">
+                  <div className="admin-step-header-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 7h-9" />
+                      <path d="M14 17H5" />
+                      <circle cx="17" cy="17" r="3" />
+                      <circle cx="7" cy="7" r="3" />
+                    </svg>
+                  </div>
+                  <div className="admin-step-header-text">
+                    <h2
+                      className="admin-form-section-title"
+                      style={{ margin: 0, padding: 0, border: 'none' }}
+                    >
+                      Identidad de la Pieza (Datos Principales)
+                    </h2>
+                    <p>
+                      Definí el nombre comercial, categoría, visibilidad, precio
+                      y stock en el catálogo.
+                    </p>
+                  </div>
+                </div>
 
                 {/* Nombre */}
                 <div className="admin-form-group">
@@ -627,7 +1033,7 @@ function ProductForm() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Ej: Aparador Uspallata en Nogal"
+                    placeholder="Ej: Aparador Urquiza en Nogal Macizo"
                     className={`admin-form-input ${errors.name ? 'admin-form-input--error' : ''}`}
                     required
                     aria-invalid={Boolean(errors.name)}
@@ -746,7 +1152,8 @@ function ProductForm() {
                   {/* Stock */}
                   <div className="admin-form-group">
                     <label htmlFor="product-stock" className="admin-form-label">
-                      Stock Disponible <span className="admin-required">*</span>
+                      Stock Disponible{' '}
+                      <small className="admin-label-optional">(Por defecto: 0)</small>
                     </label>
                     <input
                       type="number"
@@ -754,11 +1161,10 @@ function ProductForm() {
                       name="stock"
                       value={formData.stock}
                       onChange={handleChange}
-                      placeholder="Ej: 5"
+                      placeholder="0"
                       min="0"
                       step="1"
                       className={`admin-form-input ${errors.stock ? 'admin-form-input--error' : ''}`}
-                      required
                       aria-invalid={Boolean(errors.stock)}
                       aria-describedby={
                         errors.stock ? 'error-stock' : undefined
@@ -783,7 +1189,7 @@ function ProductForm() {
                     className="admin-form-label"
                   >
                     Descripción Artesanal{' '}
-                    <span className="admin-required">*</span>
+                    <small className="admin-label-optional">(Opcional)</small>
                   </label>
                   <textarea
                     id="product-description"
@@ -791,11 +1197,10 @@ function ProductForm() {
                     rows="4"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Describí los detalles de construcción, el veteado de la madera y el propósito del diseño..."
+                    placeholder="Describí los detalles de construcción, el veteado de la madera y el propósito del diseño... (Opcional)"
                     className={`admin-form-textarea ${
                       errors.description ? 'admin-form-input--error' : ''
                     }`}
-                    required
                     aria-invalid={Boolean(errors.description)}
                     aria-describedby={
                       errors.description ? 'error-description' : undefined
@@ -814,27 +1219,42 @@ function ProductForm() {
               </div>
 
               {/* =========================================================
-                  Sección 2: Fotografía del Mueble (Galería visual + Subida de archivos + URL)
+                  PASO 2: Fotografía del Mueble
                   ========================================================= */}
-              <div className="admin-form-fieldset">
-                <h2 className="admin-form-section-title">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <polyline points="21 15 16 10 5 21" />
-                  </svg>
-                  Fotografía del Mueble
-                </h2>
+              <div
+                className={`admin-step-content ${currentStep === 2 ? 'admin-step-content--active' : ''}`}
+                id="step-2"
+              >
+                <div className="admin-step-header">
+                  <div className="admin-step-header-icon" aria-hidden="true">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                  </div>
+                  <div className="admin-step-header-text">
+                    <h2
+                      className="admin-form-section-title"
+                      style={{ margin: 0, padding: 0, border: 'none' }}
+                    >
+                      Fotografía del Mueble
+                    </h2>
+                    <p>
+                      Seleccioná del catálogo del taller o subí un archivo en
+                      alta resolución.
+                    </p>
+                  </div>
+                </div>
 
                 {/* Pestañas para elegir la forma de cargar la imagen */}
                 <div
@@ -1024,8 +1444,12 @@ function ProductForm() {
                       WEBP). Se procesará de inmediato para el catálogo:
                     </p>
                     <div
-                      className="admin-dropzone"
+                      className={`admin-dropzone ${isDragging ? 'admin-dropzone--drag-over' : ''}`}
                       onClick={() => fileInputRef.current?.click()}
+                      onDragEnter={handleDragEnter}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) =>
@@ -1055,10 +1479,18 @@ function ProductForm() {
                         <polyline points="17 8 12 3 7 8" />
                         <line x1="12" y1="3" x2="12" y2="15" />
                       </svg>
-                      <strong>
-                        Hacé clic acá para elegir una imagen de tus archivos
-                      </strong>
-                      <span>o arrastrá un archivo PNG, JPG o WEBP</span>
+                      {isDragging ? (
+                        <strong style={{ color: 'var(--siena)' }}>
+                          ¡Soltá tu imagen acá para subirla!
+                        </strong>
+                      ) : (
+                        <>
+                          <strong>
+                            Hacé clic acá para elegir una imagen de tus archivos
+                          </strong>
+                          <span>o arrastrá un archivo PNG, JPG o WEBP acá</span>
+                        </>
+                      )}
                     </div>
 
                     {uploadingImage && (
@@ -1117,7 +1549,7 @@ function ProductForm() {
                       </p>
 
                       {/* Mini vista previa inmediata del enlace ingresado */}
-                      {formData.image.trim() && (
+                      {(formData.image || '').trim() && (
                         <div
                           style={{
                             marginTop: '1rem',
@@ -1131,7 +1563,7 @@ function ProductForm() {
                           }}
                         >
                           <img
-                            key={formData.image.trim()}
+                            key={(formData.image || '').trim()}
                             src={getProductImageUrl(formData.image)}
                             alt="Vista previa del enlace"
                             style={{
@@ -1168,7 +1600,7 @@ function ProductForm() {
                                 whiteSpace: 'nowrap',
                               }}
                             >
-                              {formData.image.trim()}
+                              {(formData.image || '').trim()}
                             </span>
                           </div>
                           <button
@@ -1193,11 +1625,14 @@ function ProductForm() {
               </div>
 
               {/* =========================================================
-                  Sección 3: Especificaciones Técnicas (Ficha de Taller - Opcionales)
+                  PASO 3: Ficha Técnica (Especificaciones del Taller)
                   ========================================================= */}
-              <div className="admin-form-fieldset">
-                <div className="admin-form-section-header">
-                  <h2 className="admin-form-section-title">
+              <div
+                className={`admin-step-content ${currentStep === 3 ? 'admin-step-content--active' : ''}`}
+                id="step-3"
+              >
+                <div className="admin-step-header">
+                  <div className="admin-step-header-icon" aria-hidden="true">
                     <svg
                       width="20"
                       height="20"
@@ -1207,7 +1642,6 @@ function ProductForm() {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      aria-hidden="true"
                     >
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                       <polyline points="14 2 14 8 20 8" />
@@ -1215,9 +1649,21 @@ function ProductForm() {
                       <line x1="16" y1="17" x2="8" y2="17" />
                       <polyline points="10 9 9 9 8 9" />
                     </svg>
-                    Especificaciones Técnicas (Ficha de Taller)
-                  </h2>
-                  <span className="admin-optional-pill">Opcionales</span>
+                  </div>
+                  <div className="admin-step-header-text">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <h2
+                        className="admin-form-section-title"
+                        style={{ margin: 0, padding: 0, border: 'none' }}
+                      >
+                        Ficha de Taller (Especificaciones)
+                      </h2>
+                      <span className="admin-optional-pill">Opcionales</span>
+                    </div>
+                    <p>
+                      Parámetros constructivos de la carpintería artesanal de autor.
+                    </p>
+                  </div>
                 </div>
 
                 <p className="admin-form-hint" style={{ marginBottom: '16px' }}>
@@ -1226,27 +1672,78 @@ function ProductForm() {
                   las que apliquen a esta pieza artesanal:
                 </p>
 
-                {/* Especificaciones estándar opcionales */}
-                <div className="admin-form-grid-3">
-                  <div className="admin-form-group">
-                    <label
-                      htmlFor="product-medidas"
-                      className="admin-form-label"
-                    >
-                      Medidas{' '}
-                      <small className="admin-label-optional">(Opcional)</small>
-                    </label>
-                    <input
-                      type="text"
-                      id="product-medidas"
-                      name="medidas"
-                      value={specs.medidas}
-                      onChange={handleSpecChange}
-                      placeholder="Ej: 180 × 45 × 75 cm"
-                      className="admin-form-input"
-                    />
-                  </div>
+                {/* Medidas compuestas (Ancho × Profundidad × Alto cm) */}
+                <div className="admin-form-group">
+                  <label className="admin-form-label">
+                    Medidas (Ancho × Profundidad × Alto){' '}
+                    <small className="admin-label-optional">(Opcional)</small>
+                  </label>
+                  <div
+                    className={`admin-dimensions-row ${
+                      errors.medidas ? 'admin-dimensions-row--error' : ''
+                    }`}
+                  >
+                    <div className="admin-dim-field">
+                      <input
+                        type="text"
+                        id="product-ancho"
+                        name="ancho"
+                        value={specs.ancho}
+                        onChange={handleSpecChange}
+                        placeholder="180"
+                        className="admin-dim-input"
+                        aria-label="Ancho en centímetros"
+                      />
+                      <span className="admin-dim-label">Ancho</span>
+                    </div>
 
+                    <span className="admin-dim-symbol" aria-hidden="true">
+                      ×
+                    </span>
+
+                    <div className="admin-dim-field">
+                      <input
+                        type="text"
+                        id="product-prof"
+                        name="prof"
+                        value={specs.prof}
+                        onChange={handleSpecChange}
+                        placeholder="45"
+                        className="admin-dim-input"
+                        aria-label="Profundidad en centímetros"
+                      />
+                      <span className="admin-dim-label">Profundidad</span>
+                    </div>
+
+                    <span className="admin-dim-symbol" aria-hidden="true">
+                      ×
+                    </span>
+
+                    <div className="admin-dim-field">
+                      <input
+                        type="text"
+                        id="product-alto"
+                        name="alto"
+                        value={specs.alto}
+                        onChange={handleSpecChange}
+                        placeholder="75"
+                        className="admin-dim-input"
+                        aria-label="Alto en centímetros"
+                      />
+                      <span className="admin-dim-label">Alto</span>
+                    </div>
+
+                    <span className="admin-dim-unit">cm</span>
+                  </div>
+                  {errors.medidas && (
+                    <span className="admin-form-error-msg" role="alert">
+                      {errors.medidas}
+                    </span>
+                  )}
+                </div>
+
+                {/* Materiales y Acabado */}
+                <div className="admin-form-grid-2">
                   <div className="admin-form-group">
                     <label
                       htmlFor="product-materiales"
@@ -1261,7 +1758,7 @@ function ProductForm() {
                       name="materiales"
                       value={specs.materiales}
                       onChange={handleSpecChange}
-                      placeholder="Ej: Nogal macizo FSC®"
+                      placeholder="Ej: Nogal macizo FSC®, herrajes de latón"
                       className="admin-form-input"
                     />
                   </div>
@@ -1280,7 +1777,7 @@ function ProductForm() {
                       name="acabado"
                       value={specs.acabado}
                       onChange={handleSpecChange}
-                      placeholder="Ej: Aceite natural eco"
+                      placeholder="Ej: Aceite natural ecológico"
                       className="admin-form-input"
                     />
                   </div>
@@ -1290,56 +1787,139 @@ function ProductForm() {
                 {customSpecs.length > 0 && (
                   <div className="admin-custom-specs-list">
                     <strong className="admin-custom-specs-heading">
-                      Otras Especificaciones Particulares:
+                      Especificaciones Secundarias del Mueble:
                     </strong>
-                    {customSpecs.map((item) => (
-                      <div key={item.id} className="admin-custom-spec-row">
-                        <div className="admin-custom-spec-col">
-                          <label className="admin-form-label-sr">
-                            Propiedad
-                          </label>
-                          <input
-                            type="text"
-                            placeholder="Propiedad (ej: Peso, Rotación, Tapizado)"
-                            value={item.key}
-                            onChange={(e) =>
-                              handleUpdateCustomSpec(
-                                item.id,
-                                'key',
-                                e.target.value
-                              )
-                            }
-                            className="admin-form-input"
-                          />
-                        </div>
-                        <div className="admin-custom-spec-col">
-                          <label className="admin-form-label-sr">Valor</label>
-                          <input
-                            type="text"
-                            placeholder="Valor (ej: 42 kg, 360°, Bouclé Rose)"
-                            value={item.value}
-                            onChange={(e) =>
-                              handleUpdateCustomSpec(
-                                item.id,
-                                'value',
-                                e.target.value
-                              )
-                            }
-                            className="admin-form-input"
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          className="admin-spec-remove-btn"
-                          onClick={() => handleRemoveCustomSpec(item.id)}
-                          title="Eliminar esta especificación"
-                          aria-label="Eliminar especificación"
+                    {customSpecs.map((item) => {
+                      const isPeso =
+                        item.tipo === 'peso' ||
+                        item.clave === 'peso' ||
+                        item.key === 'peso';
+                      const isOtro = item.tipo === 'otro';
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`admin-custom-spec-row ${
+                            isOtro ? 'admin-custom-spec-row--otro' : ''
+                          }`}
                         >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
+                          {/* Selector de Tipo de Especificación */}
+                          <div className="admin-custom-spec-select-col">
+                            <label className="admin-form-label-sr">
+                              Tipo de especificación
+                            </label>
+                            <select
+                              value={item.tipo || (isPeso ? 'peso' : 'otro')}
+                              onChange={(e) =>
+                                handleSpecTypeChange(item.id, e.target.value)
+                              }
+                              className="admin-form-select admin-spec-select"
+                              aria-label="Seleccionar tipo de especificación"
+                            >
+                              <option value="peso">Peso (kg)</option>
+                              <option value="capacidad">Capacidad</option>
+                              <option value="tapizado">Tapizado</option>
+                              <option value="rotacion">Rotación</option>
+                              <option value="otro">Otro (personalizado)</option>
+                            </select>
+                          </div>
+
+                          {/* Si eligieron 'otro', se habilitan los dos inputs libres */}
+                          {isOtro && (
+                            <div className="admin-custom-spec-col">
+                              <label className="admin-form-label-sr">
+                                Nombre de propiedad
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="Propiedad (ej: Estilo, Garantía)"
+                                value={item.clave || item.key || ''}
+                                onChange={(e) =>
+                                  handleUpdateCustomSpec(
+                                    item.id,
+                                    'clave',
+                                    e.target.value
+                                  )
+                                }
+                                className="admin-form-input"
+                                aria-label="Nombre de propiedad personalizada"
+                              />
+                            </div>
+                          )}
+
+                          {/* Input de valor: si eligen peso, concatena automáticamente kg con sufijo visual */}
+                          <div className="admin-custom-spec-val-col">
+                            <label className="admin-form-label-sr">
+                              Valor de especificación
+                            </label>
+                            {isPeso ? (
+                              <div className="admin-input-suffix-wrapper">
+                                <input
+                                  type="text"
+                                  placeholder="Ej: 68 o 42"
+                                  value={item.valor || item.value || ''}
+                                  onChange={(e) =>
+                                    handleUpdateCustomSpec(
+                                      item.id,
+                                      'valor',
+                                      e.target.value
+                                    )
+                                  }
+                                  className="admin-form-input admin-form-input--suffixed"
+                                  aria-label="Peso en kilogramos"
+                                />
+                                <span className="admin-input-suffix">kg</span>
+                              </div>
+                            ) : (
+                              <input
+                                type="text"
+                                placeholder={
+                                  item.tipo === 'capacidad'
+                                    ? 'Ej: 45 kg por estante, 6 comensales'
+                                    : item.tipo === 'tapizado'
+                                    ? 'Ej: Repelente al agua y manchas'
+                                    : item.tipo === 'rotacion'
+                                    ? 'Ej: 360° silenciosa y suave'
+                                    : 'Valor (ej: Nórdico, 5 años)'
+                                }
+                                value={item.valor || item.value || ''}
+                                onChange={(e) =>
+                                  handleUpdateCustomSpec(
+                                    item.id,
+                                    'valor',
+                                    e.target.value
+                                  )
+                                }
+                                className="admin-form-input"
+                                aria-label="Valor de la especificación"
+                              />
+                            )}
+                          </div>
+
+                          {/* Botón eliminar */}
+                          <button
+                            type="button"
+                            className="admin-spec-remove-btn"
+                            onClick={() => handleRemoveCustomSpec(item.id)}
+                            title="Eliminar esta especificación"
+                            aria-label="Eliminar especificación"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
+                )}
+
+                {errors.customSpecs && (
+                  <span
+                    className="admin-form-error-msg"
+                    style={{ marginTop: '8px', display: 'block' }}
+                    role="alert"
+                  >
+                    {errors.customSpecs}
+                  </span>
                 )}
 
                 {/* Botón para añadir una nueva especificación personalizada */}
@@ -1352,55 +1932,151 @@ function ProductForm() {
                     + Agregar otra especificación personalizada
                   </button>
                 </div>
+
+                {/* Caja de Compromiso de Calidad Hermanos Jota */}
+                <div className="admin-craft-guarantee-box">
+                  <svg
+                    className="admin-craft-guarantee-icon"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  <div className="admin-craft-guarantee-text">
+                    <h4>Garantía Hermanos Jota</h4>
+                    <p>
+                      Todas las maderas provienen de bosques con manejo responsable
+                      certificado FSC®. Secado en cámara al 10% de humedad para
+                      máxima estabilidad.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* Botones de acción del formulario */}
-              <div className="admin-form-actions">
-                <Link
-                  to="/admin"
-                  className="btn btn-secondary admin-btn-cancel"
-                >
-                  Cancelar
-                </Link>
+              {/* =========================================================
+                  ACCIONES DE NAVEGACIÓN INFERIOR (STEPPER CONTROLS)
+                  ========================================================= */}
+              <div className="admin-wizard-actions">
                 <button
-                  type="submit"
-                  className="btn btn-primary admin-btn-submit"
-                  disabled={submitting || uploadingImage}
-                  id="btn-submit-product"
+                  type="button"
+                  className="admin-wizard-btn-prev"
+                  onClick={handlePrevStep}
+                  disabled={currentStep === 1}
+                  id="btn-prev-step"
                 >
-                  {submitting ? (
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                  </svg>
+                  <span>Anterior</span>
+                </button>
+
+                <div className="admin-wizard-actions-right">
+                  <Link to="/admin" className="admin-wizard-btn-cancel">
+                    Cancelar
+                  </Link>
+
+                  {currentStep < totalSteps ? (
                     <>
-                      <span className="admin-spinner" aria-hidden="true" />
-                      <span>Guardando mueble...</span>
-                    </>
-                  ) : uploadingImage ? (
-                    <>
-                      <span className="admin-spinner" aria-hidden="true" />
-                      <span>Subiendo imagen...</span>
+                      <button
+                        type="button"
+                        className="admin-wizard-btn-next"
+                        onClick={handleNextStep}
+                        id="btn-next-step"
+                      >
+                        <span>Siguiente</span>
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="admin-wizard-btn-save-direct"
+                        disabled={submitting || uploadingImage}
+                        id="btn-submit-product"
+                        title={
+                          isEdit
+                            ? 'Guardar cambios directamente'
+                            : 'Publicar directamente'
+                        }
+                      >
+                        {submitting
+                          ? 'Guardando...'
+                          : isEdit
+                            ? 'Guardar Cambios'
+                            : 'Publicar Mueble'}
+                      </button>
                     </>
                   ) : (
-                    <>
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden="true"
-                      >
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                        <polyline points="17 21 17 13 7 13 7 21" />
-                        <polyline points="7 3 7 8 15 8" />
-                      </svg>
-                      <span>
-                        {isEdit ? 'Guardar Cambios' : 'Publicar Mueble'}
-                      </span>
-                    </>
+                    <button
+                      type="submit"
+                      className="btn btn-primary admin-btn-submit admin-wizard-btn-final-submit"
+                      disabled={submitting || uploadingImage}
+                      id="btn-submit-product"
+                    >
+                      {submitting ? (
+                        <>
+                          <span className="admin-spinner" aria-hidden="true" />
+                          <span>Guardando mueble...</span>
+                        </>
+                      ) : uploadingImage ? (
+                        <>
+                          <span className="admin-spinner" aria-hidden="true" />
+                          <span>Subiendo imagen...</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                          <span>
+                            {isEdit ? 'Guardar Cambios' : 'Publicar Mueble'}
+                          </span>
+                        </>
+                      )}
+                    </button>
                   )}
-                </button>
+                </div>
               </div>
             </form>
           </div>
@@ -1420,7 +2096,7 @@ function ProductForm() {
                 {/* Imagen y badges flotantes */}
                 <div className="admin-preview-img-wrapper">
                   <img
-                    key={formData.image.trim()}
+                    key={(formData.image || '').trim() || 'preview-placeholder'}
                     src={getProductImageUrl(formData.image)}
                     alt={formData.name || 'Vista previa del mueble'}
                     className="admin-preview-img"
@@ -1472,43 +2148,52 @@ function ProductForm() {
                       'La descripción de tu pieza artesanal aparecerá aquí tal como la verán tus clientes en el catálogo.'}
                   </p>
 
-                  {/* Ficha técnica compacta en la vista previa (incluye base y personalizadas) */}
-                  {(specs.medidas ||
-                    specs.materiales ||
-                    specs.acabado ||
-                    customSpecs.some((c) => c.key && c.value)) && (
-                    <div className="admin-preview-specs">
-                      {specs.medidas && (
-                        <div className="admin-preview-spec-item">
-                          <span>Medidas:</span> {specs.medidas}
-                        </div>
-                      )}
-                      {specs.materiales && (
-                        <div className="admin-preview-spec-item">
-                          <span>Materiales:</span> {specs.materiales}
-                        </div>
-                      )}
-                      {specs.acabado && (
-                        <div className="admin-preview-spec-item">
-                          <span>Acabado:</span> {specs.acabado}
-                        </div>
-                      )}
-                      {customSpecs.map((item) => {
-                        if (!item.key.trim() || !item.value.trim()) return null;
-                        return (
-                          <div
-                            key={item.id}
-                            className="admin-preview-spec-item"
-                          >
-                            <span style={{ textTransform: 'capitalize' }}>
-                              {item.key}:
-                            </span>{' '}
-                            {item.value}
+                  {/* Ficha técnica compacta en la vista previa (normalizada con formatSpecs) */}
+                  {(() => {
+                    const previewSpecs = formatSpecs({
+                      ancho: specs.ancho,
+                      prof: specs.prof,
+                      alto: specs.alto,
+                      materiales: specs.materiales,
+                      acabado: specs.acabado,
+                      customSpecs,
+                    });
+                    const hasSpecs = Object.keys(previewSpecs).length > 0;
+                    if (!hasSpecs) return null;
+
+                    return (
+                      <div className="admin-preview-specs">
+                        {previewSpecs.medidas && (
+                          <div className="admin-preview-spec-item">
+                            <span>Medidas:</span> {previewSpecs.medidas}
                           </div>
-                        );
-                      })}
-                    </div>
-                  )}
+                        )}
+                        {previewSpecs.materiales && (
+                          <div className="admin-preview-spec-item">
+                            <span>Materiales:</span> {previewSpecs.materiales}
+                          </div>
+                        )}
+                        {previewSpecs.acabado && (
+                          <div className="admin-preview-spec-item">
+                            <span>Acabado:</span> {previewSpecs.acabado}
+                          </div>
+                        )}
+                        {Object.entries(previewSpecs)
+                          .filter(
+                            ([k]) =>
+                              !['medidas', 'materiales', 'acabado'].includes(k)
+                          )
+                          .map(([k, val]) => (
+                            <div key={k} className="admin-preview-spec-item">
+                              <span style={{ textTransform: 'capitalize' }}>
+                                {k}:
+                              </span>{' '}
+                              {val}
+                            </div>
+                          ))}
+                      </div>
+                    );
+                  })()}
 
                   <div className="admin-preview-footer">
                     <span className="admin-preview-price-label">
