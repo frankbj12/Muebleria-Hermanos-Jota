@@ -5,10 +5,12 @@
 Aplicación full stack para explorar un catálogo de muebles artesanales y gestionar sus productos. El frontend está construido con React y React Router; la API REST usa Node.js, Express y Mongoose, con persistencia en MongoDB Atlas.
 
 [![Vercel Deployment](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
-[![Render Deployment](https://img.shields.io/badge/API-Render-46E3B7?style=for-the-badge&logo=render)](https://muebleria-hermanos-jota-api-b051.onrender.com/api/health)
+[![Render Deployment](https://img.shields.io/badge/API-Render-141414?style=for-the-badge&logo=render)](https://muebleria-hermanos-jota-api-b051.onrender.com/api/health)
+[![MongoDB](https://img.shields.io/badge/MongoDB-023430?style=for-the-badge&logo=MongoDB)](https://www.mongodb.com/es/docs/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
+
 
 - **Frontend:** [muebleria-hermanos-jota-grupo-13.vercel.app](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
 - **API:** [muebleria-hermanos-jota-api-b051.onrender.com](https://muebleria-hermanos-jota-api-b051.onrender.com/api/health)
@@ -33,7 +35,7 @@ Aplicación full stack para explorar un catálogo de muebles artesanales y gesti
 | --- | --- |
 | Cliente | React, React Router, JavaScript, CSS |
 | Servidor | Node.js, Express |
-| Datos | MongoDB Atlas, Mongoose |
+| Datos y Media | MongoDB Atlas, Mongoose, Vercel Blob |
 | Despliegue | Vercel (frontend), Render (API) |
 
 ## 🛠️Puesta en marcha
@@ -53,7 +55,10 @@ Copiá `backend/.env.example` a `backend/.env` y completá `MONGODB_URI` con tus
 PORT=5000
 MONGODB_URI=mongodb+srv://<usuario>:<contraseña>@<cluster>/<base>
 CORS_ORIGIN=http://localhost:3000
+BLOB_READ_WRITE_TOKEN="vercel_blob_rw_xxxxxxxxxxxxxxxx"
 ```
+
+Para habilitar la subida y administración de imágenes en la nube con Vercel Blob, configurá el token en `BLOB_READ_WRITE_TOKEN`.
 
 Iniciá el servidor:
 
@@ -86,14 +91,16 @@ El frontend se abrirá en `http://localhost:3000`. Para usar la API local, mante
 
 ### Variables en producción
 
-- **Render:** definir `MONGODB_URI` y `CORS_ORIGIN` en la configuración del servicio. `CORS_ORIGIN` debe incluir el origen exacto del frontend publicado.
+- **Render:** definir `MONGODB_URI`, `CORS_ORIGIN` y `BLOB_READ_WRITE_TOKEN` (para la gestión y persistencia de imágenes en Vercel Blob) en la configuración del servicio. `CORS_ORIGIN` debe incluir el origen exacto del frontend publicado.
 - **Vercel:** definir `REACT_APP_API_URL` con `https://muebleria-hermanos-jota-api-b051.onrender.com/api/productos` y volver a desplegar el frontend.
 
 No guardes credenciales ni secretos en el repositorio. El archivo `.env.example` documenta los nombres de variables sin contener valores secretos.
 
 ## ⚙API
 
-La API utiliza el modelo `Product` y persiste los registros en MongoDB. Los productos se manejan con campos en inglés (`name`, `description`, `price`, `stock`, `image`, `category`, `featured`, `specs`) y su identificador MongoDB (`_id`/`id`).
+La API utiliza el modelo `Product` y persiste los registros en MongoDB. Los productos se manejan con campos en inglés (`name`, `description`, `price`, `stock`, `image`, `category`, `featured`, `specs`) y su identificador MongoDB (`_id`/`id`). Además, integra endpoints dedicados a la subida y administración de archivos multimedia con Vercel Blob.
+
+### Catálogo de productos
 
 | Método | Endpoint | Descripción |
 | --- | --- | --- |
@@ -105,6 +112,14 @@ La API utiliza el modelo `Product` y persiste los registros en MongoDB. Los prod
 | `DELETE` | `/api/productos/:id` | Elimina un producto existente. |
 
 También están disponibles las rutas CRUD bajo `/productos` para compatibilidad.
+
+### Almacenamiento multimedia (Vercel Blob)
+
+| Método | Endpoint | Descripción |
+| --- | --- | --- |
+| `GET` | `/api/upload` | Lista las imágenes almacenadas en Vercel Blob ordenadas cronológicamente. |
+| `POST` | `/api/upload` | Sube una imagen (`multipart/form-data`, campo `image`, máx. 5 MB) a Vercel Blob y responde con su URL pública. |
+| `DELETE` | `/api/upload` | Elimina una imagen de Vercel Blob a partir de su URL (enviada en el cuerpo JSON o query string). |
 
 ## 📂Estructura
 
@@ -121,7 +136,8 @@ También están disponibles las rutas CRUD bajo `/productos` para compatibilidad
 │   │   ├── errorHandler.js          Respuestas centralizadas de error
 │   │   └── logger.js                Registro de método y URL
 │   ├── routes/
-│   │   └── productos.js             Endpoints de productos
+│   │   ├── productos.js             Endpoints de productos
+│   │   └── upload.js                Subida y gestión de imágenes (Vercel Blob)
 │   ├── index.js                     Configuración y arranque del servidor
 │   ├── seed.js                      Carga inicial de productos
 │   ├── .env.example                 Plantilla de variables de entorno
@@ -130,18 +146,26 @@ También están disponibles las rutas CRUD bajo `/productos` para compatibilidad
 ├── client/                          Aplicación React
 │   ├── public/
 │   │   ├── assets/                  Imágenes, logo y videos usados por la UI
+│   │   │   └── products/            Imágenes del catálogo e imagen de mantenimiento
 │   │   ├── index.html               Documento HTML de entrada de React
 │   │   ├── manifest.json            Metadatos de la aplicación web
 │   │   └── robots.txt               Directivas para rastreadores
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── Admin/               Panel, formulario y modal de confirmación
+│   │   │   │   ├── AdminPanel.jsx        Métricas, filtros y tabla de gestión
+│   │   │   │   ├── ConfirmDeleteModal.jsx Modal destructivo estilo GitHub
+│   │   │   │   └── ProductForm.jsx       Alta/edición, drag & drop y Vercel Blob
 │   │   │   ├── Cart/                Vista e ítem reutilizable del carrito
 │   │   │   ├── ContactForm/         Formulario y datos de contacto
 │   │   │   ├── Footer/              Pie de página
-│   │   │   ├── Home/                Inicio y selección de destacados
+│   │   │   ├── Home/                Inicio y carrusel de piezas destacadas
+│   │   │   │   ├── FeaturedCarousel.jsx  Carrusel responsivo con reel continuo
+│   │   │   │   └── Home.jsx              Vista principal
 │   │   │   ├── Navbar/              Navegación y contador del carrito
+│   │   │   ├── NotFound/            Vista de página no encontrada
 │   │   │   ├── ProductCard/         Tarjeta reutilizable de producto
-│   │   │   ├── ProductDetail/       Detalle dinámico y pruebas de ruta
+│   │   │   ├── ProductDetail/       Detalle dinámico y especificaciones
 │   │   │   └── ProductList/         Catálogo, búsqueda y filtros
 │   │   ├── context/
 │   │   │   ├── CartContext.jsx      Carrito persistido en localStorage
@@ -149,12 +173,14 @@ También están disponibles las rutas CRUD bajo `/productos` para compatibilidad
 │   │   │   ├── ProductsContext.jsx  Estado, carga y actualización del catálogo
 │   │   │   ├── ProductsContext.test.jsx Prueba de actualización tras un alta
 │   │   │   └── ToastContext.jsx     Notificaciones de la interfaz
-│   │   ├── App.js                   Rutas de la aplicación
-│   │   ├── index.js                 Montaje de React y proveedores globales
-│   │   ├── index.css                Estilos globales
 │   │   ├── services/
 │   │   │   ├── productosApi.js      Acceso HTTP a los endpoints de productos
 │   │   │   └── productosApi.test.js Pruebas del servicio HTTP
+│   │   ├── utils/
+│   │   │   └── imageUrl.js          Normalización de URLs y fallback global
+│   │   ├── App.js                   Rutas de la aplicación
+│   │   ├── index.js                 Montaje de React y proveedores globales
+│   │   └── index.css                Estilos globales y diseño del sistema
 │   └── package.json                 Dependencias y comandos del cliente
 │
 ├── assets/                          Copia original de los recursos gráficos
@@ -175,19 +201,23 @@ También están disponibles las rutas CRUD bajo `/productos` para compatibilidad
 
 ### 📜Cómo se organiza
 
-- **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas; `config/db.js` conecta MongoDB y el controlador implementa el CRUD.
-- **`client/src/`** contiene la aplicación. `App.js` define las rutas; `services/productosApi.js` centraliza las peticiones HTTP y adapta la respuesta de la API al modelo en inglés; `ProductsContext.jsx` gestiona la carga y actualización del catálogo.
-- **Carrito:** `CartContext.jsx` administra el carrito y lo conserva en `localStorage` al recargar la página.
-- **`client/public/assets/`** contiene los recursos que el navegador solicita directamente. La carpeta raíz `assets/` conserva los recursos originales del proyecto.
+- **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas (`productos.js` para CRUD y `upload.js` para la integración con Vercel Blob); `config/db.js` conecta MongoDB y los controladores implementan la persistencia.
+- **`client/src/`** contiene la aplicación cliente. `App.js` define las rutas principales (`/`, `/productos`, `/productos/:id`, `/carrito`, `/contacto`, `/admin`, `/admin/crear-producto`, `/admin/editar-producto/:id`); `services/productosApi.js` centraliza las peticiones HTTP y adapta la respuesta de la API al modelo en inglés; `ProductsContext.jsx` gestiona la carga y actualización del catálogo; `utils/imageUrl.js` provee la resolución de imágenes con fallback automático.
+- **Administración de catálogo:** `AdminPanel.jsx` brinda métricas de inventario, filtros combinables por nivel de existencias y ordenamiento de columnas; `ProductForm.jsx` maneja altas/ediciones con medidas compuestas, drag and drop y subida directa a Vercel Blob; `ConfirmDeleteModal.jsx` previene eliminaciones accidentales mediante confirmación segura.
+- **Home y piezas destacadas:** `FeaturedCarousel.jsx` presenta los productos destacados con reel continuo para dispositivos móviles, centrado adaptable en grilla estática cuando no hay overflow y pausa interactiva al interactuar (hover/touch).
+- **Carrito:** `CartContext.jsx` administra el carrito de compras y lo conserva en `localStorage` ante recargas.
+- **`client/public/assets/`** contiene los recursos estáticos que el navegador solicita directamente, incluyendo la imagen de mantenimiento (`Imagen Mantenimiento.png`) para respaldo de errores de carga. La carpeta raíz `assets/` conserva los recursos originales del proyecto.
 - **`docs/`** reúne documentación funcional y de marca. `sprint-01-02-legacy/` es una referencia archivada y no forma parte de la aplicación React actual.
-- **Configuración raíz**: `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
-
+- **Configuración raíz:** `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
 
 ## ✅ Alcance y validación
 
-- Catálogo desde la API, búsqueda, filtros y detalle por ID.
-- Panel y formularios de administración con operaciones CRUD sobre la API.
-- Pruebas del frontend: desde `client/`, ejecutá `npm test -- --watchAll=false`.
+- Catálogo sincronizado desde la API con búsqueda en tiempo real, filtros por categoría y vista detallada por ID.
+- Carrusel de productos destacados adaptable y continuo en la página principal.
+- Panel de administración integral con filtros avanzados de stock, ordenamiento de columnas y confirmación destructiva segura.
+- Formulario de alta y edición de muebles con carga de imágenes a Vercel Blob (incluyendo drag & drop) y especificaciones técnicas estructuradas.
+- Carrito de compras con persistencia local en `localStorage` y cálculo dinámico de totales.
+- Pruebas del frontend: desde `client/`, ejecutá `npm test -- --watchAll=false` (51 pruebas unitarias y de integración pasando).
 - Build de producción: desde `client/`, ejecutá `npm run build`.
 
-El formulario de contacto muestra una confirmación de interfaz y no envía datos a un servicio. El checkout es informativo y no procesa pagos. La aplicación no incluye autenticación de usuarios.
+El formulario de contacto muestra una confirmación de interfaz y no envía datos a un servicio. El checkout es informativo y no procesa pagos.
