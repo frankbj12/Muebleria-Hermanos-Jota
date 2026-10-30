@@ -222,41 +222,22 @@ describe('FeaturedCarousel Component', () => {
     jest.useRealTimers();
   });
 
-  test('en modo celular (< 768px) activa reel continuo y permite arrastrar y congelar al soltar', () => {
-    jest.useFakeTimers();
-
-    const originalInnerWidth = window.innerWidth;
-    window.innerWidth = 390;
-
+  test('cuando los productos no exceden el límite visible se muestran completos sin controles de carrusel', () => {
+    // Si hay 3 productos y caben 4, no debe activar botones de carrusel
+    const threeProducts = mockFeaturedProducts.slice(0, 3);
     render(
       <MemoryRouter>
-        <FeaturedCarousel
-          products={mockFeaturedProducts}
-          mobileFreezeDuration={4000}
-        />
+        <FeaturedCarousel products={threeProducts} />
       </MemoryRouter>
     );
 
-    const container = screen.getByRole('region', { name: /Piezas Destacadas/i });
-    expect(container).toHaveClass('featured-carousel--mobile');
+    expect(screen.getByText('Butaca Mendoza')).toBeInTheDocument();
+    expect(screen.getByText('Mesa Comedor Pampa')).toBeInTheDocument();
+    expect(screen.getByText('Sofá Patagonia')).toBeInTheDocument();
 
-    // Tocar y arrastrar horizontalmente
-    fireEvent.touchStart(container, { touches: [{ clientX: 300, clientY: 100 }] });
-    fireEvent.touchMove(container, { touches: [{ clientX: 220, clientY: 100 }] });
-    fireEvent.touchEnd(container);
-
-    // Se congela durante 4 segundos tras soltar
-    act(() => {
-      jest.advanceTimersByTime(3500);
-    });
-
-    // Pasan los 4 segundos y se reanuda
-    act(() => {
-      jest.advanceTimersByTime(1000);
-    });
-
-    window.innerWidth = originalInnerWidth;
-    jest.useRealTimers();
+    // No debe haber botones de carrusel
+    expect(screen.queryByRole('button', { name: /Ver siguiente pieza destacada/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Ver pieza destacada anterior/i })).not.toBeInTheDocument();
   });
 
   test('muestra estado de carga cuando loading es true', () => {

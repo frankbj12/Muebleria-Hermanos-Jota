@@ -2,25 +2,28 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 
 /**
- * Componente FeaturedCarousel (Carrusel Infinito / Reel Continuo)
- * Carrusel continuo, interactivo y responsivo para las Piezas Destacadas de Hermanos Jota.
- * - Modo Desktop / Tablet (>= 768px):
- *   Avance automático paso a paso con flechas interactivas y dots de paginación.
- *   Se pausa al posar el cursor del mouse (hover) y se reanuda al retirarlo.
- * - Modo Celulares (< 768px):
- *   Desplazamiento horizontal fluido, continuo y constante (estilo reel / portfolio skills).
- *   Si el usuario arrastra o toca la pantalla, se pausa al instante y permite navegar manualmente con el dedo.
- *   Al soltar el dedo, se congela durante unos segundos para permitir observar la pieza y luego
- *   continúa el scrolleo continuo desde esa misma posición sin saltos.
+ * Componente FeaturedCarousel (Piezas Destacadas Responsivo)
+ *
+ * Comportamiento adaptable y sin cortes de tarjetas:
+ * - Desktop (>= 992px): Muestra 4 tarjetas completas que ocupan exactamente el ancho del contenedor.
+ * - Tablet grande (768px - 991px): Muestra 3 tarjetas completas.
+ * - Tablet / Móvil ancho (480px - 767px): Muestra 2 tarjetas completas.
+ * - Móvil (< 480px): Muestra 1 tarjeta completa.
+ *
+ * Regla de activación del carrusel:
+ * - El carrusel interactivo y automático SOLO se activa si la cantidad de productos
+ *   excede el límite visible para el tamaño de pantalla actual (`products.length > visibleCount`).
+ * - Si entran todos los productos (ej. 4 productos en pantalla de 4), se muestran completos
+ *   en grilla estática sin flechas ni desplazamiento innecesario.
+ * - Si exceden el límite, se activa el carrusel infinito paso a paso: siempre aterrizando en
+ *   tarjetas completas alineadas de borde a borde, sin cortes laterales.
  *
  * @param {Object} props
  * @param {Array} props.products - Lista de productos destacados
  * @param {boolean} [props.loading] - Estado de carga
  * @param {string|null} [props.error] - Estado de error
- * @param {boolean} [props.autoPlay=true] - Habilitar avance automático
- * @param {number} [props.autoPlayInterval=3800] - Intervalo en ms para desktop/tablet
- * @param {number} [props.mobileScrollSpeed=35] - Velocidad en px/seg para el scroll continuo en móviles
- * @param {number} [props.mobileFreezeDuration=4500] - Tiempo de congelamiento en ms tras tocar en celular
+ * @param {boolean} [props.autoPlay=true] - Habilitar avance automático cuando hay overflow
+ * @param {number} [props.autoPlayInterval=3800] - Intervalo en ms para autoplay
  */
 function FeaturedCarousel({
   products = [],
@@ -28,47 +31,23 @@ function FeaturedCarousel({
   error = null,
   autoPlay = true,
   autoPlayInterval = 3800,
-  mobileScrollSpeed = 35,
-  mobileFreezeDuration = 4500,
 }) {
   const containerRef = useRef(null);
-  const trackRef = useRef(null);
   const isSlidingRef = useRef(false);
 
   const n = products.length;
 
-  // Triplicamos la lista para crear un bucle infinito continuo [Set 0, Set 1 (original), Set 2]
-  const extendedProducts = n > 1 ? [...products, ...products, ...products] : products;
-
-  // Estado para modo desktop / tablet
-  const [currentIndex, setCurrentIndex] = useState(n > 1 ? n : 0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  // Medición reactiva del ancho disponible del contenedor
   const [containerWidth, setContainerWidth] = useState(1200);
 
-  // Estados de pausa
-  const [isHovered, setIsHovered] = useState(false);
-  const [isDocumentHidden, setIsDocumentHidden] = useState(false);
-
-  // Estados y referencias para el scroll continuo en celulares (< 768px)
-  const [isMobileTouchFrozen, setIsMobileTouchFrozen] = useState(false);
-  const scrollPosRef = useRef(0);
-  const lastTimeRef = useRef(null);
-  const animFrameIdRef = useRef(null);
-  const isDraggingRef = useRef(false);
-  const hasDraggedRef = useRef(false);
-  const touchStartXRef = useRef(0);
-  const touchStartYRef = useRef(0);
-  const lastTouchXRef = useRef(0);
-  const isHorizontalDragRef = useRef(null);
-  const mobileFreezeTimerRef = useRef(null);
-
-  // Medición reactiva del ancho disponible del contenedor
   useEffect(() => {
     const measure = () => {
       if (containerRef.current && containerRef.current.clientWidth > 0) {
         setContainerWidth(containerRef.current.clientWidth);
       } else if (typeof window !== 'undefined' && window.innerWidth > 0) {
-        setContainerWidth(window.innerWidth);
+        // Descontar padding aproximado del contenedor si clientWidth aún no está listo
+        const padding = window.innerWidth >= 1024 ? 80 : 32;
+        setContainerWidth(Math.min(1200, window.innerWidth) - padding);
       }
     };
     measure();
@@ -87,68 +66,65 @@ function FeaturedCarousel({
     };
   }, []);
 
-  // Determinar si nos encontramos en tamaño celular (< 768px)
-  const isMobile = containerWidth > 0 && containerWidth < 768;
-
-  // Actualizar índice inicial de desktop si cambia la cantidad de productos
-  useEffect(() => {
-    if (n > 1 && !isMobile) {
-      setIsTransitioning(false);
-      setCurrentIndex(n);
-    }
-  }, [n, isMobile]);
-
-  // Cálculo de columnas y anchos según viewport
+  // Cálculo exacto de cuántas tarjetas completas caben según el ancho disponible
   const getVisibleCount = (width) => {
-    if (width >= 1150) return 4;
-    if (width >= 850) return 3;
-    if (width >= 560) return 2;
+    if (width >= 960) return 4;
+    if (width >= 720) return 3;
+    if (width >= 480) return 2;
     return 1;
   };
 
   const visibleCount = getVisibleCount(containerWidth);
-  const gap = isMobile ? 16 : (containerWidth < 600 ? 16 : 24);
+  const gap = containerWidth < 720 ? 16 : 24;
 
-  let cardWidth = 280;
-  if (containerWidth > 0) {
-    if (isMobile) {
-      // En celulares (< 768px), ancho tipo tarjeta reel continuo
-      cardWidth = Math.min(320, Math.max(260, Math.floor(containerWidth * 0.78)));
-    } else {
-      cardWidth = Math.floor(
-        (containerWidth - (visibleCount - 1) * gap) / visibleCount
-      );
-    }
-  }
+  // Ancho exacto para que visibleCount tarjetas llenen el 100% del contenedor sin sobrante ni corte
+  const cardWidth = containerWidth > 0
+    ? Math.floor((containerWidth - (visibleCount - 1) * gap) / visibleCount)
+    : 280;
 
-  // Ancho de un conjunto completo de productos originales
-  const singleSetWidth = n * (cardWidth + gap);
+  // El carrusel solo se activa si los productos exceden el límite visible
+  const hasOverflow = n > visibleCount;
 
-  // Sincronizar posición continua al pasar a modo móvil
+  // Triplicamos la lista para crear un bucle infinito continuo [Set 0, Set 1 (original), Set 2]
+  const extendedProducts = hasOverflow ? [...products, ...products, ...products] : products;
+
+  // Iniciar centrado en el Set 1 (los originales)
+  const [currentIndex, setCurrentIndex] = useState(hasOverflow ? n : 0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+
+  // Estados de pausa (hover, táctil, pestaña oculta)
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouchFrozen, setIsTouchFrozen] = useState(false);
+  const [isDocumentHidden, setIsDocumentHidden] = useState(false);
+
+  // Swipe táctil
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const touchDeltaXRef = useRef(0);
+  const touchDeltaYRef = useRef(0);
+  const touchFreezeTimerRef = useRef(null);
+
+  // Reajustar índice si cambia la cantidad o el overflow
   useEffect(() => {
-    if (isMobile && n > 1 && singleSetWidth > 0) {
-      let initialPos = (currentIndex % n) * (cardWidth + gap);
-      if (initialPos >= singleSetWidth) initialPos -= singleSetWidth;
-      scrollPosRef.current = initialPos;
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translate3d(-${initialPos}px, 0px, 0px)`;
-      }
+    if (hasOverflow) {
+      setIsTransitioning(false);
+      setCurrentIndex(n);
+    } else {
+      setIsTransitioning(false);
+      setCurrentIndex(0);
     }
-  }, [isMobile, n, cardWidth, gap, currentIndex, singleSetWidth]);
+  }, [n, hasOverflow]);
 
-  // Limpieza de temporizadores en desmontaje
+  // Limpieza de timer de congelamiento
   useEffect(() => {
     return () => {
-      if (mobileFreezeTimerRef.current) {
-        clearTimeout(mobileFreezeTimerRef.current);
-      }
-      if (animFrameIdRef.current) {
-        cancelAnimationFrame(animFrameIdRef.current);
+      if (touchFreezeTimerRef.current) {
+        clearTimeout(touchFreezeTimerRef.current);
       }
     };
   }, []);
 
-  // Pausar si la pestaña del navegador no está visible
+  // Detección de pestaña oculta para pausar autoplay
   useEffect(() => {
     const handleVisibility = () => {
       setIsDocumentHidden(document.hidden);
@@ -157,158 +133,25 @@ function FeaturedCarousel({
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
-  /* =========================================================================
-     MODO CELULAR: Scrolleo continuo fluido y constante (rAF / Ticker estilo Reel)
-     ========================================================================= */
-  useEffect(() => {
-    if (!isMobile || n <= 1 || !autoPlay) {
-      if (animFrameIdRef.current) {
-        cancelAnimationFrame(animFrameIdRef.current);
-        animFrameIdRef.current = null;
-      }
-      return;
-    }
-
-    const step = (now) => {
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = now;
-      }
-      const dt = (now - lastTimeRef.current) / 1000;
-      lastTimeRef.current = now;
-
-      // Avanzar de manera constante y lineal si no está arrastrando, ni congelado, ni pestaña oculta
-      if (!isDraggingRef.current && !isMobileTouchFrozen && !isDocumentHidden && singleSetWidth > 0) {
-        scrollPosRef.current += mobileScrollSpeed * dt;
-        if (scrollPosRef.current >= singleSetWidth) {
-          scrollPosRef.current -= singleSetWidth;
-        }
-        if (trackRef.current) {
-          trackRef.current.style.transform = `translate3d(-${scrollPosRef.current}px, 0px, 0px)`;
-        }
-      }
-
-      animFrameIdRef.current = requestAnimationFrame(step);
-    };
-
-    lastTimeRef.current = performance.now();
-    animFrameIdRef.current = requestAnimationFrame(step);
-
-    return () => {
-      if (animFrameIdRef.current) {
-        cancelAnimationFrame(animFrameIdRef.current);
-        animFrameIdRef.current = null;
-      }
-      lastTimeRef.current = null;
-    };
-  }, [isMobile, n, autoPlay, mobileScrollSpeed, singleSetWidth, isMobileTouchFrozen, isDocumentHidden]);
-
-  // Gestos táctiles en celulares (< 768px)
-  const handleTouchStart = (e) => {
-    if (!isMobile) return;
-
-    if (mobileFreezeTimerRef.current) {
-      clearTimeout(mobileFreezeTimerRef.current);
-      mobileFreezeTimerRef.current = null;
-    }
-
-    isDraggingRef.current = true;
-    hasDraggedRef.current = false;
-    setIsMobileTouchFrozen(true);
-
-    const touch = e.touches[0];
-    touchStartXRef.current = touch.clientX;
-    touchStartYRef.current = touch.clientY;
-    lastTouchXRef.current = touch.clientX;
-    isHorizontalDragRef.current = null;
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isMobile || !isDraggingRef.current) return;
-
-    const touch = e.touches[0];
-    const diffX = touch.clientX - touchStartXRef.current;
-    const diffY = touch.clientY - touchStartYRef.current;
-
-    // Diferenciar deslizamiento horizontal vs scroll vertical de página
-    if (isHorizontalDragRef.current === null) {
-      if (Math.abs(diffX) > 6 || Math.abs(diffY) > 6) {
-        isHorizontalDragRef.current = Math.abs(diffX) >= Math.abs(diffY);
-      }
-    }
-
-    if (isHorizontalDragRef.current) {
-      const delta = touch.clientX - lastTouchXRef.current;
-      lastTouchXRef.current = touch.clientX;
-
-      if (Math.abs(diffX) > 10) {
-        hasDraggedRef.current = true;
-      }
-
-      scrollPosRef.current -= delta;
-
-      // Wrap suave bidireccional
-      if (singleSetWidth > 0) {
-        while (scrollPosRef.current < 0) {
-          scrollPosRef.current += singleSetWidth;
-        }
-        while (scrollPosRef.current >= singleSetWidth) {
-          scrollPosRef.current -= singleSetWidth;
-        }
-      }
-
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translate3d(-${scrollPosRef.current}px, 0px, 0px)`;
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (!isMobile) return;
-
-    isDraggingRef.current = false;
-
-    // Al soltar el dedo, se congela unos segundos para observar la pieza
-    // y luego continúa scrolleando automáticamente desde la misma posición
-    if (mobileFreezeTimerRef.current) {
-      clearTimeout(mobileFreezeTimerRef.current);
-    }
-    mobileFreezeTimerRef.current = setTimeout(() => {
-      lastTimeRef.current = performance.now();
-      setIsMobileTouchFrozen(false);
-      mobileFreezeTimerRef.current = null;
-    }, mobileFreezeDuration);
-  };
-
-  // Prevenir clics accidentales al arrastrar con el dedo
-  const handleCardClickCapture = (e) => {
-    if (isMobile && hasDraggedRef.current) {
-      e.preventDefault();
-      e.stopPropagation();
-      setTimeout(() => {
-        hasDraggedRef.current = false;
-      }, 50);
-    }
-  };
-
-  /* =========================================================================
-     MODO DESKTOP / TABLET: Avance por pasos y controles interactivos
-     ========================================================================= */
+  // Navegación siguiente
   const handleNext = useCallback(() => {
-    if (n <= 1 || isSlidingRef.current) return;
+    if (!hasOverflow || isSlidingRef.current) return;
     isSlidingRef.current = true;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev + 1);
-  }, [n]);
+  }, [hasOverflow]);
 
+  // Navegación anterior
   const handlePrev = useCallback(() => {
-    if (n <= 1 || isSlidingRef.current) return;
+    if (!hasOverflow || isSlidingRef.current) return;
     isSlidingRef.current = true;
     setIsTransitioning(true);
     setCurrentIndex((prev) => prev - 1);
-  }, [n]);
+  }, [hasOverflow]);
 
+  // Salto directo por clic en dots
   const handleDotClick = (targetDotIndex) => {
-    if (n <= 1 || isSlidingRef.current) return;
+    if (!hasOverflow || isSlidingRef.current) return;
     const currentDot = ((currentIndex % n) + n) % n;
     const diff = targetDotIndex - currentDot;
     if (diff === 0) return;
@@ -318,9 +161,10 @@ function FeaturedCarousel({
     setCurrentIndex((prev) => prev + diff);
   };
 
+  // Reacomodar posición silenciosamente al terminar transición CSS para ciclo infinito
   const handleTransitionEnd = () => {
     isSlidingRef.current = false;
-    if (n <= 1) return;
+    if (!hasOverflow) return;
 
     if (currentIndex >= 2 * n) {
       setIsTransitioning(false);
@@ -331,9 +175,8 @@ function FeaturedCarousel({
     }
   };
 
-  // Re-activar la transición luego del salto silencioso
   useEffect(() => {
-    if (!isTransitioning && !isMobile) {
+    if (!isTransitioning && hasOverflow) {
       const id = requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           setIsTransitioning(true);
@@ -341,27 +184,71 @@ function FeaturedCarousel({
       });
       return () => cancelAnimationFrame(id);
     }
-  }, [isTransitioning, isMobile]);
+  }, [isTransitioning, hasOverflow]);
 
   useEffect(() => {
-    if (isTransitioning && !isMobile) {
+    if (isTransitioning && hasOverflow) {
       const timer = setTimeout(() => {
         isSlidingRef.current = false;
       }, 550);
       return () => clearTimeout(timer);
     }
-  }, [isTransitioning, currentIndex, isMobile]);
+  }, [isTransitioning, currentIndex, hasOverflow]);
 
-  // Autoplay para desktop / tablet (pausa con hover o pestaña oculta)
+  // Autoplay continuo cuando hay overflow y no está pausado
+  const isPaused = isHovered || isTouchFrozen || isDocumentHidden;
+
   useEffect(() => {
-    if (isMobile || !autoPlay || n <= 1 || isHovered || isDocumentHidden) return;
+    if (!hasOverflow || !autoPlay || isPaused) return;
 
     const timer = setInterval(() => {
       handleNext();
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [isMobile, autoPlay, autoPlayInterval, n, isHovered, isDocumentHidden, handleNext]);
+  }, [hasOverflow, autoPlay, autoPlayInterval, isPaused, handleNext]);
+
+  // Gestos táctiles (Swipe)
+  const handleTouchStart = (e) => {
+    if (!hasOverflow) return;
+    if (touchFreezeTimerRef.current) {
+      clearTimeout(touchFreezeTimerRef.current);
+      touchFreezeTimerRef.current = null;
+    }
+    setIsTouchFrozen(true);
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+    touchDeltaXRef.current = 0;
+    touchDeltaYRef.current = 0;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!hasOverflow) return;
+    touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+    touchDeltaYRef.current = e.touches[0].clientY - touchStartYRef.current;
+  };
+
+  const handleTouchEnd = () => {
+    if (!hasOverflow) return;
+    const diffX = touchDeltaXRef.current;
+    const diffY = touchDeltaYRef.current;
+
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX < 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+
+    if (touchFreezeTimerRef.current) {
+      clearTimeout(touchFreezeTimerRef.current);
+    }
+    touchFreezeTimerRef.current = setTimeout(() => {
+      setIsTouchFrozen(false);
+      touchFreezeTimerRef.current = null;
+    }, 4500);
+  };
 
   if (loading) {
     return (
@@ -383,15 +270,48 @@ function FeaturedCarousel({
     return null;
   }
 
+  // Si los productos NO exceden la capacidad de la pantalla, mostrar grilla completa estática sin carrusel
+  if (!hasOverflow) {
+    return (
+      <div
+        ref={containerRef}
+        className="featured-carousel-container"
+        role="region"
+        aria-label="Piezas Destacadas"
+      >
+        <div
+          className="featured-carousel-track"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${visibleCount}, 1fr)`,
+            gap: `${gap}px`,
+            width: '100%',
+          }}
+        >
+          {products.map((product, idx) => (
+            <div
+              key={`static-${product.id ?? product._id ?? idx}`}
+              className="featured-carousel-slide"
+              style={{ width: '100%' }}
+            >
+              <ProductCard product={product} index={idx} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Si los productos EXCEDEN la capacidad visible, activar carrusel infinito sin cortes
   const currentDotIndex = n > 0 ? ((currentIndex % n) + n) % n : 0;
   const offset = currentIndex * (cardWidth + gap);
 
   return (
     <div
       ref={containerRef}
-      className={`featured-carousel-container ${isMobile ? 'featured-carousel--mobile' : ''}`}
+      className="featured-carousel-container"
       role="region"
-      aria-roledescription={isMobile ? 'reel continuo' : 'carrusel infinito'}
+      aria-roledescription="carrusel infinito"
       aria-label="Piezas Destacadas"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -399,58 +319,46 @@ function FeaturedCarousel({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Flecha Anterior (visible solo en desktop/tablet >= 768px) */}
-      {n > 1 && !isMobile && (
-        <button
-          type="button"
-          className="featured-carousel-btn featured-carousel-btn--prev"
-          onClick={handlePrev}
-          aria-label="Ver pieza destacada anterior"
-          title="Pieza anterior"
+      {/* Flecha Anterior (visible en desktop/tablet >= 768px) */}
+      <button
+        type="button"
+        className="featured-carousel-btn featured-carousel-btn--prev"
+        onClick={handlePrev}
+        aria-label="Ver pieza destacada anterior"
+        title="Pieza anterior"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-      )}
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
 
       {/* Viewport del Carrusel */}
       <div className="featured-carousel-viewport">
         <div
-          ref={trackRef}
           className="featured-carousel-track"
-          style={
-            isMobile
-              ? {
-                  transform: `translate3d(-${scrollPosRef.current}px, 0px, 0px)`,
-                  transition: 'none',
-                  gap: `${gap}px`,
-                }
-              : {
-                  transform: `translateX(-${offset}px)`,
-                  transition: isTransitioning
-                    ? 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)'
-                    : 'none',
-                  gap: `${gap}px`,
-                }
-          }
-          onTransitionEnd={isMobile ? undefined : handleTransitionEnd}
-          onClickCapture={handleCardClickCapture}
+          style={{
+            transform: `translateX(-${offset}px)`,
+            transition: isTransitioning
+              ? 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)'
+              : 'none',
+            gap: `${gap}px`,
+          }}
+          onTransitionEnd={handleTransitionEnd}
         >
           {extendedProducts.map((product, idx) => (
             <div
               key={`slide-${product.id ?? product._id}-${idx}`}
               className="featured-carousel-slide"
               style={{ width: `${cardWidth}px`, flex: `0 0 ${cardWidth}px` }}
-              aria-hidden={!isMobile && (idx < currentIndex || idx >= currentIndex + visibleCount)}
+              aria-hidden={idx < currentIndex || idx >= currentIndex + visibleCount}
             >
               <ProductCard product={product} index={idx % n} />
             </div>
@@ -458,51 +366,47 @@ function FeaturedCarousel({
         </div>
       </div>
 
-      {/* Flecha Siguiente (visible solo en desktop/tablet >= 768px) */}
-      {n > 1 && !isMobile && (
-        <button
-          type="button"
-          className="featured-carousel-btn featured-carousel-btn--next"
-          onClick={handleNext}
-          aria-label="Ver siguiente pieza destacada"
-          title="Siguiente pieza"
+      {/* Flecha Siguiente (visible en desktop/tablet >= 768px) */}
+      <button
+        type="button"
+        className="featured-carousel-btn featured-carousel-btn--next"
+        onClick={handleNext}
+        aria-label="Ver siguiente pieza destacada"
+        title="Siguiente pieza"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-      )}
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
 
-      {/* Puntos de Paginación (visibles solo en desktop/tablet >= 768px) */}
-      {n > 1 && !isMobile && (
-        <div
-          className="featured-carousel-dots"
-          role="tablist"
-          aria-label="Paginación de piezas destacadas"
-        >
-          {products.map((p, idx) => (
-            <button
-              key={`dot-${p.id ?? p._id ?? idx}`}
-              type="button"
-              className={`featured-carousel-dot ${
-                idx === currentDotIndex ? 'featured-carousel-dot--active' : ''
-              }`}
-              onClick={() => handleDotClick(idx)}
-              aria-label={`Ir a pieza ${idx + 1}: ${p.name}`}
-              aria-selected={idx === currentDotIndex}
-              role="tab"
-            />
-          ))}
-        </div>
-      )}
+      {/* Paginación con Puntos (Dots) */}
+      <div
+        className="featured-carousel-dots"
+        role="tablist"
+        aria-label="Paginación de piezas destacadas"
+      >
+        {products.map((p, idx) => (
+          <button
+            key={`dot-${p.id ?? p._id ?? idx}`}
+            type="button"
+            className={`featured-carousel-dot ${
+              idx === currentDotIndex ? 'featured-carousel-dot--active' : ''
+            }`}
+            onClick={() => handleDotClick(idx)}
+            aria-label={`Ir a pieza ${idx + 1}: ${p.name}`}
+            aria-selected={idx === currentDotIndex}
+            role="tab"
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -890,33 +890,18 @@ h4 {
 }
 
 /* En celulares / pantallas móviles (< 768px):
-   - Ocultamos flechas y dots para que el foco quede 100% en las tarjetas.
-   - Activamos touch-action: pan-y para un scroll vertical natural sin trabas.
-   - Pista táctil interactiva tipo reel continuo (grab / grabbing). */
+   - Ocultamos flechas para evitar que tapen las tarjetas.
+   - Activamos touch-action: pan-y para un scroll vertical natural sin interferencias. */
 @media (max-width: 767px) {
   .featured-carousel-container {
     touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
   }
 
   .featured-carousel-viewport {
-    padding: 10px 0 18px 0;
-  }
-
-  .featured-carousel-track {
-    cursor: grab;
-  }
-
-  .featured-carousel-track:active {
-    cursor: grabbing;
+    padding: 10px 0 16px 0;
   }
 
   .featured-carousel-btn {
-    display: none !important;
-  }
-
-  .featured-carousel-dots {
     display: none !important;
   }
 }
