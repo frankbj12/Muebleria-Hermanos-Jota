@@ -235,9 +235,12 @@ describe('FeaturedCarousel Component', () => {
     expect(screen.getByText('Mesa Comedor Pampa')).toBeInTheDocument();
     expect(screen.getByText('Sofá Patagonia')).toBeInTheDocument();
 
-    // No debe haber botones de carrusel
+    // No debe haber botones de carrusel y debe estar centrado
     expect(screen.queryByRole('button', { name: /Ver siguiente pieza destacada/i })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Ver pieza destacada anterior/i })).not.toBeInTheDocument();
+
+    const track = document.querySelector('.featured-carousel-track');
+    expect(track).toHaveStyle({ justifyContent: 'center' });
   });
 
   test('muestra estado de carga cuando loading es true', () => {

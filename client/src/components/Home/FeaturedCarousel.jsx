@@ -270,7 +270,7 @@ function FeaturedCarousel({
     return null;
   }
 
-  // Si los productos NO exceden la capacidad de la pantalla, mostrar grilla completa estática sin carrusel
+  // Si los productos NO exceden la capacidad de la pantalla, mostrarlos centrados sin carrusel
   if (!hasOverflow) {
     return (
       <div
@@ -282,8 +282,10 @@ function FeaturedCarousel({
         <div
           className="featured-carousel-track"
           style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${visibleCount}, 1fr)`,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'stretch',
+            flexWrap: 'wrap',
             gap: `${gap}px`,
             width: '100%',
           }}
@@ -292,7 +294,11 @@ function FeaturedCarousel({
             <div
               key={`static-${product.id ?? product._id ?? idx}`}
               className="featured-carousel-slide"
-              style={{ width: '100%' }}
+              style={{
+                width: `${cardWidth}px`,
+                flex: `0 0 ${cardWidth}px`,
+                maxWidth: '100%',
+              }}
             >
               <ProductCard product={product} index={idx} />
             </div>
