@@ -3,6 +3,7 @@ import express from 'express';
 import { connectDB } from './config/db.js';
 import productosRouter from './routes/productos.js';
 import uploadRouter from './routes/upload.js';
+import authRouter from './routes/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 
@@ -54,6 +55,9 @@ app.use((req, res, next) => {
 app.use('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
+
+// Rutas de autenticación (verifyToken + /me)
+app.use('/api/auth', authRouter);
 
 // Rutas de subida de imágenes a la nube (Vercel Blob)
 app.use('/api/upload', uploadRouter);
