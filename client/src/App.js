@@ -19,6 +19,7 @@ import CartPage from './components/Cart/CartPage';
 import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
+import Chatbot from './components/Chatbot/Chatbot';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function AppLayout() {
         </main>
 
         <Footer />
+        <Chatbot />
       </div>
     </>
   );
