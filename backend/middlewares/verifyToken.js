@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { getJwtSecret } from '../config/jwt.js';
 
 /**
  * Middleware de verificación de JWT (Bearer).
@@ -20,10 +21,14 @@ export const verifyToken = (req, res, next) => {
   const token = authHeader.slice(7); // quitar "Bearer "
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, getJwtSecret());
     req.user = payload;
     next();
   } catch (err) {
+    if (err.statusCode === 500) {
+      return next(err);
+    }
+
     return res.status(401).json({ error: 'Token inválido o expirado' });
   }
 };
