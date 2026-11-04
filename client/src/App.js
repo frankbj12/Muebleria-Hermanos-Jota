@@ -20,6 +20,7 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import { AuthProvider } from './context/AuthContext';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import LegalTerms from './components/Legal/LegalTerms';
 import LegalPrivacy from './components/Legal/LegalPrivacy';
@@ -28,20 +29,22 @@ import { RepentanceModalProvider } from './context/RepentanceModalContext';
 
 function App() {
   return (
-    <CartProvider>
-      <ProductsProvider>
-        <RepentanceModalProvider>
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <AppLayout />
-          </BrowserRouter>
-        </RepentanceModalProvider>
-      </ProductsProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <ProductsProvider>
+          <RepentanceModalProvider>
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <AppLayout />
+            </BrowserRouter>
+          </RepentanceModalProvider>
+        </ProductsProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
