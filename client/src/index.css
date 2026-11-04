@@ -596,7 +596,7 @@ h4 {
 .hero-volume-btn {
   position: absolute;
   bottom: var(--space-2xl);
-  right: var(--space-xl);
+  left: var(--space-xl);
   z-index: 4;
   display: inline-flex;
   align-items: center;
@@ -671,7 +671,7 @@ h4 {
 @media (max-width: 768px) {
   .hero-volume-btn {
     bottom: var(--space-xl);
-    right: var(--space-md);
+    left: var(--space-md);
     padding: 0.5rem 0.75rem;
   }
 

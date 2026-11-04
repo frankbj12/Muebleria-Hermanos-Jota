@@ -20,6 +20,7 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import LegalTerms from './components/Legal/LegalTerms';
 import LegalPrivacy from './components/Legal/LegalPrivacy';
 import LegalReturns from './components/Legal/LegalReturns';
@@ -88,6 +89,7 @@ function AppLayout() {
         </main>
 
         <Footer />
+        <WhatsAppButton />
         <Chatbot />
       </div>
     </>
