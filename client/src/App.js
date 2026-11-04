@@ -20,19 +20,26 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import LegalTerms from './components/Legal/LegalTerms';
+import LegalPrivacy from './components/Legal/LegalPrivacy';
+import LegalReturns from './components/Legal/LegalReturns';
+import { RepentanceModalProvider } from './context/RepentanceModalContext';
 
 function App() {
   return (
     <CartProvider>
       <ProductsProvider>
-        <BrowserRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
-          <AppLayout />
-        </BrowserRouter>
+        <RepentanceModalProvider>
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <AppLayout />
+          </BrowserRouter>
+        </RepentanceModalProvider>
       </ProductsProvider>
     </CartProvider>
   );
@@ -74,11 +81,15 @@ function AppLayout() {
               path="/admin/editar-producto/:id"
               element={<ProductForm />}
             />
+            <Route path="/terminos-y-condiciones" element={<LegalTerms />} />
+            <Route path="/politica-de-privacidad" element={<LegalPrivacy />} />
+            <Route path="/cambios-y-devoluciones" element={<LegalReturns />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
 
         <Footer />
+        <WhatsAppButton />
         <Chatbot />
       </div>
     </>
