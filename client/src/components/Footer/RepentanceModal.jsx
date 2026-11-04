@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const REASON_OPTIONS = [
   { value: '', label: 'Seleccioná un motivo...' },
@@ -58,6 +58,23 @@ function RepentanceModal({ isOpen, onClose }) {
     }
   }, [isOpen]);
 
+  const handleClose = useCallback(() => {
+    onClose();
+    // Resetear después de que se oculte
+    setTimeout(() => {
+      setSubmitted(false);
+      setErrors({});
+      setFormData({
+        nombre: '',
+        telefono: '',
+        email: '',
+        numeroOrden: '',
+        motivo: '',
+        comentarios: '',
+      });
+    }, 200);
+  }, [onClose]);
+
   // Manejo de tecla Escape y trampa básica de tabulación
   useEffect(() => {
     if (!isOpen) return;
@@ -93,7 +110,7 @@ function RepentanceModal({ isOpen, onClose }) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, submitted]);
+  }, [isOpen, handleClose]);
 
   // Foco al confirmar el éxito
   useEffect(() => {
@@ -101,23 +118,6 @@ function RepentanceModal({ isOpen, onClose }) {
       successCloseBtnRef.current.focus();
     }
   }, [submitted]);
-
-  const handleClose = () => {
-    onClose();
-    // Resetear después de que se oculte
-    setTimeout(() => {
-      setSubmitted(false);
-      setErrors({});
-      setFormData({
-        nombre: '',
-        telefono: '',
-        email: '',
-        numeroOrden: '',
-        motivo: '',
-        comentarios: '',
-      });
-    }, 200);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
