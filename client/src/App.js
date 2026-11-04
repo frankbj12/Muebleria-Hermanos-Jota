@@ -26,6 +26,8 @@ import LegalTerms from './components/Legal/LegalTerms';
 import LegalPrivacy from './components/Legal/LegalPrivacy';
 import LegalReturns from './components/Legal/LegalReturns';
 import { RepentanceModalProvider } from './context/RepentanceModalContext';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import Login from './components/Auth/Login';
 
 function App() {
   return (
@@ -78,11 +80,30 @@ function AppLayout() {
             <Route path="/productos/:id" element={<ProductDetailRoute />} />
             <Route path="/contacto" element={<ContactForm />} />
             <Route path="/carrito" element={<CartPage />} />
-            <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/admin/crear-producto" element={<ProductForm />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/crear-producto"
+              element={
+                <ProtectedRoute adminOnly>
+                  <ProductForm />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin/editar-producto/:id"
-              element={<ProductForm />}
+              element={
+                <ProtectedRoute adminOnly>
+                  <ProductForm />
+                </ProtectedRoute>
+              }
             />
             <Route path="/terminos-y-condiciones" element={<LegalTerms />} />
             <Route path="/politica-de-privacidad" element={<LegalPrivacy />} />

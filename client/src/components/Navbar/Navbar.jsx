@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 
 function Navbar({ cartCount: cartCountProp }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const cartContext = useContext(CartContext);
+  const { user, isAuthenticated, logout } = useAuth();
   const cartCount =
     cartCountProp !== undefined ? cartCountProp : (cartContext?.cartCount ?? 0);
 
@@ -28,6 +31,12 @@ function Navbar({ cartCount: cartCountProp }) {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/', { replace: true });
+    setIsMenuOpen(false);
   };
 
   return (
@@ -66,6 +75,27 @@ function Navbar({ cartCount: cartCountProp }) {
                 Contacto
               </NavLink>
             </li>
+            {isAuthenticated && user?.role === 'admin' && (
+              <li>
+                <Link to="/admin" className="nav-link">
+                  Administración
+                </Link>
+              </li>
+            )}
+            {isAuthenticated ? (
+              <li className="nav-auth-item">
+                <span>{user?.name || user?.email}</span>
+                <button type="button" className="nav-auth-button" onClick={handleLogout}>
+                  Cerrar sesión
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login" className="nav-auth-button">
+                  Iniciar sesión
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
 
