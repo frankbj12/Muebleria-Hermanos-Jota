@@ -35,8 +35,10 @@ describe('Navbar', () => {
 
     renderNavbar();
 
-    expect(screen.getByRole('link', { name: 'Iniciar sesión' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Cerrar sesión' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ingresar/i })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Cerrar sesión' })
+    ).not.toBeInTheDocument();
   });
 
   it('muestra el usuario y permite cerrar sesion', () => {
