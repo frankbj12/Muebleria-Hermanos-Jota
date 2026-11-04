@@ -357,6 +357,34 @@ h4 {
   z-index: 10;
 }
 
+.nav-auth-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.nav-user {
+  color: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.nav-auth-button {
+  border: 1px solid currentColor;
+  padding: 0.55rem 0.8rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+}
+
+.nav-auth-button:hover,
+.nav-auth-button:focus-visible {
+  opacity: 0.75;
+}
+
 .cart-link {
   background-color: transparent;
   position: relative;
