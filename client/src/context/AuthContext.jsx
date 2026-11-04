@@ -6,38 +6,14 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import {
+  AUTH_STORAGE_KEY,
+  UNAUTHORIZED_EVENT,
+  apiRequest,
+} from '../services/apiClient';
 
 export const AuthContext = createContext(null);
-
-export const AUTH_STORAGE_KEY = 'hermanos-jota-auth';
-export const UNAUTHORIZED_EVENT = 'hermanos-jota:unauthorized';
-
-function getApiBaseUrl() {
-  const configuredUrl = process.env.REACT_APP_API_URL?.replace(/\/+$/, '');
-  return configuredUrl || 'http://localhost:5000';
-}
-
-async function parseResponse(response) {
-  const contentType = response.headers.get('content-type') || '';
-  const data = contentType.includes('application/json')
-    ? await response.json()
-    : null;
-
-  if (!response.ok) {
-    const error = new Error(
-      data?.error || data?.message || `Error en la API: ${response.status}`
-    );
-    error.status = response.status;
-    throw error;
-  }
-
-  return data;
-}
-
-async function authRequest(path, options = {}) {
-  const response = await fetch(`${getApiBaseUrl()}${path}`, options);
-  return parseResponse(response);
-}
+export { AUTH_STORAGE_KEY, UNAUTHORIZED_EVENT };
 
 function readStoredSession() {
   try {
@@ -90,7 +66,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const data = await authRequest('/api/auth/me', {
+      const data = await apiRequest('/api/auth/me', {
         headers: { Authorization: `Bearer ${storedSession.token}` },
       });
       persistSession(data.user ?? data, storedSession.token);
@@ -129,7 +105,7 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(
     async (credentials) => {
-      const data = await authRequest('/api/auth/login', {
+      const data = await apiRequest('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -141,7 +117,7 @@ export function AuthProvider({ children }) {
 
   const register = useCallback(
     async (details) => {
-      const data = await authRequest('/api/auth/register', {
+      const data = await apiRequest('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(details),

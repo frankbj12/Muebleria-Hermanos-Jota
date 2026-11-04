@@ -4,6 +4,7 @@ import { useProducts } from '../../context/ProductsContext';
 import { useToast } from '../../context/ToastContext';
 import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
+import { apiRequest } from '../../services/apiClient';
 
 const CATEGORIES = [
   { value: 'living', label: 'Living & Sala' },
@@ -249,13 +250,8 @@ function ProductForm() {
   const fetchBlobImages = async () => {
     setLoadingBlobs(true);
     try {
-      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
-      const res = await fetch(`${cleanApiUrl}/api/upload`);
-      if (res.ok) {
-        const data = await res.json();
-        setBlobImages(data.blobs || []);
-      }
+      const data = await apiRequest('/api/upload');
+      setBlobImages(data.blobs || []);
     } catch (err) {
       console.error('Error al cargar imágenes de Vercel Blob:', err);
     } finally {
@@ -502,22 +498,10 @@ function ProductForm() {
       const uploadData = new FormData();
       uploadData.append('image', file);
 
-      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
-
-      const response = await fetch(`${cleanApiUrl}/api/upload`, {
+      const data = await apiRequest('/api/upload', {
         method: 'POST',
         body: uploadData,
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.error || 'Error al procesar la subida de la imagen.'
-        );
-      }
-
-      const data = await response.json();
 
       // Guardamos la URL pública definitiva de Vercel Blob
       setFormData((prev) => ({ ...prev, image: data.url }));
@@ -602,20 +586,11 @@ function ProductForm() {
     if (!blobToDelete) return;
     setIsDeletingBlob(true);
     try {
-      const rawApiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const cleanApiUrl = rawApiUrl.replace(/\/$/, '');
-      const response = await fetch(`${cleanApiUrl}/api/upload`, {
+      await apiRequest('/api/upload', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: blobToDelete.url }),
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.error || 'Error al eliminar la imagen de Vercel Blob.'
-        );
-      }
 
       setBlobImages((prev) => prev.filter((b) => b.url !== blobToDelete.url));
 
