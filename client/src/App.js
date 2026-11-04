@@ -20,6 +20,7 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+<<<<<<< HEAD
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -27,6 +28,19 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <ProductsProvider>
+=======
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
+import LegalTerms from './components/Legal/LegalTerms';
+import LegalPrivacy from './components/Legal/LegalPrivacy';
+import LegalReturns from './components/Legal/LegalReturns';
+import { RepentanceModalProvider } from './context/RepentanceModalContext';
+
+function App() {
+  return (
+    <CartProvider>
+      <ProductsProvider>
+        <RepentanceModalProvider>
+>>>>>>> origin/integracion/sprint-07-08
           <BrowserRouter
             future={{
               v7_startTransition: true,
@@ -35,9 +49,15 @@ function App() {
           >
             <AppLayout />
           </BrowserRouter>
+<<<<<<< HEAD
         </ProductsProvider>
       </CartProvider>
     </AuthProvider>
+=======
+        </RepentanceModalProvider>
+      </ProductsProvider>
+    </CartProvider>
+>>>>>>> origin/integracion/sprint-07-08
   );
 }
 
@@ -77,11 +97,15 @@ function AppLayout() {
               path="/admin/editar-producto/:id"
               element={<ProductForm />}
             />
+            <Route path="/terminos-y-condiciones" element={<LegalTerms />} />
+            <Route path="/politica-de-privacidad" element={<LegalPrivacy />} />
+            <Route path="/cambios-y-devoluciones" element={<LegalReturns />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
 
         <Footer />
+        <WhatsAppButton />
         <Chatbot />
       </div>
     </>
