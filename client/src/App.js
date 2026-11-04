@@ -20,6 +20,7 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 
 function App() {
   return (
@@ -79,6 +80,7 @@ function AppLayout() {
         </main>
 
         <Footer />
+        <WhatsAppButton />
         <Chatbot />
       </div>
     </>

@@ -323,7 +323,7 @@ h4 {
   transition: color var(--transition-fast);
 }
 
-.site-header.home-page:not(.scrolled){
+.site-header.home-page:not(.scrolled) {
   color: var(--negro);
 }
 
@@ -596,7 +596,7 @@ h4 {
 .hero-volume-btn {
   position: absolute;
   bottom: var(--space-2xl);
-  right: var(--space-xl);
+  left: var(--space-xl);
   z-index: 4;
   display: inline-flex;
   align-items: center;
@@ -671,7 +671,7 @@ h4 {
 @media (max-width: 768px) {
   .hero-volume-btn {
     bottom: var(--space-xl);
-    right: var(--space-md);
+    left: var(--space-md);
     padding: 0.5rem 0.75rem;
   }
 
@@ -2534,8 +2534,16 @@ h4 {
   padding-bottom: var(--space-4xl);
   background-color: var(--alabastro-light);
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(245, 230, 211, 0.6) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(212, 164, 55, 0.06) 0%, transparent 40%);
+    radial-gradient(
+      circle at 10% 20%,
+      rgba(245, 230, 211, 0.6) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(212, 164, 55, 0.06) 0%,
+      transparent 40%
+    );
   min-height: 100vh;
 }
 
@@ -2663,10 +2671,22 @@ h4 {
   background-color: var(--card-accent, var(--siena));
 }
 
-.admin-metric-card--total { --card-accent: var(--siena); --active-bg: #faf4ed; }
-.admin-metric-card--success { --card-accent: var(--salvia); --active-bg: #f4f8f2; }
-.admin-metric-card--warning { --card-accent: var(--oro); --active-bg: #fdfaf0; }
-.admin-metric-card--danger { --card-accent: var(--rosa); --active-bg: #faf0ee; }
+.admin-metric-card--total {
+  --card-accent: var(--siena);
+  --active-bg: #faf4ed;
+}
+.admin-metric-card--success {
+  --card-accent: var(--salvia);
+  --active-bg: #f4f8f2;
+}
+.admin-metric-card--warning {
+  --card-accent: var(--oro);
+  --active-bg: #fdfaf0;
+}
+.admin-metric-card--danger {
+  --card-accent: var(--rosa);
+  --active-bg: #faf0ee;
+}
 
 .admin-metric-card:hover {
   transform: translateY(-4px);
@@ -2677,7 +2697,9 @@ h4 {
 .admin-metric-card--active {
   background-color: var(--active-bg, #faf6f0) !important;
   border-color: var(--card-accent, var(--siena)) !important;
-  box-shadow: 0 0 0 2px var(--card-accent, var(--siena)), 0 8px 24px rgba(59, 36, 20, 0.08) !important;
+  box-shadow:
+    0 0 0 2px var(--card-accent, var(--siena)),
+    0 8px 24px rgba(59, 36, 20, 0.08) !important;
   transform: translateY(-2px);
 }
 
@@ -2733,9 +2755,15 @@ h4 {
   margin-bottom: 4px;
 }
 
-.admin-metric-value--success { color: var(--salvia-dark); }
-.admin-metric-value--warning { color: #9c7318; }
-.admin-metric-value--danger { color: #a14337; }
+.admin-metric-value--success {
+  color: var(--salvia-dark);
+}
+.admin-metric-value--warning {
+  color: #9c7318;
+}
+.admin-metric-value--danger {
+  color: #a14337;
+}
 
 .admin-metric-hint {
   font-size: var(--fs-xs);
@@ -2950,7 +2978,9 @@ h4 {
 }
 
 .admin-sort-icon {
-  transition: transform var(--transition-fast), color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .admin-sort-icon--inactive {
@@ -3779,7 +3809,9 @@ h4 {
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: 8px 12px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .admin-dimensions-row:focus-within {
@@ -4039,7 +4071,9 @@ h4 {
   border: 1px solid rgba(160, 82, 45, 0.12);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .admin-preview-img-wrapper {
@@ -4319,7 +4353,9 @@ h4 {
   cursor: pointer;
   padding: 0;
   border-radius: 8px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .admin-modal-close-btn:hover:not(:disabled) {

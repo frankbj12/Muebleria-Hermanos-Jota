@@ -1,0 +1,113 @@
+/* =============================================
+   HERMANOS JOTA — BOTÓN FLOTANTE WHATSAPP
+   Acceso directo e independiente para atención personalizada
+   ============================================= */
+
+.hj-whatsapp-fab {
+  position: fixed;
+  bottom: 94px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.38);
+  text-decoration: none;
+  z-index: 998;
+  transition:
+    transform var(--transition-fast, 200ms ease),
+    background-color var(--transition-fast, 200ms ease),
+    box-shadow var(--transition-fast, 200ms ease),
+    opacity var(--transition-fast, 200ms ease),
+    visibility var(--transition-fast, 200ms ease);
+}
+
+.hj-whatsapp-fab:hover {
+  background-color: #20ba59;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.48);
+}
+
+.hj-whatsapp-fab:focus-visible {
+  outline: 3px solid #25d366;
+  outline-offset: 3px;
+}
+
+.hj-whatsapp-fab svg {
+  width: 32px;
+  height: 32px;
+  fill: currentColor;
+}
+
+/* Tooltip emergente al pasar el cursor o hacer foco */
+.hj-whatsapp-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  background-color: var(--negro, #3b2414);
+  color: var(--blanco, #ffffff);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(6px);
+  transition:
+    opacity var(--transition-fast, 200ms ease),
+    transform var(--transition-fast, 200ms ease);
+  box-shadow: 0 4px 12px rgba(59, 36, 20, 0.18);
+}
+
+.hj-whatsapp-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  border-width: 5px 0 5px 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--negro, #3b2414);
+}
+
+.hj-whatsapp-fab:hover .hj-whatsapp-tooltip,
+.hj-whatsapp-fab:focus-visible .hj-whatsapp-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Ocultar suavemente cuando la ventana del chatbot esté abierta para evitar superposiciones */
+body:has(#hj-chatbot-window) .hj-whatsapp-fab {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85);
+  visibility: hidden;
+}
+
+/* =============================================
+   RESPONSIVE DESIGN (MOBILE-FIRST ADAPTATIONS)
+   ============================================= */
+
+@media (max-width: 480px) {
+  .hj-whatsapp-fab {
+    bottom: 78px;
+    right: 18px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .hj-whatsapp-fab svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hj-whatsapp-tooltip {
+    display: none;
+  }
+}
