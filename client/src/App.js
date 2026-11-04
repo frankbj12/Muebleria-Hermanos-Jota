@@ -20,15 +20,7 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
-<<<<<<< HEAD
 import { AuthProvider } from './context/AuthContext';
-
-function App() {
-  return (
-    <AuthProvider>
-      <CartProvider>
-        <ProductsProvider>
-=======
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import LegalTerms from './components/Legal/LegalTerms';
 import LegalPrivacy from './components/Legal/LegalPrivacy';
@@ -37,27 +29,22 @@ import { RepentanceModalProvider } from './context/RepentanceModalContext';
 
 function App() {
   return (
-    <CartProvider>
-      <ProductsProvider>
-        <RepentanceModalProvider>
->>>>>>> origin/integracion/sprint-07-08
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <AppLayout />
-          </BrowserRouter>
-<<<<<<< HEAD
+    <AuthProvider>
+      <CartProvider>
+        <ProductsProvider>
+          <RepentanceModalProvider>
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <AppLayout />
+            </BrowserRouter>
+          </RepentanceModalProvider>
         </ProductsProvider>
       </CartProvider>
     </AuthProvider>
-=======
-        </RepentanceModalProvider>
-      </ProductsProvider>
-    </CartProvider>
->>>>>>> origin/integracion/sprint-07-08
   );
 }
 
