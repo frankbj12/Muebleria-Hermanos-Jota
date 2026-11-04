@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import RepentanceModal from './RepentanceModal';
+import { useRepentanceModal } from '../../context/RepentanceModalContext';
 
 function Footer() {
+  const modalContext = useRepentanceModal();
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+
+  // Funciona con o sin RepentanceModalProvider en el árbol
+  const isContextAvailable = modalContext && modalContext.openRepentanceModal;
+  const isModalOpen = isContextAvailable ? modalContext.isOpen : localIsOpen;
+
+  const handleOpen = () => {
+    if (isContextAvailable) {
+      modalContext.openRepentanceModal();
+    } else {
+      setLocalIsOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    if (isContextAvailable) {
+      modalContext.closeRepentanceModal();
+    } else {
+      setLocalIsOpen(false);
+    }
+  };
+
   return (
     <footer className="site-footer" id="site-footer">
       <div className="container">
@@ -30,6 +55,46 @@ function Footer() {
               </li>
               <li>
                 <Link to="/contacto">Contacto</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-legal">
+            <h4>Legales</h4>
+            <ul>
+              <li>
+                <Link to="/terminos-y-condiciones">Términos y condiciones</Link>
+              </li>
+              <li>
+                <Link to="/politica-de-privacidad">Política de privacidad</Link>
+              </li>
+              <li>
+                <Link to="/cambios-y-devoluciones">
+                  Política de cambios y devoluciones
+                </Link>
+              </li>
+              <li className="footer-repentance-item">
+                <button
+                  type="button"
+                  className="footer-repentance-btn"
+                  onClick={handleOpen}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                  </svg>
+                  Botón de arrepentimiento
+                </button>
               </li>
             </ul>
           </div>
@@ -104,6 +169,8 @@ function Footer() {
           <p>© 2026 Hermanos Jota. Todos los derechos reservados.</p>
         </div>
       </div>
+
+      <RepentanceModal isOpen={isModalOpen} onClose={handleClose} />
     </footer>
   );
 }
