@@ -20,21 +20,24 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <CartProvider>
-      <ProductsProvider>
-        <BrowserRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true,
-          }}
-        >
-          <AppLayout />
-        </BrowserRouter>
-      </ProductsProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <ProductsProvider>
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <AppLayout />
+          </BrowserRouter>
+        </ProductsProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
