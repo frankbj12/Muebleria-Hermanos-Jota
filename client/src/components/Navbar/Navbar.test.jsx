@@ -54,7 +54,6 @@ describe('Navbar', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }));
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
-
   it('oculta Administración a un usuario común', () => {
     mockAuthState = {
       user: { name: 'Franco', role: 'user' },
