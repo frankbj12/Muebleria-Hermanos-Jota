@@ -26,7 +26,7 @@ describe('Navbar', () => {
     mockLogout.mockReset();
   });
 
-  it('muestra iniciar sesion cuando no existe una sesion', () => {
+  it('muestra ingresar cuando no existe una sesion', () => {
     mockAuthState = {
       user: null,
       isAuthenticated: false,
@@ -53,5 +53,32 @@ describe('Navbar', () => {
     expect(screen.getByText('Franco Alegre')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }));
     expect(mockLogout).toHaveBeenCalledTimes(1);
+  });
+  it('oculta Administración a un usuario común', () => {
+    mockAuthState = {
+      user: { name: 'Franco', role: 'user' },
+      isAuthenticated: true,
+      logout: mockLogout,
+    };
+
+    renderNavbar();
+
+    expect(
+      screen.queryByRole('link', { name: 'Administración' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('muestra Administración a un administrador', () => {
+    mockAuthState = {
+      user: { name: 'Admin', role: 'admin' },
+      isAuthenticated: true,
+      logout: mockLogout,
+    };
+
+    renderNavbar();
+
+    expect(
+      screen.getByRole('link', { name: 'Administración' })
+    ).toBeInTheDocument();
   });
 });

@@ -75,6 +75,13 @@ function Navbar({ cartCount: cartCountProp }) {
                 Contacto
               </NavLink>
             </li>
+            {isAuthenticated && user?.role === 'admin' && (
+              <li>
+                <Link to="/admin" className="nav-link">
+                  Administración
+                </Link>
+              </li>
+            )}
             {isAuthenticated ? (
               <li className="nav-auth-item">
                 <div className="nav-user-widget">
