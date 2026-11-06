@@ -35,8 +35,8 @@ function Navbar({ cartCount: cartCountProp }) {
 
   const handleLogout = () => {
     logout();
-    navigate('/', { replace: true });
     setIsMenuOpen(false);
+    navigate('/', { replace: true });
   };
 
   return (
@@ -84,15 +84,61 @@ function Navbar({ cartCount: cartCountProp }) {
             )}
             {isAuthenticated ? (
               <li className="nav-auth-item">
-                <span>{user?.name || user?.email}</span>
-                <button type="button" className="nav-auth-button" onClick={handleLogout}>
-                  Cerrar sesión
-                </button>
+                <div className="nav-user-widget">
+                  <div className="nav-user-avatar" aria-hidden="true">
+                    {(user?.name || user?.email || 'U')[0].toUpperCase()}
+                  </div>
+                  <div className="nav-user-info">
+                    <span className="nav-user-name">
+                      {user?.name || user?.email || 'Mi cuenta'}
+                    </span>
+                    {user?.role === 'admin' && (
+                      <span className="nav-user-badge">Admin</span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="nav-logout-button"
+                    onClick={handleLogout}
+                    aria-label="Cerrar sesión"
+                    title="Cerrar sesión"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <polyline points="16 17 21 12 16 7" />
+                      <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                  </button>
+                </div>
               </li>
             ) : (
-              <li>
-                <Link to="/login" className="nav-auth-button">
-                  Iniciar sesión
+              <li className="nav-auth-item">
+                <Link to="/login" className="nav-login-button">
+                  <svg
+                    width="23"
+                    height="23"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="7" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                  </svg>
+                  Ingresar
                 </Link>
               </li>
             )}
