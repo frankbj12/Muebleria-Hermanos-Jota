@@ -325,7 +325,7 @@ describe('RegisterPage', () => {
     expect(screen.getByLabelText(/nombre y apellido/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
     expect(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i)
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i)
     ).toBeInTheDocument();
     expect(screen.getByLabelText(/confirmar contraseña/i)).toBeInTheDocument();
     expect(
@@ -350,13 +350,13 @@ describe('RegisterPage', () => {
       target: { value: 'lu@test.com' },
     });
     fireEvent.change(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i),
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i),
       {
-        target: { value: '123456' },
+        target: { value: 'Password123!' },
       }
     );
     fireEvent.change(screen.getByLabelText(/confirmar contraseña/i), {
-      target: { value: '654321' },
+      target: { value: 'Different123!' },
     });
 
     fireEvent.click(screen.getByRole('button', { name: /registrarme/i }));
@@ -370,7 +370,7 @@ describe('RegisterPage', () => {
     expect(mockRegister).not.toHaveBeenCalled();
   });
 
-  it('valida contraseña menor a 6 caracteres', async () => {
+  it('valida contraseña menor a 8 caracteres', async () => {
     render(
       <MemoryRouter>
         <RegisterPage />
@@ -384,7 +384,7 @@ describe('RegisterPage', () => {
       target: { value: 'lucas@test.com' },
     });
     fireEvent.change(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i),
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i),
       {
         target: { value: '123' },
       }
@@ -396,7 +396,7 @@ describe('RegisterPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /registrarme/i }));
 
     expect(
-      await screen.findByText('La contraseña debe tener al menos 6 caracteres.')
+      await screen.findByText('La contraseña debe tener al menos 8 caracteres.')
     ).toBeInTheDocument();
     expect(mockRegister).not.toHaveBeenCalled();
   });
@@ -411,7 +411,7 @@ describe('RegisterPage', () => {
     const nameInput = screen.getByLabelText(/nombre y apellido/i);
     const emailInput = screen.getByLabelText(/correo electrónico/i);
     const passwordInput = screen.getByLabelText(
-      /contraseña \(mínimo 6 caracteres\)/i
+      /contraseña \(mínimo 8 caracteres\)/i
     );
     const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
     const submitBtn = screen.getByRole('button', { name: /registrarme/i });
@@ -419,7 +419,7 @@ describe('RegisterPage', () => {
     fireEvent.change(nameInput, { target: { value: 'Lucas Gómez' } });
     fireEvent.change(emailInput, { target: { value: 'lucas@test.com' } });
 
-    // Sin mayúsculas (solo minúsculas, números y símbolos)
+    // Sin mayúsculas (solo minúsculas, números y símbolos, 8 chars)
     fireEvent.change(passwordInput, { target: { value: 'abcdef1!' } });
     fireEvent.change(confirmInput, { target: { value: 'abcdef1!' } });
     fireEvent.click(submitBtn);
@@ -429,7 +429,7 @@ describe('RegisterPage', () => {
       )
     ).toBeInTheDocument();
 
-    // Sin minúsculas (solo mayúsculas, números y símbolos)
+    // Sin minúsculas (solo mayúsculas, números y símbolos, 8 chars)
     fireEvent.change(passwordInput, { target: { value: 'ABCDEF1!' } });
     fireEvent.change(confirmInput, { target: { value: 'ABCDEF1!' } });
     fireEvent.click(submitBtn);
@@ -439,17 +439,17 @@ describe('RegisterPage', () => {
       )
     ).toBeInTheDocument();
 
-    // Sin números (solo mayúsculas, minúsculas y símbolos)
-    fireEvent.change(passwordInput, { target: { value: 'Abcdef!' } });
-    fireEvent.change(confirmInput, { target: { value: 'Abcdef!' } });
+    // Sin números (solo mayúsculas, minúsculas y símbolos, 8 chars)
+    fireEvent.change(passwordInput, { target: { value: 'Abcdefg!' } });
+    fireEvent.change(confirmInput, { target: { value: 'Abcdefg!' } });
     fireEvent.click(submitBtn);
     expect(
       await screen.findByText('La contraseña debe incluir al menos un número.')
     ).toBeInTheDocument();
 
-    // Sin caracteres especiales (solo mayúsculas, minúsculas y números)
-    fireEvent.change(passwordInput, { target: { value: 'Abcdef1' } });
-    fireEvent.change(confirmInput, { target: { value: 'Abcdef1' } });
+    // Sin caracteres especiales (solo mayúsculas, minúsculas y números, 8 chars)
+    fireEvent.change(passwordInput, { target: { value: 'Abcdefg1' } });
+    fireEvent.change(confirmInput, { target: { value: 'Abcdefg1' } });
     fireEvent.click(submitBtn);
     expect(
       await screen.findByText(
@@ -478,7 +478,7 @@ describe('RegisterPage', () => {
       target: { value: 'lucas@test.com' },
     });
     fireEvent.change(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i),
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i),
       {
         target: { value: 'Mi Mueble Favorito 2026!' },
       }
@@ -519,7 +519,7 @@ describe('RegisterPage', () => {
       target: { value: 'lucas@test.com' },
     });
     fireEvent.change(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i),
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i),
       {
         target: { value: 'Secreto123!' },
       }
@@ -562,7 +562,7 @@ describe('RegisterPage', () => {
       target: { value: 'lucas@test.com' },
     });
     fireEvent.change(
-      screen.getByLabelText(/contraseña \(mínimo 6 caracteres\)/i),
+      screen.getByLabelText(/contraseña \(mínimo 8 caracteres\)/i),
       {
         target: { value: 'Secreto123!' },
       }
@@ -587,7 +587,7 @@ describe('RegisterPage', () => {
     );
 
     const passwordInput = screen.getByLabelText(
-      /contraseña \(mínimo 6 caracteres\)/i
+      /contraseña \(mínimo 8 caracteres\)/i
     );
     const confirmInput = screen.getByLabelText(/confirmar contraseña/i);
 

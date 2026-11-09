@@ -22,7 +22,7 @@ function RegisterPage({ onRegisterSuccess }) {
   const auth = useAuth();
 
   const passwordChecks = {
-    min: formData.password.length >= 6,
+    min: formData.password.length >= 8,
     upper: /[A-Z]/.test(formData.password),
     lower: /[a-z]/.test(formData.password),
     number: /\d/.test(formData.password),
@@ -48,7 +48,7 @@ function RegisterPage({ onRegisterSuccess }) {
     if (!formData.password) {
       errors.password = 'La contraseña es requerida.';
     } else if (!passwordChecks.min) {
-      errors.password = 'La contraseña debe tener al menos 6 caracteres.';
+      errors.password = 'La contraseña debe tener al menos 8 caracteres.';
     } else if (!passwordChecks.upper) {
       errors.password =
         'La contraseña debe incluir al menos una letra mayúscula.';
@@ -207,7 +207,7 @@ function RegisterPage({ onRegisterSuccess }) {
 
           <div className="auth-field">
             <label className="auth-label" htmlFor="register-password">
-              Contraseña (mínimo 6 caracteres)
+              Contraseña (mínimo 8 caracteres)
             </label>
             <div className="auth-input-wrapper">
               <input
@@ -286,7 +286,7 @@ function RegisterPage({ onRegisterSuccess }) {
                   <span className="req-icon" aria-hidden="true">
                     {passwordChecks.min ? '✓' : '•'}
                   </span>
-                  Mínimo 6 caracteres
+                  Mínimo 8 caracteres
                 </li>
                 <li
                   className={passwordChecks.upper ? 'req-met' : 'req-pending'}
