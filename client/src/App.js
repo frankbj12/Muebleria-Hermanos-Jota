@@ -31,6 +31,7 @@ import LoginPage from './components/Auth/LoginPage';
 import RegisterPage from './components/Auth/RegisterPage';
 import ProfilePage from './components/User/ProfilePage';
 import OrdersPage from './components/Orders/OrdersPage';
+import DevUserSwitcher from './components/DevTools/DevUserSwitcher';
 
 function App() {
   return (
@@ -125,6 +126,7 @@ function AppLayout() {
         <Footer />
         <WhatsAppButton />
         <Chatbot />
+        <DevUserSwitcher />
       </div>
     </>
   );

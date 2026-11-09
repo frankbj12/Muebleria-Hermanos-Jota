@@ -23,7 +23,8 @@ function readStoredSession() {
     const session = JSON.parse(storedSession);
     return {
       token: typeof session.token === 'string' ? session.token : null,
-      user: session.user && typeof session.user === 'object' ? session.user : null,
+      user:
+        session.user && typeof session.user === 'object' ? session.user : null,
     };
   } catch (error) {
     console.error('No se pudo recuperar la sesion guardada:', error);
@@ -65,6 +66,12 @@ export function AuthProvider({ children }) {
       return;
     }
 
+    // Si es un token de desarrollo / simulación, omitir validación contra la API
+    if (storedSession.token.startsWith('mock-')) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const data = await apiRequest('/api/auth/me', {
         headers: { Authorization: `Bearer ${storedSession.token}` },
@@ -93,7 +100,9 @@ export function AuthProvider({ children }) {
   const completeAuthentication = useCallback(
     (data) => {
       if (!data?.token || !data?.user) {
-        throw new Error('La API devolvio una respuesta de autenticacion invalida.');
+        throw new Error(
+          'La API devolvio una respuesta de autenticacion invalida.'
+        );
       }
 
       persistSession(data.user, data.token);
@@ -127,6 +136,43 @@ export function AuthProvider({ children }) {
     [completeAuthentication]
   );
 
+  /**
+   * Cambia rápidamente el usuario activo para desarrollo / testing sin depender de la API.
+   * Acepta 'guest', 'user', 'admin' o un objeto de usuario personalizado.
+   */
+  const switchUser = useCallback(
+    (target) => {
+      if (!target || target === 'guest') {
+        persistSession(null, null);
+        setLoading(false);
+        return;
+      }
+
+      if (typeof target === 'string') {
+        const mockUsers = {
+          admin: {
+            id: 'dev-admin-id',
+            name: 'Administrador Jota',
+            email: 'admin@hermanosjota.com',
+            role: 'admin',
+          },
+          user: {
+            id: 'dev-user-id',
+            name: 'Cliente Demo',
+            email: 'cliente@hermanosjota.com',
+            role: 'user',
+          },
+        };
+        const selected = mockUsers[target] || mockUsers.user;
+        persistSession(selected, `mock-${selected.role}-token`);
+      } else {
+        persistSession(target, `mock-${target.role || 'user'}-token`);
+      }
+      setLoading(false);
+    },
+    [persistSession]
+  );
+
   const value = useMemo(
     () => ({
       user,
@@ -135,9 +181,10 @@ export function AuthProvider({ children }) {
       login,
       register,
       logout,
+      switchUser,
       isAuthenticated: Boolean(user && token),
     }),
-    [user, token, loading, login, register, logout]
+    [user, token, loading, login, register, logout, switchUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
