@@ -27,7 +27,10 @@ import LegalPrivacy from './components/Legal/LegalPrivacy';
 import LegalReturns from './components/Legal/LegalReturns';
 import { RepentanceModalProvider } from './context/RepentanceModalContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
-import Login from './components/Auth/Login';
+import LoginPage from './components/Auth/LoginPage';
+import RegisterPage from './components/Auth/RegisterPage';
+import ProfilePage from './components/User/ProfilePage';
+import OrdersPage from './components/Orders/OrdersPage';
 
 function App() {
   return (
@@ -80,7 +83,14 @@ function AppLayout() {
             <Route path="/productos/:id" element={<ProductDetailRoute />} />
             <Route path="/contacto" element={<ContactForm />} />
             <Route path="/carrito" element={<CartPage />} />
-            <Route path="/login" element={<Login />} />
+
+            {/* Rutas de autenticación (Sprint 7 - Semana 1: Camilo) */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/registro" element={<RegisterPage />} />
+
+            {/* Rutas de usuario (Semana 1: declaradas base; Franco agregará <ProtectedRoute> en Semana 2) */}
+            <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/mis-pedidos" element={<OrdersPage />} />
             <Route
               path="/admin"
               element={
