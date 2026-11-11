@@ -4,6 +4,7 @@ import { connectDB } from './config/db.js';
 import productosRouter from './routes/productos.js';
 import uploadRouter from './routes/upload.js';
 import authRouter from './routes/auth.js';
+import pedidosRouter from './routes/pedidos.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { loggerMiddleware } from './middlewares/logger.js';
 
@@ -58,6 +59,7 @@ app.use('/api/health', (req, res) => {
 
 // Rutas de autenticación (verifyToken + /me)
 app.use('/api/auth', authRouter);
+app.use('/api/pedidos', pedidosRouter);
 
 // Rutas de subida de imágenes a la nube (Vercel Blob)
 app.use('/api/upload', uploadRouter);
