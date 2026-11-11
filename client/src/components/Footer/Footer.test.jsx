@@ -2,12 +2,15 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Footer from './Footer';
+import { RepentanceModalProvider } from '../../context/RepentanceModalContext';
 
 describe('Footer y Botón de arrepentimiento', () => {
   const renderFooter = () => {
     return render(
       <MemoryRouter>
-        <Footer />
+        <RepentanceModalProvider>
+          <Footer />
+        </RepentanceModalProvider>
       </MemoryRouter>
     );
   };
