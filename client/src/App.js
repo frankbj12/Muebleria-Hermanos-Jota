@@ -88,9 +88,23 @@ function AppLayout() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/registro" element={<RegisterPage />} />
 
-            {/* Rutas de usuario (Semana 1: declaradas base; Franco agregará <ProtectedRoute> en Semana 2) */}
-            <Route path="/perfil" element={<ProfilePage />} />
-            <Route path="/mis-pedidos" element={<OrdersPage />} />
+            {/* Rutas protegidas de usuario */}
+            <Route
+              path="/perfil"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/mis-pedidos"
+              element={
+                <ProtectedRoute>
+                  <OrdersPage />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin"
               element={
