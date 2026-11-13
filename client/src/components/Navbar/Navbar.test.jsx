@@ -41,7 +41,7 @@ describe('Navbar', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('muestra el usuario y permite cerrar sesion', () => {
+  it('muestra el usuario con enlace a perfil y permite cerrar sesion', () => {
     mockAuthState = {
       user: { name: 'Franco Alegre' },
       isAuthenticated: true,
@@ -50,6 +50,8 @@ describe('Navbar', () => {
 
     renderNavbar();
 
+    const profileLink = screen.getByRole('link', { name: /ir a mi perfil/i });
+    expect(profileLink).toHaveAttribute('href', '/perfil');
     expect(screen.getByText('Franco Alegre')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }));
     expect(mockLogout).toHaveBeenCalledTimes(1);

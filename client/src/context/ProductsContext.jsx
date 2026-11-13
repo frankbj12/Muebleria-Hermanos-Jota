@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import productosApi from '../services/productosApi';
 
-const ProductsContext = createContext(null);
+export const ProductsContext = createContext(null);
 
 export function ProductsProvider({ children }) {
   const [products, setProducts] = useState([]);

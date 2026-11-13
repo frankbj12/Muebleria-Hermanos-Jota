@@ -85,17 +85,24 @@ function Navbar({ cartCount: cartCountProp }) {
             {isAuthenticated ? (
               <li className="nav-auth-item">
                 <div className="nav-user-widget">
-                  <div className="nav-user-avatar" aria-hidden="true">
-                    {(user?.name || user?.email || 'U')[0].toUpperCase()}
-                  </div>
-                  <div className="nav-user-info">
-                    <span className="nav-user-name">
-                      {user?.name || user?.email || 'Mi cuenta'}
-                    </span>
-                    {user?.role === 'admin' && (
-                      <span className="nav-user-badge">Admin</span>
-                    )}
-                  </div>
+                  <Link
+                    to="/perfil"
+                    className="nav-user-profile-link"
+                    aria-label="Ir a mi perfil"
+                    title="Ver mi perfil"
+                  >
+                    <div className="nav-user-avatar" aria-hidden="true">
+                      {(user?.name || user?.email || 'U')[0].toUpperCase()}
+                    </div>
+                    <div className="nav-user-info">
+                      <span className="nav-user-name">
+                        {user?.name || user?.email || 'Mi cuenta'}
+                      </span>
+                      {user?.role === 'admin' && (
+                        <span className="nav-user-badge">Admin</span>
+                      )}
+                    </div>
+                  </Link>
                   <button
                     type="button"
                     className="nav-logout-button"
