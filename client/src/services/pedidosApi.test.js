@@ -95,4 +95,71 @@ describe('pedidosApi', () => {
       'Token inválido o expirado'
     );
   });
+
+  it('crea un pedido con POST /api/pedidos enviando JWT e items normalizados', async () => {
+    localStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify({ token: 'jwt-checkout-token', user: { id: 'u1' } })
+    );
+
+    const createdOrder = {
+      _id: '6af24237e2cd1fbb5d6eb999',
+      user: 'u1',
+      items: [
+        {
+          productId: '6ace86682817cb7b9eb7a0e6',
+          name: 'Butaca Mendoza',
+          price: 890000,
+          quantity: 2,
+        },
+      ],
+      total: 1780000,
+      status: 'pending',
+      createdAt: '2026-11-17T18:00:00.000Z',
+    };
+
+    global.fetch.mockResolvedValue(jsonResponse({ order: createdOrder }, 201));
+
+    const result = await pedidosApi.createOrder([
+      {
+        id: '6ace86682817cb7b9eb7a0e6',
+        name: 'Butaca Mendoza',
+        price: 890000,
+        quantity: 2,
+      },
+    ]);
+
+    expect(global.fetch).toHaveBeenCalledWith(PEDIDOS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer jwt-checkout-token',
+      },
+      body: JSON.stringify({
+        items: [{ productId: '6ace86682817cb7b9eb7a0e6', quantity: 2 }],
+      }),
+    });
+    expect(result).toEqual({
+      ...createdOrder,
+      id: '6af24237e2cd1fbb5d6eb999',
+    });
+  });
+
+  it('propaga el error 400 de stock al crear un pedido', async () => {
+    global.fetch.mockResolvedValue(
+      jsonResponse(
+        {
+          error: 'Uno o más productos no existen o no tienen stock suficiente.',
+        },
+        400
+      )
+    );
+
+    await expect(
+      pedidosApi.createOrder([{ id: 'prod-1', quantity: 5 }])
+    ).rejects.toMatchObject({
+      message: 'Uno o más productos no existen o no tienen stock suficiente.',
+      status: 400,
+    });
+  });
 });

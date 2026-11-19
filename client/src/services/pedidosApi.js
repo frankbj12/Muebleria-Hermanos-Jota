@@ -51,6 +51,29 @@ const pedidosApi = {
         : [];
     return orders.map(normalizeOrder);
   },
+
+  /**
+   * Crea un nuevo pedido para el usuario autenticado.
+   * Envía solo { items: [{ productId, quantity }] }; el servidor valida stock y calcula el total.
+   */
+  async createOrder(items) {
+    const normalizedItems = Array.isArray(items)
+      ? items
+          .map((item) => ({
+            productId: String(item?.productId ?? item?.id ?? item?._id ?? ''),
+            quantity: Number(item?.quantity) || 1,
+          }))
+          .filter((item) => item.productId)
+      : [];
+
+    const data = await apiRequest(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: normalizedItems }),
+    });
+
+    return normalizeOrder(data?.order ?? data);
+  },
 };
 
 export default pedidosApi;
