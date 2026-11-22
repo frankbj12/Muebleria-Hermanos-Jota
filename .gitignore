@@ -1,6 +1,8 @@
 # Dependencies
 node_modules/
 **/node_modules/
+.pnp
+.pnp.js
 
 # Production & Build outputs
 dist/
@@ -9,10 +11,31 @@ client/build/
 backend/dist/
 *.tsbuildinfo
 
-# Environment variables
+# Environment variables & secrets
 .env
 .env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.vault
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+
+# Whitelist environment example files
 !.env.example
+!**/.env.example
+!.env.*.example
+!**/.env.*.example
+
+# Deployment & Cloud tooling
+.vercel/
+.render/
+.serverless/
 
 # OS generated files
 .DS_Store
@@ -21,7 +44,13 @@ backend/dist/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+ehthumbs_vista.db
 Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+.AppleDouble
+.LSOverride
 
 # Logs
 logs/
@@ -34,6 +63,7 @@ pnpm-debug.log*
 # Testing & Coverage
 coverage/
 .nyc_output/
+*.lcov
 
 # Editor & IDE configurations
 .vscode/
@@ -44,6 +74,8 @@ coverage/
 *.sln
 *.swp
 *~
+*.sublime-project
+*.sublime-workspace
 
 # Caches and local tooling
 .cache/
@@ -52,4 +84,7 @@ coverage/
 .gemini/
 scratch/
 .local-cache/
-
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
