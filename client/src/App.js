@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 
 // Componentes requeridos para Sprint 03-04
+import AnnouncementBar from './components/AnnouncementBar/AnnouncementBar';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import ProductList from './components/ProductList/ProductList';
@@ -20,28 +21,36 @@ import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
 import Chatbot from './components/Chatbot/Chatbot';
+import { AuthProvider } from './context/AuthContext';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
 import LegalTerms from './components/Legal/LegalTerms';
 import LegalPrivacy from './components/Legal/LegalPrivacy';
 import LegalReturns from './components/Legal/LegalReturns';
 import { RepentanceModalProvider } from './context/RepentanceModalContext';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import LoginPage from './components/Auth/LoginPage';
+import RegisterPage from './components/Auth/RegisterPage';
+import ProfilePage from './components/User/ProfilePage';
+import OrdersPage from './components/Orders/OrdersPage';
 
 function App() {
   return (
-    <CartProvider>
-      <ProductsProvider>
-        <RepentanceModalProvider>
-          <BrowserRouter
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <AppLayout />
-          </BrowserRouter>
-        </RepentanceModalProvider>
-      </ProductsProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <ProductsProvider>
+          <RepentanceModalProvider>
+            <BrowserRouter
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <AppLayout />
+            </BrowserRouter>
+          </RepentanceModalProvider>
+        </ProductsProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
@@ -52,6 +61,7 @@ function AppLayout() {
     <>
       <ScrollToTop />
       <div className="App">
+        <AnnouncementBar />
         <Navbar />
 
         <main>
@@ -75,11 +85,51 @@ function AppLayout() {
             <Route path="/productos/:id" element={<ProductDetailRoute />} />
             <Route path="/contacto" element={<ContactForm />} />
             <Route path="/carrito" element={<CartPage />} />
-            <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/admin/crear-producto" element={<ProductForm />} />
+
+            {/* Rutas de autenticación (Sprint 7 - Semana 1: Camilo) */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/registro" element={<RegisterPage />} />
+
+            {/* Rutas protegidas de usuario */}
+            <Route
+              path="/perfil"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/mis-pedidos"
+              element={
+                <ProtectedRoute>
+                  <OrdersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminPanel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/crear-producto"
+              element={
+                <ProtectedRoute adminOnly>
+                  <ProductForm />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin/editar-producto/:id"
-              element={<ProductForm />}
+              element={
+                <ProtectedRoute adminOnly>
+                  <ProductForm />
+                </ProtectedRoute>
+              }
             />
             <Route path="/terminos-y-condiciones" element={<LegalTerms />} />
             <Route path="/politica-de-privacidad" element={<LegalPrivacy />} />

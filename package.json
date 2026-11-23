@@ -2,6 +2,8 @@
   "type": "module",
   "scripts": {
     "start": "node backend/index.js",
+    "test": "npm --prefix backend test",
+    "test:backend": "npm --prefix backend test",
     "build": "npm --prefix client run build",
     "lint": "eslint .",
     "format": "prettier . --write",

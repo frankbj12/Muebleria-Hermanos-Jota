@@ -1,33 +1,9 @@
-const configuredApiUrl = process.env.REACT_APP_API_URL?.replace(/\/+$/, '');
-const API_URL = configuredApiUrl
-  ? configuredApiUrl.endsWith('/api/productos')
-    ? configuredApiUrl
-    : `${configuredApiUrl}/api/productos`
-  : 'http://localhost:5000/api/productos';
+import { apiRequest, getApiBaseUrl } from './apiClient';
 
-async function request(url, options = {}) {
-  const response = await fetch(url, options);
-  const contentType = response.headers.get('content-type') || '';
-  const data = contentType.includes('application/json')
-    ? await response.json()
-    : null;
-
-  if (!response.ok) {
-    const error = new Error(
-      data?.error ||
-        data?.message ||
-        `Error en la petición: ${response.status} ${response.statusText}`
-    );
-    error.status = response.status;
-    throw error;
-  }
-
-  if (response.status !== 204 && data === null) {
-    throw new Error('La API respondió con un formato inesperado.');
-  }
-
-  return data;
-}
+const configuredApiUrl = getApiBaseUrl();
+const API_URL = configuredApiUrl.endsWith('/api/productos')
+  ? configuredApiUrl
+  : `${configuredApiUrl}/api/productos`;
 
 function jsonOptions(method, product) {
   return {
@@ -74,24 +50,24 @@ function normalizeProductResponse(data) {
 
 const productosApi = {
   async getAll({ signal } = {}) {
-    return normalizeProductResponse(await request(API_URL, { signal }));
+    return normalizeProductResponse(await apiRequest(API_URL, { signal }));
   },
 
   async getById(id, { signal } = {}) {
     return normalizeProductResponse(
-      await request(`${API_URL}/${encodeURIComponent(id)}`, { signal })
+      await apiRequest(`${API_URL}/${encodeURIComponent(id)}`, { signal })
     );
   },
 
   async create(product) {
     return normalizeProductResponse(
-      await request(API_URL, jsonOptions('POST', product))
+      await apiRequest(API_URL, jsonOptions('POST', product))
     );
   },
 
   async update(id, product) {
     return normalizeProductResponse(
-      await request(
+      await apiRequest(
         `${API_URL}/${encodeURIComponent(id)}`,
         jsonOptions('PUT', product)
       )
@@ -99,7 +75,7 @@ const productosApi = {
   },
 
   async remove(id) {
-    const data = await request(`${API_URL}/${encodeURIComponent(id)}`, {
+    const data = await apiRequest(`${API_URL}/${encodeURIComponent(id)}`, {
       method: 'DELETE',
     });
 

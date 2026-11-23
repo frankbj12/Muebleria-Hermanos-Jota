@@ -1,0 +1,490 @@
+/* =============================================
+   MUEBLERÍA HERMANOS JOTA — CHECKOUT Y MODAL
+   Estilos para el flujo de confirmación de compra en /carrito
+   ============================================= */
+
+.cart-auth-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: var(--alabastro-light);
+  border: 1px solid rgba(160, 82, 45, 0.22);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 0.9rem;
+  margin-top: var(--space-md);
+  font-size: var(--fs-xs);
+  color: var(--negro-suave);
+  line-height: 1.5;
+}
+
+.cart-auth-notice svg {
+  color: var(--siena);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.cart-checkout-error {
+  margin-top: var(--space-md);
+  background-color: rgba(196, 122, 109, 0.12);
+  border: 1px solid rgba(196, 122, 109, 0.45);
+  border-radius: var(--border-radius);
+  padding: 0.75rem 0.9rem;
+  font-size: var(--fs-xs);
+  color: #8f3e32;
+  line-height: 1.5;
+}
+
+/* ── Overlay y contenedor del modal ── */
+.checkout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background-color: rgba(59, 36, 20, 0.56);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  animation: checkout-fade-in 180ms ease;
+}
+
+@keyframes checkout-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.checkout-modal-card {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 2rem);
+  background-color: var(--blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: checkout-slide-up 220ms ease;
+}
+
+@keyframes checkout-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.checkout-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  background: linear-gradient(
+    180deg,
+    var(--alabastro-light) 0%,
+    rgba(250, 244, 236, 0.45) 100%
+  );
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.checkout-modal-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--siena);
+  margin: 0 0 0.2rem;
+}
+
+.checkout-modal-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--negro);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.checkout-modal-close {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--color-borde);
+  background-color: var(--blanco);
+  color: var(--gris);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.checkout-modal-close:hover:not(:disabled) {
+  background-color: var(--alabastro);
+  border-color: var(--siena-light);
+  color: var(--negro);
+}
+
+.checkout-modal-close:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkout-modal-body {
+  padding: var(--space-lg) var(--space-xl);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Datos de cuenta autenticada */
+.checkout-buyer-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--alabastro-light);
+  border: 1px solid rgba(160, 82, 45, 0.16);
+  border-radius: var(--border-radius);
+}
+
+.checkout-buyer-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--siena);
+  color: var(--alabastro-light);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkout-buyer-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.checkout-buyer-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  font-weight: 600;
+}
+
+.checkout-buyer-name {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--negro);
+  word-break: break-word;
+}
+
+.checkout-buyer-email {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  word-break: break-word;
+}
+
+/* Lista de muebles en el resumen */
+.checkout-items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-height: 230px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.checkout-item-row {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--border-radius);
+  background-color: var(--blanco-calido);
+}
+
+.checkout-item-thumb {
+  width: 54px;
+  height: 54px;
+  border-radius: 6px;
+  background-color: var(--alabastro-light);
+  border: 1px solid rgba(160, 82, 45, 0.12);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.checkout-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.checkout-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.checkout-item-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--negro);
+  line-height: 1.25;
+}
+
+.checkout-item-qty {
+  font-size: var(--fs-xs);
+  color: var(--gris);
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-item-subtotal {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--negro);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Totales */
+.checkout-totals {
+  border-top: 1px solid var(--alabastro);
+  padding-top: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.checkout-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-sm);
+  color: var(--gris);
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-shipping-free {
+  color: var(--salvia-dark);
+  font-weight: 600;
+}
+
+.checkout-total-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 0.65rem;
+  margin-top: 0.35rem;
+  border-top: 1.5px solid var(--color-borde);
+  color: var(--negro);
+}
+
+.checkout-total-final span {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.checkout-total-final strong {
+  font-family: var(--font-body);
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-modal-alert {
+  background-color: rgba(196, 122, 109, 0.14);
+  border: 1px solid rgba(196, 122, 109, 0.45);
+  border-radius: var(--border-radius);
+  padding: 0.8rem 1rem;
+  color: #8f3e32;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.checkout-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--alabastro-light);
+  border-top: 1px solid var(--color-borde);
+}
+
+.checkout-modal-footer .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0;
+  width: auto;
+}
+
+.checkout-btn-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(250, 244, 236, 0.4);
+  border-top-color: var(--alabastro-light);
+  border-radius: 50%;
+  animation: checkout-spin 0.7s linear infinite;
+}
+
+@keyframes checkout-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Vista de confirmación exitosa ── */
+.checkout-success-body {
+  padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.checkout-success-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background-color: rgba(135, 169, 107, 0.18);
+  border: 1.5px solid rgba(135, 169, 107, 0.45);
+  color: var(--salvia-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkout-success-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--negro);
+  margin: 0;
+}
+
+.checkout-success-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--gris);
+  max-width: 420px;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.checkout-success-summary {
+  width: 100%;
+  background-color: var(--alabastro-light);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--border-radius);
+  padding: var(--space-md) var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  text-align: center;
+}
+
+.checkout-success-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.checkout-success-stat-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+}
+
+.checkout-success-stat-value {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--negro);
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-success-actions {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.checkout-success-actions .btn {
+  text-align: center;
+}
+
+@media (max-width: 580px) {
+  .checkout-modal-header,
+  .checkout-modal-body,
+  .checkout-modal-footer,
+  .checkout-success-body {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .checkout-modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .checkout-modal-footer .btn {
+    width: 100%;
+  }
+
+  .checkout-success-summary {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .checkout-success-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-modal-overlay,
+  .checkout-modal-card,
+  .checkout-btn-spinner {
+    animation: none;
+  }
+
+  .checkout-modal-close {
+    transition: none;
+  }
+}

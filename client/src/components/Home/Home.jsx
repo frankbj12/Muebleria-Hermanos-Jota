@@ -29,6 +29,14 @@ function Home({ products = [], loading = false, error = null }) {
   // Estados interactivos para la Card de Instagram
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [heartAnim, setHeartAnim] = useState(false);
+  const handleLike = () => {
+    if (!isLiked) {
+      setHeartAnim(true);
+      setTimeout(() => setHeartAnim(false), 800);
+    }
+    setIsLiked(!isLiked);
+  };
 
   // Filtrar productos destacados (featured: true)
   const featuredProducts = products.filter((prod) => prod.featured);
@@ -172,68 +180,289 @@ function Home({ products = [], loading = false, error = null }) {
       </section>
 
       {/* ========== 2. ESENCIA DE MARCA ========== */}
-      <section className="essence" id="essence">
+      <section className="essence" id="essence" aria-labelledby="essence-title">
         <div className="container">
-          <h2 className="section-title fade-in visible">Nuestra Esencia</h2>
-          <p className="section-intro fade-in visible">
-            Cada pieza cuenta la historia de manos expertas y materiales nobles
-          </p>
+          <header className="essence-header fade-in visible">
+            <div className="essence-badge-wrapper">
+              <span className="essence-badge">
+                <svg
+                  className="essence-badge-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  width="13"
+                  height="13"
+                >
+                  <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6 2.3-7.4-6-4.6h7.6z" />
+                </svg>
+                · Hermanos Jota ·
+              </span>
+            </div>
+
+            <h2 id="essence-title" className="section-title essence-title">
+              Nuestra <span className="title-accent">Esencia</span>
+            </h2>
+
+            <p className="section-intro essence-subtitle">
+              Cada pieza cuenta la historia de manos expertas, maderas vivas y
+              un diálogo honesto entre tradición e innovación contemporánea.
+            </p>
+          </header>
 
           <div className="essence-grid">
             <article className="essence-card fade-in visible fade-in-delay-1">
               <span className="essence-card-accent" aria-hidden="true"></span>
-              <h3>Artesanía</h3>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--artesania"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                  </svg>
+                </div>
+              </div>
+              <span className="essence-card-tag">Oficio Tradicional</span>
+              <h3>Artesanía & Precisión</h3>
               <p>
                 Técnicas heredadas de generaciones se encuentran con la
-                precisión contemporánea en cada unión, cada curva, cada acabado.
+                precisión contemporánea en cada unión, cada curva y cada
+                ensamble sin tornillos a la vista.
               </p>
+              <div className="essence-card-pill">
+                <span>Encastres manuales · Cepillado fino</span>
+              </div>
             </article>
 
             <article className="essence-card fade-in visible fade-in-delay-2">
               <span className="essence-card-accent" aria-hidden="true"></span>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--sustentabilidad"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                  </svg>
+                </div>
+              </div>
+              <span className="essence-card-tag">Compromiso Vivo</span>
               <h3>Sustentabilidad</h3>
               <p>
-                Madera certificada FSC® de bosques argentinos, acabados
-                naturales y compromiso de huella mínima en cada proceso.
+                Maderas de bosques argentinos gestionados con certificación
+                FSC®, acabados a base de aceites vegetales orgánicos y huella
+                mínima en cada etapa del taller.
               </p>
+              <div className="essence-card-pill">
+                <span>100% FSC® · Aceite natural sin COV</span>
+              </div>
             </article>
 
             <article className="essence-card fade-in visible fade-in-delay-3">
               <span className="essence-card-accent" aria-hidden="true"></span>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--diseno"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                  </svg>
+                </div>
+              </div>
+              <span className="essence-card-tag">Líneas 1960–2026</span>
               <h3>Diseño Atemporal</h3>
               <p>
-                Inspirados en el optimismo de los 60, diseñamos piezas que
-                trascienden tendencias y envejecen con la gracia de lo bien
-                hecho.
+                Inspirados en el optimismo y la solidez del mid-century modern,
+                diseñamos piezas que trascienden modas efímeras y envejecen con
+                la gracia de lo auténtico.
               </p>
+              <div className="essence-card-pill">
+                <span>Proporción armónica · Durabilidad</span>
+              </div>
             </article>
           </div>
         </div>
       </section>
 
       {/* ========== 3. PRODUCTOS DESTACADOS ========== */}
-      <section className="featured-products" id="featured-products">
+      <section
+        className="featured-products"
+        id="featured-products"
+        aria-labelledby="featured-title"
+      >
         <div className="container">
-          <h2 className="section-title fade-in visible">Piezas Destacadas</h2>
-          <p className="section-intro fade-in visible">
-            Diseñadas para quedarse
-          </p>
+          {/* Encabezado Profesional con Jerarquía y Curaduría */}
+          <header className="featured-header fade-in visible">
+            <div className="featured-header-main">
+              <h2 id="featured-title" className="section-title featured-title">
+                Piezas <span className="featured-title-accent">Destacadas</span>
+              </h2>
 
-          <FeaturedCarousel
-            products={
-              featuredProducts.length > 0
-                ? featuredProducts
-                : products.slice(0, 4)
-            }
-            loading={loading}
-            error={error}
-          />
+              {/* Pilares de valor comercial y artesanal */}
+              <div className="featured-highlights-list" role="list">
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  <span>Garantía estructural de 5 años</span>
+                </div>
 
-          <div className="section-cta fade-in visible">
-            <Link to="/productos" className="btn btn-secondary">
-              Ver toda la colección
-            </Link>
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                    <line x1="1" y1="10" x2="23" y2="10" />
+                  </svg>
+                  <span>Hasta 3 cuotas fijas sin interés</span>
+                </div>
+
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  <span>Maderas 100% certificadas FSC®</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Acceso rápido a colección completa en desktop */}
+            <div className="featured-header-action">
+              <Link to="/productos" className="featured-quick-link">
+                <span>Ver catálogo completo</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  width="16"
+                  height="16"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </Link>
+            </div>
+          </header>
+
+          {/* Carrusel de Productos Destacados (INTACTO) */}
+          <div className="featured-carousel-wrapper">
+            <FeaturedCarousel
+              products={
+                featuredProducts.length > 0
+                  ? featuredProducts
+                  : products.slice(0, 4)
+              }
+              loading={loading}
+              error={error}
+            />
           </div>
+
+          {/* Cierre de sección: Bloque de confianza y CTA comercial */}
+          <footer className="featured-footer fade-in visible">
+            <div className="featured-guarantee-card">
+              <div className="featured-guarantee-content">
+                <div className="featured-guarantee-stamp" aria-hidden="true">
+                  <img
+                    src="/assets/logo.svg"
+                    alt="Logo de Mueblería Hermanos Jota"
+                    className="ig-card__avatar"
+                  />
+                  <div className="featured-stamp-text">
+                    <strong>Oficio & Calidad</strong>
+                    <span>Taller Colegiales · CABA</span>
+                  </div>
+                </div>
+                <p className="featured-guarantee-desc">
+                  Producimos cada serie con maderas nobles seleccionadas por
+                  veta y densidad. Encastres de ebanistería oculta, terminación
+                  a mano y embalaje acolchado para envíos seguros a todo el
+                  país.
+                </p>
+              </div>
+
+              <div className="featured-cta-container">
+                <Link
+                  to="/productos"
+                  className="btn btn-primary featured-main-cta"
+                >
+                  <span>Ver toda la colección</span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    width="16"
+                    height="16"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </footer>
         </div>
       </section>
 
@@ -253,207 +482,287 @@ function Home({ products = [], loading = false, error = null }) {
               <p className="section-intro">
                 Nos apasiona ver cómo nuestras piezas cobran vida en los
                 espacios de quienes nos eligen. Seguinos para inspirarte con
-                proyectos de diseño de interiores, procesos en el taller y
-                nuevas colecciones.
+                proyectos de interiorismo, procesos de ebanistería en vivo y
+                nuevos lanzamientos artesanales.
               </p>
+
+              <div className="redes-highlights">
+                <div className="redes-highlight-item">
+                  <span className="redes-highlight-bullet">✦</span>
+                  <div>
+                    <strong>Procesos del taller:</strong> Compartimos cada paso,
+                    desde la selección del tronco hasta el pulido final con
+                    aceites botánicos.
+                  </div>
+                </div>
+                <div className="redes-highlight-item">
+                  <span className="redes-highlight-bullet">✦</span>
+                  <div>
+                    <strong>Hogares reales:</strong> Conocé casas y estudios
+                    decorados con nuestras piezas en Buenos Aires y todo el
+                    país.
+                  </div>
+                </div>
+              </div>
+
               <div className="redes-cta-group">
                 <a
                   href="https://instagram.com/hermanosjota_ba"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-luxury"
                   aria-label="Seguir a Hermanos Jota en Instagram"
                 >
-                  Seguir en @hermanosjota_ba
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect
+                      x="2"
+                      y="2"
+                      width="20"
+                      height="20"
+                      rx="5"
+                      ry="5"
+                    ></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <span>Seguir en @hermanosjota_ba</span>
                 </a>
               </div>
             </div>
 
             <div className="redes-card-wrapper fade-in visible fade-in-delay-2">
-              <article className="ig-card">
-                {/* Header de la publicación */}
-                <header className="ig-card__header">
-                  <img
-                    src="/assets/logo.svg"
-                    alt="Logo de Mueblería Hermanos Jota"
-                    className="ig-card__avatar"
-                  />
-                  <div className="ig-card__usuario">
-                    <span className="ig-card__username">
-                      muebleria_hnos_jota
-                    </span>
-                    <span className="ig-card__location">
-                      Buenos Aires, Argentina
-                    </span>
-                  </div>
-                  <a
-                    href="https://instagram.com/hermanosjota_ba"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ig-card__follow-link"
-                  >
-                    Seguir
-                  </a>
-                </header>
-
-                {/* Media (Video de la publicidad) */}
-                <div className="ig-card__media">
-                  <video
-                    className="ig-card__video"
-                    autoPlay
-                    muted
-                    controls
-                    loop
-                    playsInline
-                    poster="/assets/logo.svg"
-                  >
-                    <source
-                      src="/assets/videos/publicidad IG.mp4"
-                      type="video/mp4"
+              <div className="ig-phone-frame">
+                <article className="ig-card">
+                  {/* Header de la publicación */}
+                  <header className="ig-card__header">
+                    <img
+                      src="/assets/logo.svg"
+                      alt="Logo de Mueblería Hermanos Jota"
+                      className="ig-card__avatar"
                     />
-                    Tu navegador no soporta la reproducción de este video.
-                  </video>
-                </div>
+                    <div className="ig-card__usuario">
+                      <div className="ig-card__username-row">
+                        <span className="ig-card__username">
+                          muebleria_hnos_jota
+                        </span>
+                        <span
+                          className="ig-verified-badge"
+                          title="Cuenta verificada"
+                        >
+                          ✓
+                        </span>
+                      </div>
+                      <span className="ig-card__location">
+                        Buenos Aires, Argentina
+                      </span>
+                    </div>
+                    <a
+                      href="https://instagram.com/hermanosjota_ba"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ig-card__follow-link"
+                    >
+                      Seguir
+                    </a>
+                  </header>
 
-                {/* Barra de acciones */}
-                <div className="ig-card__actions">
-                  <div className="ig-card__actions-left">
+                  {/* Media (Video de la publicidad) */}
+                  <div className="ig-card__media">
+                    <video
+                      className="ig-card__video"
+                      autoPlay
+                      muted
+                      controls
+                      loop
+                      playsInline
+                      poster="/assets/logo.svg"
+                    >
+                      <source
+                        src="/assets/videos/publicidad IG.mp4"
+                        type="video/mp4"
+                      />
+                      Tu navegador no soporta la reproducción de este video.
+                    </video>
+                    {heartAnim && (
+                      <div className="ig-heart-bubble" aria-hidden="true">
+                        ❤️
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Barra de acciones */}
+                  <div className="ig-card__actions">
+                    <div className="ig-card__actions-left">
+                      <button
+                        type="button"
+                        className={`ig-card__action-btn ${isLiked ? 'liked' : ''}`}
+                        aria-label={isLiked ? 'Ya no me gusta' : 'Me gusta'}
+                        onClick={handleLike}
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill={isLiked ? '#e74c3c' : 'none'}
+                          stroke={isLiked ? '#e74c3c' : 'currentColor'}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className="ig-card__action-btn"
+                        aria-label="Comentar"
+                      >
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        className="ig-card__action-btn"
+                        aria-label="Compartir"
+                      >
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <line x1="22" y1="2" x2="11" y2="13"></line>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                      </button>
+                    </div>
                     <button
                       type="button"
-                      className="ig-card__action-btn"
-                      aria-label={isLiked ? 'Ya no me gusta' : 'Me gusta'}
-                      onClick={() => setIsLiked(!isLiked)}
+                      className={`ig-card__action-btn ${isSaved ? 'saved' : ''}`}
+                      aria-label={isSaved ? 'Quitar de guardados' : 'Guardar'}
+                      onClick={() => setIsSaved(!isSaved)}
                     >
                       <svg
                         width="22"
                         height="22"
                         viewBox="0 0 24 24"
-                        fill={isLiked ? '#e74c3c' : 'none'}
-                        stroke={isLiked ? '#e74c3c' : 'currentColor'}
+                        fill={isSaved ? '#d4a437' : 'none'}
+                        stroke={isSaved ? '#d4a437' : 'currentColor'}
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.78-8.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      className="ig-card__action-btn"
-                      aria-label="Comentar"
-                    >
-                      <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                      </svg>
-                    </button>
-                    <button
-                      type="button"
-                      className="ig-card__action-btn"
-                      aria-label="Compartir"
-                    >
-                      <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                       </svg>
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    className="ig-card__action-btn"
-                    aria-label={isSaved ? 'Quitar de guardados' : 'Guardar'}
-                    onClick={() => setIsSaved(!isSaved)}
-                  >
-                    <svg
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      fill={isSaved ? 'currentColor' : 'none'}
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </button>
-                </div>
 
-                {/* Detalle y leyenda */}
-                <div className="ig-card__body">
-                  <p className="ig-card__likes">
-                    {isLiked ? '12.386 Me gusta' : '12.385 Me gusta'}
-                  </p>
-                  <p className="ig-card__caption">
-                    <span className="ig-card__user-bold">
-                      muebleria_hnos_jota
-                    </span>{' '}
-                    ¡Renová tu hogar con estilo! ✨ Descubrí nuestra nueva
-                    colección de muebles artesanales.🏠
-                    <br />
-                    <br />
-                    ¡Gracias @carolo_!
-                  </p>
-                  <p className="ig-card__hashtags">
-                    #muebles #artesanal #diseñodeinteriores #hogar #sustentable
-                  </p>
-                  <time className="ig-card__time" dateTime="2026-08-28">
-                    HACE 2 DÍAS
-                  </time>
-                </div>
-              </article>
+                  {/* Detalle y leyenda */}
+                  <div className="ig-card__body">
+                    <p className="ig-card__likes">
+                      {isLiked ? '12.386 Me gusta' : '12.385 Me gusta'}
+                    </p>
+                    <p className="ig-card__caption">
+                      <span className="ig-card__user-bold">
+                        muebleria_hnos_jota
+                      </span>{' '}
+                      ¡Renová tu hogar con estilo y nobleza! ✨ Descubrí nuestra
+                      nueva colección de muebles artesanales elaborados con
+                      maderas argentinas. 🏠
+                      <br />
+                      <br />
+                      ¡Gracias @carolo_ por abrirnos las puertas de tu espacio!
+                    </p>
+                    <p className="ig-card__hashtags">
+                      #HermanosJota #MueblesDeAutor #ArtesaniaArgentina
+                      #DisenoSustentable #SanCristobal
+                    </p>
+                    <time className="ig-card__time" dateTime="2026-08-28">
+                      HACE 2 DÍAS · BUENOS AIRES
+                    </time>
+                  </div>
+                </article>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========== 5. COMPROMISO — HERENCIA VIVA ========== */}
-      <section className="commitment" id="commitment">
+      <section
+        className="commitment"
+        id="commitment"
+        aria-labelledby="commitment-title"
+      >
         <div className="container">
-          <h2 className="section-title fade-in visible">
-            Programa Herencia Viva
-          </h2>
-          <p className="section-intro fade-in visible">
-            Nuestro compromiso va más allá de la venta
-          </p>
+          <header className="commitment-header fade-in visible">
+            <h2
+              id="commitment-title"
+              className="section-title commitment-title"
+            >
+              Programa <span className="title-accent">Herencia Viva</span>
+            </h2>
+            <p className="section-intro commitment-subtitle">
+              Nuestro compromiso trasciende la venta: creamos piezas nobles y
+              duraderas que respetan los bosques nativos y están pensadas para
+              acompañarte toda la vida.
+            </p>
+          </header>
 
           <div className="commitment-grid">
             <div className="commitment-stat fade-in visible fade-in-delay-1">
               <span className="stat-number">10</span>
-              <span className="stat-label">años de garantía en estructura</span>
+              <span className="stat-label">Años de garantía en estructura</span>
+              <span className="stat-desc">
+                Solidez garantizada por ebanistas
+              </span>
             </div>
             <div className="commitment-stat fade-in visible fade-in-delay-2">
               <span className="stat-number">30%</span>
               <span className="stat-label">
-                materiales recuperados o reciclados
+                Materiales recuperados o reciclados
               </span>
+              <span className="stat-desc">Economía circular en cada serie</span>
             </div>
             <div className="commitment-stat fade-in visible fade-in-delay-3">
               <span className="stat-number">FSC®</span>
               <span className="stat-label">
-                certificación en todas nuestras maderas
+                Certificación en todas nuestras maderas
+              </span>
+              <span className="stat-desc">
+                Bosques gestionados responsablemente
               </span>
             </div>
             <div className="commitment-stat fade-in visible fade-in-delay-4">
               <span className="stat-number">0</span>
-              <span className="stat-label">plásticos de un solo uso</span>
+              <span className="stat-label">Plásticos de un solo uso</span>
+              <span className="stat-desc">
+                Embalajes biodegradables y acolchados
+              </span>
             </div>
           </div>
         </div>

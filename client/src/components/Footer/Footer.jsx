@@ -170,6 +170,56 @@ function Footer() {
         </div>
       </div>
 
+      {/* Sección final: Firma de Diseño y Desarrollo Web */}
+      <aside className="site-credits" aria-label="Créditos del sitio">
+        <div className="container">
+          <p className="credits-text">
+            <span className="credits-label">Diseño y desarrollo web por</span>
+            <a
+              href="https://github.com/frankbj12"
+              className="credits-author"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Alegre Franco
+            </a>
+            <span className="credits-sep" aria-hidden="true">
+              -
+            </span>
+            <a
+              href="https://github.com/tomassnahuel"
+              className="credits-author"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Cupello Tomás
+            </a>
+            <span className="credits-sep" aria-hidden="true">
+              -
+            </span>
+            <a
+              href="https://github.com/CamiloD2212"
+              className="credits-author"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Desza Camilo
+            </a>
+            <span className="credits-sep" aria-hidden="true">
+              -
+            </span>
+            <a
+              href="https://github.com/reilbrian"
+              className="credits-author"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Reil Brian
+            </a>
+          </p>
+        </div>
+      </aside>
+
       <RepentanceModal isOpen={isModalOpen} onClose={handleClose} />
     </footer>
   );
