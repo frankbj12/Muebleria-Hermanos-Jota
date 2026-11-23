@@ -57,7 +57,7 @@
   --space-xs: 0.5rem;
   --space-sm: 0.75rem;
   --space-md: 1rem;
-  --space-lg: 1.5rem;
+  --space-lg: 3rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
   --space-3xl: 4rem;
@@ -4150,9 +4150,15 @@ h4 {
 
 .redes-layout {
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: var(--space-3xl);
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
   align-items: center;
+}
+
+.redes-card-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .redes-badge {
@@ -4205,6 +4211,10 @@ h4 {
   background: var(--alabastro-card);
   border-radius: 28px;
   padding: 12px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  box-sizing: border-box;
   box-shadow:
     0 30px 70px -15px rgba(42, 24, 14, 0.2),
     0 0 0 1px var(--oro);
@@ -4226,6 +4236,7 @@ h4 {
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--gris-borde);
+  width: 100%;
 }
 
 .ig-card__header {
@@ -4382,6 +4393,35 @@ h4 {
   text-transform: uppercase;
 }
 
+@media (max-width: 600px) {
+  .ig-phone-frame {
+    max-width: 100%;
+    border-radius: 20px;
+    padding: 8px;
+    translate: 0 0;
+  }
+
+  .ig-phone-frame:hover {
+    translate: 0 0;
+  }
+
+  .ig-card {
+    border-radius: 14px;
+  }
+
+  .ig-card__header {
+    padding: 8px 10px;
+  }
+
+  .ig-card__body {
+    padding: 0 10px 10px;
+  }
+
+  .ig-card__actions {
+    padding: 8px 10px 4px;
+  }
+}
+
 @media (min-width: 768px) {
   .redes-layout {
     grid-template-columns: 1.1fr 0.9fr;
@@ -4403,6 +4443,18 @@ h4 {
 
   .redes-cta-group {
     justify-content: flex-start;
+  }
+
+  .redes-cta-group .btn-luxury {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .redes-cta-group .btn-luxury svg {
+    flex-shrink: 0;
+    display: block;
   }
 }
 
