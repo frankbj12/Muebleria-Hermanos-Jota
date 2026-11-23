@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 
 // Componentes requeridos para Sprint 03-04
+import AnnouncementBar from './components/AnnouncementBar/AnnouncementBar';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import ProductList from './components/ProductList/ProductList';
@@ -60,6 +61,7 @@ function AppLayout() {
     <>
       <ScrollToTop />
       <div className="App">
+        <AnnouncementBar />
         <Navbar />
 
         <main>

@@ -67,7 +67,11 @@
   /* Layout */
   --container-max: 1200px;
   --container-padding: 1.25rem;
-  --header-height: 120px;
+  --announcement-height: 38px;
+  --header-height: 76px;
+  --total-header-height: calc(
+    var(--header-height) + var(--announcement-height)
+  );
   --border-radius-sm: 4px;
   --border-radius: 8px;
   --border-radius-lg: 12px;
@@ -240,12 +244,101 @@ h4 {
 }
 
 /* =============================================
+   ANNOUNCEMENT BAR / MARQUEE (Barra promocional animada)
+   ============================================= */
+
+.announcement-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--announcement-height);
+  background: linear-gradient(90deg, #2b170c 0%, #3d2212 50%, #2b170c 100%);
+  border-bottom: 1px solid rgba(212, 164, 55, 0.28);
+  color: var(--alabastro-light);
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+.announcement-bar__viewport {
+  display: flex;
+  width: max-content;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.announcement-bar__track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  animation: announcementMarquee 28s linear infinite;
+  will-change: transform;
+}
+
+/* Al pasar el cursor en desktop se pausa suavemente para facilitar la lectura */
+.announcement-bar:hover .announcement-bar__track {
+  animation-play-state: paused;
+}
+
+.announcement-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.725rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--alabastro);
+}
+
+.announcement-bar__icon {
+  color: var(--oro);
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.announcement-bar__text {
+  white-space: nowrap;
+}
+
+.announcement-bar__separator {
+  color: rgba(212, 164, 55, 0.5);
+  font-size: 0.95rem;
+  margin-left: 0.75rem;
+}
+
+@keyframes announcementMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* Respeto a usuarios con preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar__track {
+    animation-duration: 90s;
+  }
+}
+
+/* =============================================
    HEADER
    ============================================= */
 
 .site-header {
   position: fixed;
-  top: 0;
+  top: var(--announcement-height);
   left: 0;
   right: 0;
   z-index: 100;
@@ -303,9 +396,16 @@ h4 {
 }
 
 .logo img {
-  width: 120px;
-  height: 120px;
-  transition: filter var(--transition-base);
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  transition:
+    filter var(--transition-base),
+    transform var(--transition-fast);
+}
+
+.logo:hover img {
+  transform: scale(1.04);
 }
 
 /* Navegación */
@@ -2586,7 +2686,7 @@ h4 {
 @media (min-width: 768px) {
   :root {
     --container-padding: 2rem;
-    --header-height: 120px;
+    --header-height: 80px;
   }
 
   /* Header */
@@ -2629,10 +2729,10 @@ h4 {
     --container-padding: 2.5rem;
   }
 
-  /* Logo más grande en desktop */
+  /* Logo proporcionado en desktop */
   .logo img {
-    width: 120px;
-    height: 120px;
+    width: 60px;
+    height: 60px;
   }
 
   /* Productos */
