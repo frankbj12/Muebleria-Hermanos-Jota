@@ -45,7 +45,20 @@ function Navbar({ cartCount: cartCountProp }) {
       id="site-header"
     >
       <div className="header-container">
-        <Link to="/" className="logo" aria-label="Hermanos Jota — Inicio">
+        <Link
+          to="/"
+          className="logo"
+          aria-label="Hermanos Jota — Inicio"
+          onClick={(e) => {
+            if (window.location.pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            }
+          }}
+        >
           <img
             src="/assets/logo.svg"
             alt="Hermanos Jota"
@@ -61,7 +74,20 @@ function Navbar({ cartCount: cartCountProp }) {
         >
           <ul className="nav-list">
             <li>
-              <NavLink to="/" end className="nav-link">
+              <NavLink
+                to="/"
+                end
+                className="nav-link"
+                onClick={(e) => {
+                  if (window.location.pathname === '/') {
+                    e.preventDefault();
+                    window.scrollTo({
+                      top: 0,
+                      behavior: 'smooth',
+                    });
+                  }
+                }}
+              >
                 Inicio
               </NavLink>
             </li>
