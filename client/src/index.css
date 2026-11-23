@@ -945,27 +945,12 @@ h4 {
 .essence {
   position: relative;
   overflow: hidden;
-  padding: clamp(3.5rem, 6vw, 6rem) 0 clamp(4rem, 6.5vw, 6.5rem);
-  background: linear-gradient(180deg, #fafaf8 0%, #f7f4ee 50%, #faf8f3 100%);
-  border-bottom: 1px solid rgba(160, 82, 45, 0.1);
+  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2rem, 3.5vw, 3rem);
+  background-color: var(--alabastro-light);
 }
 
 .essence-ambient-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 15% 20%,
-      rgba(212, 164, 55, 0.06) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 85% 75%,
-      rgba(135, 169, 107, 0.05) 0%,
-      transparent 45%
-    );
-  z-index: 0;
+  display: none;
 }
 
 .essence-header {
@@ -1189,34 +1174,13 @@ h4 {
 .featured-products {
   position: relative;
   overflow: hidden;
-  padding: clamp(3.5rem, 6vw, 6.5rem) 0 clamp(4rem, 7vw, 7rem);
-  background: linear-gradient(180deg, #fbf7f0 0%, #f5eee3 48%, #faf5ec 100%);
-  border-top: 1px solid rgba(160, 82, 45, 0.14);
-  border-bottom: 1px solid rgba(160, 82, 45, 0.14);
+  padding: clamp(2rem, 3.5vw, 3rem) 0 clamp(2.5rem, 4vw, 3.5rem);
+  background-color: var(--alabastro-light);
 }
 
 /* Fondo decorativo ambiental sutil */
 .featured-ambient-glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      circle at 10% 12%,
-      rgba(212, 164, 55, 0.08) 0%,
-      transparent 45%
-    ),
-    radial-gradient(
-      circle at 90% 25%,
-      rgba(160, 82, 45, 0.07) 0%,
-      transparent 48%
-    ),
-    radial-gradient(
-      circle at 50% 95%,
-      rgba(135, 169, 107, 0.06) 0%,
-      transparent 50%
-    );
-  z-index: 0;
+  display: none;
 }
 
 /* Encabezado Editorial y Comercial */
@@ -1387,7 +1351,7 @@ h4 {
 .featured-footer {
   position: relative;
   z-index: 1;
-  margin-top: clamp(2rem, 3.5vw, 3rem);
+  margin-top: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .featured-guarantee-card {
@@ -2262,45 +2226,112 @@ h4 {
    ============================================= */
 
 .commitment {
-  padding: var(--space-section) 0;
+  padding: clamp(1.75rem, 3vw, 2.5rem) 0 clamp(2rem, 3.5vw, 2.75rem);
   background-color: var(--negro);
   color: var(--alabastro);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(245, 230, 211, 0.08);
 }
 
-.commitment .section-title {
+.commitment-header {
+  text-align: center;
+  max-width: 580px;
+  margin: 0 auto clamp(1rem, 1.6vw, 1.35rem);
+}
+
+.commitment-badge {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--oro);
+  background: rgba(212, 164, 55, 0.1);
+  border: 1px solid rgba(212, 164, 55, 0.22);
+  padding: 3px 10px;
+  border-radius: var(--border-radius-pill, 9999px);
+  margin-bottom: 0.35rem;
+}
+
+.commitment-title {
   color: var(--alabastro);
+  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
 }
 
-.commitment .section-intro {
+.commitment-title .title-accent {
+  color: var(--siena-light);
+  font-style: italic;
+}
+
+.commitment-subtitle {
   color: rgba(245, 230, 211, 0.65);
+  font-size: clamp(0.825rem, 0.95vw, 0.9rem);
+  line-height: 1.5;
+  margin: 0 auto;
 }
 
 .commitment-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-xl);
+  gap: clamp(0.75rem, 1.2vw, 1rem);
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .commitment-stat {
+  position: relative;
+  background: rgba(245, 230, 211, 0.035);
+  border: 1px solid rgba(245, 230, 211, 0.08);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
   text-align: center;
-  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    background-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.commitment-stat:hover {
+  transform: translateY(-2px);
+  background: rgba(245, 230, 211, 0.06);
+  border-color: rgba(212, 164, 55, 0.3);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .stat-number {
   display: block;
   font-family: var(--font-display);
-  font-size: var(--fs-3xl);
-  font-weight: 400;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 700;
   color: var(--oro);
-  margin-bottom: var(--space-xs);
-  line-height: 1.1;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
 }
 
 .stat-label {
-  font-size: var(--fs-sm);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--alabastro);
+  line-height: 1.3;
+  margin-bottom: 0.15rem;
+}
+
+.stat-desc {
+  font-size: 0.68rem;
   font-weight: 300;
-  color: rgba(245, 230, 211, 0.7);
-  line-height: 1.5;
+  color: rgba(245, 230, 211, 0.5);
+  line-height: 1.35;
 }
 
 /* =============================================
@@ -2308,7 +2339,7 @@ h4 {
    ============================================= */
 
 .site-footer {
-  padding: var(--space-3xl) 0 var(--space-xl);
+  padding: clamp(2rem, 3.5vw, 3rem) 0 0;
   background-color: var(--negro);
   color: var(--alabastro);
   border-top: 1px solid rgba(245, 230, 211, 0.1);
@@ -2317,10 +2348,10 @@ h4 {
 .footer-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-2xl);
-  padding-bottom: var(--space-2xl);
+  gap: var(--space-xl);
+  padding-bottom: clamp(1.25rem, 2vw, 1.75rem);
   border-bottom: 1px solid rgba(245, 230, 211, 0.1);
-  margin-bottom: var(--space-xl);
+  margin-bottom: 0;
 }
 
 .footer-logo {
@@ -2437,12 +2468,56 @@ h4 {
 
 .footer-bottom {
   text-align: center;
+  padding: 1rem 0 0.85rem;
 }
 
 .footer-bottom p {
   font-size: var(--fs-xs);
   color: rgba(245, 230, 211, 0.4);
   letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* =============================================
+   CREDITS / FIRMA DE DESARROLLO WEB
+   ============================================= */
+
+.site-credits {
+  background-color: #21130a;
+  border-top: 1px solid rgba(245, 230, 211, 0.07);
+  padding: 0.85rem 0;
+  text-align: center;
+}
+
+.credits-text {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(245, 230, 211, 0.55);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.credits-label {
+  color: rgba(245, 230, 211, 0.45);
+  margin-right: 0.35rem;
+}
+
+.credits-author {
+  color: rgba(245, 230, 211, 0.8);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.credits-author:hover {
+  color: var(--oro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.credits-sep {
+  margin: 0 0.45rem;
+  color: rgba(245, 230, 211, 0.25);
 }
 
 /* =============================================
@@ -3963,23 +4038,20 @@ h4 {
 }
 
 /* ---------- Redes Sociales & Showcase Instagram ---------- */
-
+/* --------------------------------------------------------------------------
+   11. COMUNIDAD & REDES SOCIALES (INSTAGRAM REEL CARD)
+   -------------------------------------------------------------------------- */
 .redes-sociales {
-  padding: var(--space-section) 0;
+  padding: clamp(2.5rem, 4.5vw, 4rem) 0 clamp(3.5rem, 6vw, 5rem);
+  position: relative;
   background-color: var(--alabastro-light);
-  border-top: 1px solid rgba(160, 82, 45, 0.08);
-  border-bottom: 1px solid rgba(160, 82, 45, 0.08);
 }
 
 .redes-layout {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-2xl);
+  grid-template-columns: 1fr 420px;
+  gap: var(--space-3xl);
   align-items: center;
-}
-
-.redes-info {
-  text-align: center;
 }
 
 .redes-badge {
@@ -3989,105 +4061,140 @@ h4 {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--salvia-dark);
+  background: var(--salvia-light);
+  padding: 4px 12px;
+  border-radius: var(--border-radius-pill);
   margin-bottom: var(--space-sm);
-  background: rgba(135, 169, 107, 0.15);
-  padding: 0.35em 1em;
-  border-radius: 20px;
 }
 
 .redes-info .section-title {
-  text-align: center;
-  margin-bottom: var(--space-md);
+  text-align: left;
 }
 
 .redes-info .section-intro {
-  text-align: center;
-  max-width: 520px;
-  margin: 0 auto var(--space-xl);
+  text-align: left;
+  margin-bottom: var(--space-xl);
 }
 
-.redes-cta-group {
+.redes-highlights {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
 }
 
-.redes-card-wrapper {
+.redes-highlight-item {
   display: flex;
-  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: var(--fs-sm);
+  color: var(--negro-suave);
+  line-height: 1.6;
 }
 
-/* Tarjeta Instagram pulida y responsive */
+.redes-highlight-bullet {
+  color: var(--oro);
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+/* Frame de Smartphone / Vidrio para Instagram */
+.ig-phone-frame {
+  position: relative;
+  background: var(--alabastro-card);
+  border-radius: 28px;
+  padding: 12px;
+  box-shadow:
+    0 30px 70px -15px rgba(42, 24, 14, 0.2),
+    0 0 0 1px var(--oro);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+  translate: 0 -6px;
+}
+
+.ig-phone-frame:hover {
+  translate: 0 -8px;
+  box-shadow:
+    0 35px 75px -15px rgba(42, 24, 14, 0.25),
+    0 0 0 1.5px var(--oro);
+}
+
 .ig-card {
-  width: 100%;
-  max-width: 380px;
   background: var(--blanco);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--border-radius-lg);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: var(--shadow-card-hover);
-  transition: transform var(--transition-base);
-}
-
-.ig-card:hover {
-  transform: translateY(-4px);
+  border: 1px solid var(--gris-borde);
 }
 
 .ig-card__header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  background: var(--blanco);
-  border-bottom: 1px solid #f2ece6;
+  padding: 12px 14px;
+  gap: 10px;
 }
 
 .ig-card__avatar {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 1.5px solid var(--siena);
   padding: 2px;
-  background: var(--alabastro-light);
-  object-fit: contain;
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
 }
 
 .ig-card__usuario {
+  flex-grow: 1;
+}
+
+.ig-card__username-row {
   display: flex;
-  flex-direction: column;
-  flex: 1;
+  align-items: center;
+  gap: 4px;
 }
 
 .ig-card__username {
-  font-weight: 600;
-  font-size: var(--fs-xs);
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--negro);
-  line-height: 1.2;
+}
+
+.ig-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: #3897f0;
+  color: var(--blanco);
+  font-size: 9px;
+  border-radius: 50%;
+  font-weight: 800;
 }
 
 .ig-card__location {
-  font-size: 0.7rem;
+  display: block;
+  font-size: 0.72rem;
   color: var(--gris);
 }
 
 .ig-card__follow-link {
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  color: var(--siena);
-  transition: color var(--transition-fast);
-}
-
-.ig-card__follow-link:hover {
-  color: var(--siena-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #3897f0;
 }
 
 .ig-card__media {
-  width: 100%;
-  background: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  width: 100%;
   aspect-ratio: 4 / 5;
+  background: #000;
   overflow: hidden;
 }
 
@@ -4095,76 +4202,91 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+}
+
+.ig-heart-bubble {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  font-size: 4rem;
+  animation: heartPop 800ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes heartPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0;
+  }
 }
 
 .ig-card__actions {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
 }
 
 .ig-card__actions-left {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 14px;
 }
 
 .ig-card__action-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
   color: var(--negro);
+  transition:
+    transform var(--transition-fast),
+    color var(--transition-fast);
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition:
-    color var(--transition-fast),
-    transform var(--transition-fast);
 }
 
 .ig-card__action-btn:hover {
-  color: var(--siena);
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .ig-card__body {
-  padding: 0 1rem 1rem;
-  font-size: 0.825rem;
+  padding: 0 14px 14px;
+  font-size: 0.8rem;
   line-height: 1.5;
-  color: var(--negro);
 }
 
 .ig-card__likes {
   font-weight: 700;
-  font-size: var(--fs-xs);
-  margin-bottom: 0.35rem;
-}
-
-.ig-card__caption {
-  margin-bottom: 0.4rem;
-  color: var(--negro-suave);
+  margin-bottom: 4px;
 }
 
 .ig-card__user-bold {
   font-weight: 700;
-  margin-right: 0.35rem;
-  color: var(--negro);
+}
+
+.ig-card__caption {
+  color: #262626;
+  margin-bottom: 6px;
 }
 
 .ig-card__hashtags {
-  color: var(--siena);
-  font-size: 0.75rem;
-  margin-bottom: 0.35rem;
+  color: #00376b;
+  font-size: 0.76rem;
+  margin-bottom: 6px;
 }
 
 .ig-card__time {
-  color: var(--gris);
   font-size: 0.68rem;
-  letter-spacing: 0.05em;
+  color: #8e8e8e;
   text-transform: uppercase;
-  display: block;
 }
 
 @media (min-width: 768px) {
