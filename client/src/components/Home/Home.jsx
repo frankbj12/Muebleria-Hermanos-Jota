@@ -172,68 +172,324 @@ function Home({ products = [], loading = false, error = null }) {
       </section>
 
       {/* ========== 2. ESENCIA DE MARCA ========== */}
-      <section className="essence" id="essence">
+      <section className="essence" id="essence" aria-labelledby="essence-title">
+        <div className="essence-ambient-glow" aria-hidden="true" />
+
         <div className="container">
-          <h2 className="section-title fade-in visible">Nuestra Esencia</h2>
-          <p className="section-intro fade-in visible">
-            Cada pieza cuenta la historia de manos expertas y materiales nobles
-          </p>
+          <header className="essence-header fade-in visible">
+            <div className="essence-badge-wrapper">
+              <span className="essence-badge">
+                <svg
+                  className="essence-badge-icon"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  width="13"
+                  height="13"
+                >
+                  <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6 2.3-7.4-6-4.6h7.6z" />
+                </svg>
+                Hermanos Jota · Desde 2026
+              </span>
+            </div>
+
+            <h2 id="essence-title" className="section-title essence-title">
+              Nuestra <span className="essence-title-accent">Esencia</span>
+            </h2>
+
+            <p className="section-intro essence-subtitle">
+              Cada pieza cuenta la historia de manos expertas, maderas vivas y
+              un diálogo honesto entre tradición e innovación contemporánea.
+            </p>
+          </header>
 
           <div className="essence-grid">
             <article className="essence-card fade-in visible fade-in-delay-1">
               <span className="essence-card-accent" aria-hidden="true"></span>
-              <h3>Artesanía</h3>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--artesania"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                  </svg>
+                </div>
+                <span className="essence-card-number">01</span>
+              </div>
+              <span className="essence-card-tag">Oficio Tradicional</span>
+              <h3>Artesanía & Precisión</h3>
               <p>
                 Técnicas heredadas de generaciones se encuentran con la
-                precisión contemporánea en cada unión, cada curva, cada acabado.
+                precisión contemporánea en cada unión, cada curva y cada
+                ensamble sin tornillos a la vista.
               </p>
+              <div className="essence-card-pill">
+                <span>Encastres manuales · Cepillado fino</span>
+              </div>
             </article>
 
             <article className="essence-card fade-in visible fade-in-delay-2">
               <span className="essence-card-accent" aria-hidden="true"></span>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--sustentabilidad"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                  </svg>
+                </div>
+                <span className="essence-card-number">02</span>
+              </div>
+              <span className="essence-card-tag">Compromiso Vivo</span>
               <h3>Sustentabilidad</h3>
               <p>
-                Madera certificada FSC® de bosques argentinos, acabados
-                naturales y compromiso de huella mínima en cada proceso.
+                Maderas de bosques argentinos gestionados con certificación
+                FSC®, acabados a base de aceites vegetales orgánicos y huella
+                mínima en cada etapa del taller.
               </p>
+              <div className="essence-card-pill">
+                <span>100% FSC® · Aceite natural sin COV</span>
+              </div>
             </article>
 
             <article className="essence-card fade-in visible fade-in-delay-3">
               <span className="essence-card-accent" aria-hidden="true"></span>
+              <div className="essence-card-header">
+                <div
+                  className="essence-icon-box essence-icon-box--diseno"
+                  aria-hidden="true"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                  </svg>
+                </div>
+                <span className="essence-card-number">03</span>
+              </div>
+              <span className="essence-card-tag">Líneas 1960–2026</span>
               <h3>Diseño Atemporal</h3>
               <p>
-                Inspirados en el optimismo de los 60, diseñamos piezas que
-                trascienden tendencias y envejecen con la gracia de lo bien
-                hecho.
+                Inspirados en el optimismo y la solidez del mid-century modern,
+                diseñamos piezas que trascienden modas efímeras y envejecen con
+                la gracia de lo auténtico.
               </p>
+              <div className="essence-card-pill">
+                <span>Proporción armónica · Durabilidad</span>
+              </div>
             </article>
           </div>
         </div>
       </section>
 
       {/* ========== 3. PRODUCTOS DESTACADOS ========== */}
-      <section className="featured-products" id="featured-products">
+      <section
+        className="featured-products"
+        id="featured-products"
+        aria-labelledby="featured-title"
+      >
+        {/* Iluminación ambiental cálida de fondo */}
+        <div className="featured-ambient-glow" aria-hidden="true" />
+
         <div className="container">
-          <h2 className="section-title fade-in visible">Piezas Destacadas</h2>
-          <p className="section-intro fade-in visible">
-            Diseñadas para quedarse
-          </p>
+          {/* Encabezado Profesional con Jerarquía y Curaduría */}
+          <header className="featured-header fade-in visible">
+            <div className="featured-header-main">
+              <div className="featured-badge-wrapper">
+                <span className="featured-badge">
+                  <svg
+                    className="featured-badge-icon"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    width="13"
+                    height="13"
+                  >
+                    <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6 2.3-7.4-6-4.6h7.6z" />
+                  </svg>
+                  Curaduría 2026 · Edición de Autor
+                </span>
+                <span
+                  className="featured-count-pill"
+                  aria-label="Cantidad de piezas destacadas"
+                >
+                  {featuredProducts.length || 5} piezas seleccionadas
+                </span>
+              </div>
 
-          <FeaturedCarousel
-            products={
-              featuredProducts.length > 0
-                ? featuredProducts
-                : products.slice(0, 4)
-            }
-            loading={loading}
-            error={error}
-          />
+              <h2 id="featured-title" className="section-title featured-title">
+                Piezas <span className="featured-title-accent">Destacadas</span>
+              </h2>
 
-          <div className="section-cta fade-in visible">
-            <Link to="/productos" className="btn btn-secondary">
-              Ver toda la colección
-            </Link>
+              <p className="section-intro featured-subtitle">
+                Diseñadas para quedarse. Mobiliario contemporáneo construido a
+                mano en maderas nobles FSC®, con acabados al aceite natural y
+                ensambles tradicionales para acompañarte toda la vida.
+              </p>
+
+              {/* Pilares de valor comercial y artesanal */}
+              <div className="featured-highlights-list" role="list">
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  <span>Garantía estructural de 5 años</span>
+                </div>
+
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                    <line x1="1" y1="10" x2="23" y2="10" />
+                  </svg>
+                  <span>Hasta 3 cuotas fijas sin interés</span>
+                </div>
+
+                <div className="featured-highlight-item" role="listitem">
+                  <svg
+                    className="featured-highlight-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  <span>Maderas 100% certificadas FSC®</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Acceso rápido a colección completa en desktop */}
+            <div className="featured-header-action">
+              <Link to="/productos" className="featured-quick-link">
+                <span>Ver catálogo completo</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  width="16"
+                  height="16"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </Link>
+            </div>
+          </header>
+
+          {/* Carrusel de Productos Destacados (INTACTO) */}
+          <div className="featured-carousel-wrapper">
+            <FeaturedCarousel
+              products={
+                featuredProducts.length > 0
+                  ? featuredProducts
+                  : products.slice(0, 4)
+              }
+              loading={loading}
+              error={error}
+            />
           </div>
+
+          {/* Cierre de sección: Bloque de confianza y CTA comercial */}
+          <footer className="featured-footer fade-in visible">
+            <div className="featured-guarantee-card">
+              <div className="featured-guarantee-content">
+                <div className="featured-guarantee-stamp" aria-hidden="true">
+                  <span className="featured-stamp-icon">HJ</span>
+                  <div className="featured-stamp-text">
+                    <strong>Oficio & Calidad</strong>
+                    <span>Taller Colegiales · CABA</span>
+                  </div>
+                </div>
+                <p className="featured-guarantee-desc">
+                  Producimos cada serie con maderas nobles seleccionadas por
+                  veta y densidad. Encastres de ebanistería oculta, terminación
+                  a mano y embalaje acolchado para envíos seguros a todo el
+                  país.
+                </p>
+              </div>
+
+              <div className="featured-cta-container">
+                <Link
+                  to="/productos"
+                  className="btn btn-primary featured-main-cta"
+                >
+                  <span>Ver toda la colección</span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    width="16"
+                    height="16"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </Link>
+                <span className="featured-cta-subtext">
+                  Envíos a coordinar con flete especializado
+                </span>
+              </div>
+            </div>
+          </footer>
         </div>
       </section>
 
