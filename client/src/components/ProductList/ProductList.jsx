@@ -216,12 +216,12 @@ function ProductList({ products = [], loading = false, error = null }) {
   ]);
 
   // Anuncio accesible por cambio de filtro u orden (modern-web-guidance: dynamic-sort)
-  /*  useEffect(() => {
-      const currentSort = SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label;
-      setStatusMessage(
-        `Mostrando ${filteredProducts.length} productos ordenados por ${currentSort}.`
-      );
-    }, [filteredProducts.length, sortBy]);*/
+  useEffect(() => {
+    const currentSort = SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label;
+    setStatusMessage(
+      `Mostrando ${filteredProducts.length} productos ordenados por ${currentSort}.`
+    );
+  }, [filteredProducts.length, sortBy]);
 
   // Categoría actual seleccionada
   const currentCategoryInfo =
