@@ -189,12 +189,12 @@ function Home({ products = [], loading = false, error = null }) {
                 >
                   <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6 2.3-7.4-6-4.6h7.6z" />
                 </svg>
-                Hermanos Jota · Desde 2026
+                · Hermanos Jota ·
               </span>
             </div>
 
             <h2 id="essence-title" className="section-title essence-title">
-              Nuestra <span className="essence-title-accent">Esencia</span>
+              Nuestra <span className="title-accent">Esencia</span>
             </h2>
 
             <p className="section-intro essence-subtitle">
@@ -224,7 +224,6 @@ function Home({ products = [], loading = false, error = null }) {
                     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                   </svg>
                 </div>
-                <span className="essence-card-number">01</span>
               </div>
               <span className="essence-card-tag">Oficio Tradicional</span>
               <h3>Artesanía & Precisión</h3>
@@ -259,7 +258,6 @@ function Home({ products = [], loading = false, error = null }) {
                     <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
                   </svg>
                 </div>
-                <span className="essence-card-number">02</span>
               </div>
               <span className="essence-card-tag">Compromiso Vivo</span>
               <h3>Sustentabilidad</h3>
@@ -294,7 +292,6 @@ function Home({ products = [], loading = false, error = null }) {
                     <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
                   </svg>
                 </div>
-                <span className="essence-card-number">03</span>
               </div>
               <span className="essence-card-tag">Líneas 1960–2026</span>
               <h3>Diseño Atemporal</h3>
@@ -324,37 +321,9 @@ function Home({ products = [], loading = false, error = null }) {
           {/* Encabezado Profesional con Jerarquía y Curaduría */}
           <header className="featured-header fade-in visible">
             <div className="featured-header-main">
-              <div className="featured-badge-wrapper">
-                <span className="featured-badge">
-                  <svg
-                    className="featured-badge-icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                    width="13"
-                    height="13"
-                  >
-                    <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6 2.3-7.4-6-4.6h7.6z" />
-                  </svg>
-                  Curaduría 2026 · Edición de Autor
-                </span>
-                <span
-                  className="featured-count-pill"
-                  aria-label="Cantidad de piezas destacadas"
-                >
-                  {featuredProducts.length || 5} piezas seleccionadas
-                </span>
-              </div>
-
               <h2 id="featured-title" className="section-title featured-title">
                 Piezas <span className="featured-title-accent">Destacadas</span>
               </h2>
-
-              <p className="section-intro featured-subtitle">
-                Diseñadas para quedarse. Mobiliario contemporáneo construido a
-                mano en maderas nobles FSC®, con acabados al aceite natural y
-                ensambles tradicionales para acompañarte toda la vida.
-              </p>
 
               {/* Pilares de valor comercial y artesanal */}
               <div className="featured-highlights-list" role="list">
@@ -449,7 +418,11 @@ function Home({ products = [], loading = false, error = null }) {
             <div className="featured-guarantee-card">
               <div className="featured-guarantee-content">
                 <div className="featured-guarantee-stamp" aria-hidden="true">
-                  <span className="featured-stamp-icon">HJ</span>
+                  <img
+                    src="/assets/logo.svg"
+                    alt="Logo de Mueblería Hermanos Jota"
+                    className="ig-card__avatar"
+                  />
                   <div className="featured-stamp-text">
                     <strong>Oficio & Calidad</strong>
                     <span>Taller Colegiales · CABA</span>
@@ -484,9 +457,6 @@ function Home({ products = [], loading = false, error = null }) {
                     <polyline points="12 5 19 12 12 19" />
                   </svg>
                 </Link>
-                <span className="featured-cta-subtext">
-                  Envíos a coordinar con flete especializado
-                </span>
               </div>
             </div>
           </footer>
