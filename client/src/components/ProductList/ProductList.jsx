@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 
 const CATEGORIES = [
@@ -65,7 +65,6 @@ function ProductList({ products = [], loading = false, error = null }) {
   const [maxPrice, setMaxPrice] = useState('');
   const [sortBy, setSortBy] = useState('relevancia');
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [statusMessage, setStatusMessage] = useState('');
 
   // Rango de precios límite del catálogo actual
   const { catalogMinPrice, catalogMaxPrice } = useMemo(() => {
@@ -338,11 +337,6 @@ function ProductList({ products = [], loading = false, error = null }) {
           </div>
         </div>
       </section>
-
-      {/* Anuncio accesible de cambios de orden y cantidad */}
-      <div role="status" aria-live="polite" className="visually-hidden">
-        {statusMessage}
-      </div>
 
       {/* Contenido principal del Catálogo */}
       <section className="catalog-section" id="catalog">
