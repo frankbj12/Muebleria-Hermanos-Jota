@@ -6056,6 +6056,45 @@ h4 {
   align-items: flex-end;
 }
 
+.admin-action-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  border: 1px solid rgba(160, 82, 45, 0.25);
+  background-color: var(--blanco);
+  color: var(--siena);
+}
+
+.admin-action-toggle:hover {
+  background-color: rgba(160, 82, 45, 0.08);
+  border-color: var(--siena);
+}
+
+.admin-action-toggle--expanded {
+  background-color: #2c241b !important;
+  border-color: #2c241b !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(44, 36, 27, 0.25);
+}
+
+.admin-action-toggle--expanded span {
+  color: #ffffff !important;
+}
+
+.admin-action-toggle--expanded svg {
+  color: #ffffff !important;
+}
+
 .admin-action-btn {
   display: inline-flex;
   align-items: center;

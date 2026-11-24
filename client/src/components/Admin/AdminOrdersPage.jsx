@@ -592,7 +592,7 @@ export default function AdminOrdersPage() {
                         <td>
                           <button
                             type="button"
-                            className="btn-admin-action"
+                            className={`admin-action-toggle ${isExpanded ? 'admin-action-toggle--expanded' : ''}`}
                             onClick={() =>
                               setExpandedId(isExpanded ? null : id)
                             }
@@ -602,32 +602,21 @@ export default function AdminOrdersPage() {
                                 ? 'Ocultar detalles'
                                 : 'Gestionar pedido'
                             }
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              padding: '6px 14px',
-                              borderRadius: '6px',
-                              fontSize: '0.82rem',
-                              fontWeight: '600',
-                              border: '1px solid rgba(160, 82, 45, 0.2)',
-                              backgroundColor: isExpanded
-                                ? 'var(--siena)'
-                                : '#ffffff',
-                              color: isExpanded
-                                ? '#ffffff !important'
-                                : 'var(--siena)',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
-                            }}
                           >
-                            <span>{isExpanded ? 'Cerrar' : 'Detalles'}</span>
+                            <span
+                              style={{
+                                color: isExpanded ? '#ffffff' : 'var(--siena)',
+                                fontWeight: '700',
+                              }}
+                            >
+                              {isExpanded ? 'Cerrar' : 'Detalles'}
+                            </span>
                             <svg
                               width="14"
                               height="14"
                               viewBox="0 0 24 24"
                               fill="none"
-                              stroke="currentColor"
+                              stroke={isExpanded ? '#ffffff' : 'currentColor'}
                               strokeWidth="2.5"
                               strokeLinecap="round"
                               strokeLinejoin="round"
