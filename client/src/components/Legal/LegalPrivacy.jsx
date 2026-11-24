@@ -5,8 +5,9 @@ import LegalNav from './LegalNav';
 function LegalPrivacy() {
   return (
     <article className="legal-page">
-      <header className="page-banner">
+      <header className="contact-hero-banner">
         <div className="container">
+          <span className="catalog-hero-eyebrow"></span>
           <p className="section-eyebrow">Protección de Datos</p>
           <h1 className="section-title">Política de Privacidad</h1>
           <p className="section-intro">

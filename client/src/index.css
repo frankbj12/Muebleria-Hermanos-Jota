@@ -5447,8 +5447,11 @@ h4 {
    Panel de Administración /admin (Estilo Moderno & Manual de Marca Hermanos Jota)
    ========================================================================== */
 .admin-panel-section {
-  /* Separación suficiente para que el header fijo (120px) no tape el contenido */
-  padding-top: calc(var(--header-height) + var(--space-2xl));
+  /* Separación para que el announcement bar y el header fijo no tapen el contenido */
+  padding-top: calc(
+    var(--announcement-height, 42px) + var(--header-height, 80px) +
+      var(--space-xl)
+  );
   padding-bottom: var(--space-4xl);
   background-color: var(--alabastro-light);
   background-image:
@@ -6218,7 +6221,10 @@ h4 {
   }
 
   .admin-panel-section {
-    padding-top: calc(var(--header-height) + var(--space-md));
+    padding-top: calc(
+      var(--announcement-height, 42px) + var(--header-height, 76px) +
+        var(--space-md)
+    );
     padding-bottom: var(--space-2xl);
   }
 

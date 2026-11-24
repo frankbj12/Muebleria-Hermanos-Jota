@@ -150,11 +150,11 @@ export default function OrdersPage() {
 
   return (
     <article className="account-page">
-      <header className="page-banner">
-        <div className="container">
-          <p className="section-eyebrow">Mi Cuenta</p>
-          <h1 className="section-title">Mis Pedidos</h1>
-          <p className="section-intro">
+      <header className="orders-hero-banner">
+        <div className="orders-hero-content">
+          <span className="orders-hero-badge">✦ HISTORIAL EXCLUSIVO</span>
+          <h1 className="orders-hero-title">Mis Pedidos</h1>
+          <p className="orders-hero-subtitle">
             Seguí el estado de tus compras y revisá el detalle de cada pieza
             adquirida en Hermanos Jota.
           </p>

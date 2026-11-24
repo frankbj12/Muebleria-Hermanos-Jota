@@ -65,13 +65,12 @@ export default function ProfilePage() {
 
   return (
     <article className="account-page">
-      <header className="page-banner">
-        <div className="container">
-          <p className="section-eyebrow">Mi Cuenta</p>
-          <h1 className="section-title">Tu Perfil</h1>
-          <p className="section-intro">
-            Consultá los datos de tu cuenta, revisá tus compras y gestioná tu
-            sesión en Hermanos Jota.
+      <header className="profile-hero-banner">
+        <div className="profile-hero-content">
+          <h1 className="profile-hero-title">Tu Perfil</h1>
+          <p className="profile-hero-subtitle">
+            Consultá los datos de tu cuenta, revisá tus pedidos y gestioná tu
+            experiencia en Hermanos Jota.
           </p>
         </div>
       </header>

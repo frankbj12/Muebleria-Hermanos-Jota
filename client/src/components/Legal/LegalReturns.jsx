@@ -8,8 +8,9 @@ function LegalReturns() {
 
   return (
     <article className="legal-page">
-      <header className="page-banner">
+      <header className="contact-hero-banner">
         <div className="container">
+          <span className="catalog-hero-eyebrow"></span>
           <p className="section-eyebrow">Atención Posventa</p>
           <h1 className="section-title">Política de Cambios y Devoluciones</h1>
           <p className="section-intro">
