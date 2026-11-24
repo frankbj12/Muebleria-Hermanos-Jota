@@ -286,7 +286,7 @@ function ProductList({ products = [], loading = false, error = null }) {
       <section className="catalog-hero-banner">
         <div className="container">
           <div className="catalog-hero-content">
-            <span className="catalog-hero-eyebrow">Catálogo Exclusivo</span>
+            <span className="catalog-hero-eyebrow"></span>
             <h1 className="catalog-hero-title">{currentCategoryInfo.title}</h1>
             <p className="catalog-hero-subtitle">
               {currentCategoryInfo.description}

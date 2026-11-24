@@ -69,6 +69,10 @@ function CartPage() {
     (sum, item) => sum + item.price * (item.quantity || 1),
     0
   );
+  const totalItems = syncedCart.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0
+  );
   const formatPrice = (price) => `$ ${price.toLocaleString('es-AR')}`;
 
   const hasOutOfStockItems = syncedCart.some(
@@ -169,11 +173,11 @@ function CartPage() {
 
   return (
     <>
-      {/* Banner superior */}
-      <section className="page-banner">
-        <div className="container">
-          <h1 className="section-title">Tu Carrito</h1>
-          <p className="section-intro" id="cart-subtitle">
+      {/* Banner superior Hero de Marca */}
+      <section className="cart-hero-banner">
+        <div className="cart-hero-content">
+          <h1 className="cart-hero-title">Tu carrito</h1>
+          <p className="cart-hero-subtitle" id="cart-subtitle">
             {subtitle}
           </p>
         </div>
@@ -183,57 +187,154 @@ function CartPage() {
       <section className="cart-section" id="cart-section">
         <div className="container" id="cart-container">
           {syncedCart.length === 0 ? (
-            <div className="cart-empty">
-              <div className="cart-empty-icon" aria-hidden="true">
-                🛋️
+            <div className="cart-empty" data-testid="cart-empty">
+              <div className="cart-empty-icon-wrap" aria-hidden="true">
+                <svg
+                  width="46"
+                  height="46"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
               </div>
-              <h2>Aún no agregaste piezas a tu carrito</h2>
-              <p>
+              <span className="cart-empty-tag">ESPACIO DISPONIBLE</span>
+              <h2 className="cart-empty-title">
+                Aún no agregaste piezas a tu carrito
+              </h2>
+              <p className="cart-empty-text">
                 Explorá nuestro catálogo de muebles artesanales y encontrá la
-                pieza ideal para tu hogar.
+                pieza ideal de autor para transformar tu hogar.
               </p>
-              <Link to="/productos" className="btn btn-primary">
+              <Link to="/productos" className="btn-cart-continue">
                 Explorar catálogo
               </Link>
             </div>
           ) : (
             <div className="cart-layout">
-              <div className="cart-items">
-                {syncedCart.map((item) => (
-                  <CartItem
-                    key={item.id ?? item._id}
-                    item={item}
-                    onUpdateQuantity={updateQuantity}
-                    onRemove={removeFromCart}
-                  />
-                ))}
+              <div className="cart-items-wrapper">
+                <div className="cart-items-header">
+                  <span className="cart-items-count-badge">
+                    Piezas Seleccionadas ({totalItems})
+                  </span>
+                  <span className="cart-shipping-notice">
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <rect x="1" y="3" width="15" height="13"></rect>
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                    Entrega segura a todo el país
+                  </span>
+                </div>
+
+                <div className="cart-items">
+                  {syncedCart.map((item) => (
+                    <CartItem
+                      key={item.id ?? item._id}
+                      item={item}
+                      onUpdateQuantity={updateQuantity}
+                      onRemove={removeFromCart}
+                    />
+                  ))}
+                </div>
+
+                <div className="cart-actions-row">
+                  <Link to="/productos" className="btn-cart-back-link">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="19" y1="12" x2="5" y2="12"></line>
+                      <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Seguir explorando piezas
+                  </Link>
+                  <button
+                    type="button"
+                    className="btn-cart-clear"
+                    id="btn-clear-cart"
+                    onClick={handleClearCart}
+                  >
+                    <svg
+                      width="15"
+                      height="15"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Vaciar selección
+                  </button>
+                </div>
               </div>
 
               <aside className="cart-summary" aria-label="Resumen de compra">
-                <h3>Resumen del Pedido</h3>
-                <div className="cart-summary-row">
-                  <span>Subtotal</span>
-                  <span>{formatPrice(subtotal)}</span>
+                <div className="cart-summary-header">
+                  <span className="cart-summary-badge">RESUMEN DEL PEDIDO</span>
+                  <h3 className="cart-summary-title">Detalle de Compra</h3>
                 </div>
+
+                <div className="cart-summary-divider"></div>
+
                 <div className="cart-summary-row">
-                  <span>Envío (CABA y GBA)</span>
-                  <span
-                    style={{ color: 'var(--salvia-dark)', fontWeight: 500 }}
-                  >
-                    Gratis
+                  <span className="cart-summary-label">
+                    Productos ({totalItems})
+                  </span>
+                  <span className="cart-summary-value">
+                    {formatPrice(subtotal)}
                   </span>
                 </div>
+                <div className="cart-summary-row">
+                  <span className="cart-summary-label">Envío (CABA y GBA)</span>
+                  <span className="cart-summary-shipping-tag">Gratis</span>
+                </div>
+
+                <div className="cart-summary-divider"></div>
+
                 <div className="cart-summary-total">
-                  <span>Total</span>
-                  <span>{formatPrice(subtotal)}</span>
+                  <div>
+                    <span className="cart-total-label">Total</span>
+                  </div>
+                  <span className="cart-total-amount">
+                    {formatPrice(subtotal)}
+                  </span>
+                </div>
+
+                <div className="cart-financing-banner">
+                  <span className="financing-icon">💳</span>
+                  <span>
+                    Hasta <strong>6 cuotas sin interés</strong> de{' '}
+                    <strong>{formatPrice(Math.round(subtotal / 6))}</strong>
+                  </span>
                 </div>
 
                 {hasStockIssue && (
-                  <div
-                    className="out-of-stock-alert"
-                    style={{ marginBottom: '1rem', fontSize: '0.8rem' }}
-                    role="alert"
-                  >
+                  <div className="out-of-stock-alert" role="alert">
                     <strong>Atención:</strong> Hay productos en tu carrito que
                     ya no tienen stock disponible. Por favor eliminalos o ajustá
                     sus cantidades para finalizar la compra.
@@ -272,7 +373,7 @@ function CartPage() {
 
                 <button
                   type="button"
-                  className={`btn btn-primary ${
+                  className={`btn-checkout ${
                     hasStockIssue || authLoading ? 'btn-disabled' : ''
                   }`}
                   id="btn-checkout"
@@ -281,15 +382,33 @@ function CartPage() {
                 >
                   {authLoading ? 'Verificando sesión...' : 'Iniciar compra'}
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  id="btn-clear-cart"
-                  style={{ marginTop: '0.5rem', width: '100%' }}
-                  onClick={handleClearCart}
-                >
-                  Vaciar carrito
-                </button>
+
+                {/* Sellos de confianza y servicio */}
+                <div className="cart-trust-box">
+                  <div className="trust-item">
+                    <span className="trust-icon">✦</span>
+                    <div>
+                      <strong>Fabricación Artesanal</strong>
+                      <p>Maderas macizas con trazabilidad sustentable.</p>
+                    </div>
+                  </div>
+                  <div className="trust-item">
+                    <span className="trust-icon">🛡️</span>
+                    <div>
+                      <strong>Garantía Hermanos Jota</strong>
+                      <p>
+                        5 años de respaldo directo sobre estructura y ensambles.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="trust-item">
+                    <span className="trust-icon">🚛</span>
+                    <div>
+                      <strong>Coordinación Personalizada</strong>
+                      <p>Pactamos día y franja horaria exacta de entrega.</p>
+                    </div>
+                  </div>
+                </div>
               </aside>
             </div>
           )}
