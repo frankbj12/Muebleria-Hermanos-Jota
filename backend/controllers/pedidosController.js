@@ -148,3 +148,57 @@ export const getMisPedidos = async (req, res, next) => {
     return next(error);
   }
 };
+
+/**
+ * [Admin] Obtiene todos los pedidos de todos los usuarios.
+ * Requiere verifyToken + requireAdmin.
+ */
+export const getAllPedidos = async (req, res, next) => {
+  try {
+    const orders = await Order.find({})
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const VALID_STATUSES = ['pending', 'processing', 'completed', 'cancelled'];
+
+/**
+ * [Admin] Actualiza el estado de un pedido por ID.
+ * Body: { status: 'pending' | 'processing' | 'completed' | 'cancelled' }
+ * Requiere verifyToken + requireAdmin.
+ */
+export const updatePedidoStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'ID de pedido inválido.' });
+    }
+
+    if (!VALID_STATUSES.includes(status)) {
+      return res.status(400).json({
+        error: `Estado inválido. Valores permitidos: ${VALID_STATUSES.join(', ')}.`,
+      });
+    }
+
+    const updated = await Order.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    ).populate('user', 'name email');
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Pedido no encontrado.' });
+    }
+
+    return res.status(200).json(updated);
+  } catch (error) {
+    return next(error);
+  }
+};

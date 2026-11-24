@@ -27,6 +27,7 @@ function normalizeOrder(order) {
   return {
     ...order,
     id: order.id ?? order._id,
+    user: order.user,
     items: Array.isArray(order.items)
       ? order.items.map(normalizeOrderItem)
       : [],
@@ -38,6 +39,33 @@ function normalizeOrder(order) {
 }
 
 const pedidosApi = {
+  /**
+   * [Admin] Obtiene todos los pedidos de todos los usuarios.
+   */
+  async getAllOrders({ signal } = {}) {
+    const data = await apiRequest(`${API_URL}/admin/all`, { signal });
+    const orders = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.orders)
+        ? data.orders
+        : [];
+    return orders.map(normalizeOrder);
+  },
+
+  /**
+   * [Admin] Actualiza el estado de un pedido.
+   * @param {string} id - ID del pedido
+   * @param {string} status - Nuevo estado
+   */
+  async updateOrderStatus(id, status) {
+    const data = await apiRequest(`${API_URL}/admin/${id}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    });
+    return normalizeOrder(data);
+  },
+
   /**
    * Obtiene el historial de pedidos del usuario autenticado.
    * El JWT se adjunta automáticamente mediante apiRequest.

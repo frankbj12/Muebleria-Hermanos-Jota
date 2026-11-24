@@ -5455,11 +5455,7 @@ h4 {
   padding-bottom: var(--space-4xl);
   background-color: var(--alabastro-light);
   background-image:
-    radial-gradient(
-      circle at 10% 20%,
-      rgba(245, 230, 211, 0.6) 0%,
-      transparent 40%
-    ),
+    radial-gradient(circle at 10% 20%, #f5e6d399 0%, transparent 40%),
     radial-gradient(
       circle at 90% 80%,
       rgba(212, 164, 55, 0.06) 0%,
@@ -8550,3 +8546,492 @@ h4 {
 }
 
 /* (estilos de sidebar legal definidos arriba) */
+
+/* ==========================================================================
+   Admin Orders Management /admin/pedidos
+   ========================================================================== */
+.admin-orders-hero-banner {
+  background: #f5e6d399;
+  padding: calc(
+      var(--announcement-height, 42px) + var(--header-height, 80px) + 2.5rem
+    )
+    1.5rem 3.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(212, 164, 55, 0.15);
+}
+
+.admin-orders-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+    circle at 50% 20%,
+    rgba(160, 82, 45, 0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.admin-orders-hero-content {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.admin-orders-hero-badge {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--oro, #d4a437);
+  background: rgba(212, 164, 55, 0.12);
+  border: 1px solid rgba(212, 164, 55, 0.3);
+  padding: 0.35rem 1rem;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+.admin-orders-hero-title {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: #fdfbf7;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.admin-orders-hero-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  color: #c4b8aa;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.admin-orders-section {
+  padding: var(--space-2xl) 0 var(--space-4xl);
+  background-color: var(--alabastro-light);
+  min-height: 60vh;
+}
+
+/* Métricas */
+.ao-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ao-metric-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(44, 36, 27, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ao-metric-value {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--negro);
+}
+
+.ao-metric-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--gris);
+}
+
+.ao-metric-card--pending .ao-metric-value {
+  color: #c0841d;
+}
+
+.ao-metric-card--processing .ao-metric-value {
+  color: #2563eb;
+}
+
+.ao-metric-card--completed .ao-metric-value {
+  color: #16a34a;
+}
+
+.ao-metric-card--revenue .ao-metric-value {
+  color: var(--siena);
+}
+
+/* Controles */
+.ao-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ao-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.ao-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gris);
+  pointer-events: none;
+}
+
+.ao-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  border: 1px solid rgba(44, 36, 27, 0.15);
+  border-radius: 8px;
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--negro);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.ao-search-input:focus {
+  border-color: var(--siena);
+  box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.1);
+}
+
+.ao-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ao-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid rgba(44, 36, 27, 0.12);
+  background: #ffffff;
+  color: var(--gris-oscuro, #4a453e);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ao-chip:hover {
+  background: #f8f6f2;
+  border-color: rgba(44, 36, 27, 0.25);
+}
+
+.ao-chip--active {
+  background: var(--siena) !important;
+  color: #ffffff !important;
+  border-color: var(--siena) !important;
+}
+
+/* Alertas & Estados */
+.ao-alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.ao-alert--error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.ao-alert-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: inherit;
+  line-height: 1;
+}
+
+.ao-loading,
+.ao-empty-state,
+.ao-error-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(44, 36, 27, 0.08);
+  margin-bottom: 2rem;
+}
+
+.ao-empty-state svg {
+  color: var(--gris);
+  margin-bottom: 1rem;
+}
+
+.ao-results-count {
+  font-size: 0.85rem;
+  color: var(--gris);
+  margin-bottom: 1rem;
+}
+
+/* Lista de pedidos */
+.ao-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ao-order-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(44, 36, 27, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.ao-order-card:hover {
+  border-color: rgba(160, 82, 45, 0.2);
+}
+
+.ao-order-card--expanded {
+  border-color: var(--siena);
+  box-shadow: 0 4px 16px rgba(160, 82, 45, 0.06);
+}
+
+.ao-order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  gap: 1rem;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+
+.ao-order-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ao-order-id {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--negro);
+}
+
+.ao-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+}
+
+.ao-status--pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.ao-status--processing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.ao-status--completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.ao-status--cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.ao-order-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+  font-size: 0.9rem;
+}
+
+.ao-order-customer {
+  font-weight: 600;
+  color: var(--negro);
+}
+
+.ao-order-date {
+  color: var(--gris);
+}
+
+.ao-order-total {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 700;
+  color: var(--siena);
+  font-size: 1.05rem;
+}
+
+.ao-expand-btn {
+  background: #f8f6f2;
+  border: 1px solid rgba(44, 36, 27, 0.1);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--negro);
+  transition: all 0.2s;
+}
+
+.ao-expand-btn:hover {
+  background: var(--siena);
+  color: #ffffff;
+  border-color: var(--siena);
+}
+
+/* Detalle de pedido */
+.ao-order-detail {
+  padding: 1.5rem;
+  background: #faf8f5;
+  border-top: 1px solid rgba(44, 36, 27, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .ao-order-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ao-detail-heading {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gris);
+  margin-bottom: 0.5rem;
+}
+
+.ao-detail-email {
+  font-size: 0.85rem;
+  color: var(--gris);
+  word-break: break-all;
+}
+
+.ao-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+.ao-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed rgba(44, 36, 27, 0.1);
+  font-size: 0.88rem;
+}
+
+.ao-item-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.ao-item-qty {
+  color: var(--gris);
+  padding: 0 0.75rem;
+}
+
+.ao-item-price {
+  font-weight: 600;
+}
+
+.ao-items-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  padding-top: 0.5rem;
+  border-top: 2px solid rgba(44, 36, 27, 0.1);
+}
+
+.ao-status-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ao-status-btn {
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(44, 36, 27, 0.15);
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.ao-status-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ao-status-btn--current {
+  border-color: var(--siena) !important;
+  background: rgba(160, 82, 45, 0.08) !important;
+  color: var(--siena) !important;
+  font-weight: 700;
+  position: relative;
+}
+
+.ao-status-btn--current::after {
+  content: '✓';
+  float: right;
+}
+
+.ao-back-link {
+  margin-top: 1rem;
+}
+
+.ao-back-link a {
+  color: var(--siena);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.ao-back-link a:hover {
+  text-decoration: underline;
+  color: var(--siena-dark);
+}

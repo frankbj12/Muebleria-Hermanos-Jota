@@ -160,6 +160,97 @@ export default function ProfilePage() {
               </div>
 
               <div className="profile-actions-grid">
+                {isAdmin && (
+                  <Link
+                    to="/admin/pedidos"
+                    className="profile-action-card profile-action-card--accent"
+                  >
+                    <div>
+                      <div className="profile-action-top">
+                        <span
+                          className="profile-action-icon"
+                          aria-hidden="true"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                            <rect
+                              width="6"
+                              height="4"
+                              x="9"
+                              y="3"
+                              rx="1"
+                              ry="1"
+                            />
+                            <path d="M9 12h6" />
+                            <path d="M9 16h4" />
+                          </svg>
+                        </span>
+                        <span className="profile-action-pill">Admin</span>
+                      </div>
+                      <h3 className="profile-action-title">
+                        Gestión de Pedidos
+                      </h3>
+                      <p className="profile-action-desc">
+                        Revisá todos los pedidos de la tienda, filtrá por estado
+                        y actualizá el progreso de cada compra.
+                      </p>
+                    </div>
+                    <span className="profile-action-cta">
+                      Administrar pedidos <span aria-hidden="true">&rarr;</span>
+                    </span>
+                  </Link>
+                )}
+
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="profile-action-card profile-action-card--accent"
+                  >
+                    <div>
+                      <div className="profile-action-top">
+                        <span
+                          className="profile-action-icon"
+                          aria-hidden="true"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                            <circle cx="12" cy="12" r="3" />
+                          </svg>
+                        </span>
+                        <span className="profile-action-pill">Admin</span>
+                      </div>
+                      <h3 className="profile-action-title">
+                        Panel de Administración
+                      </h3>
+                      <p className="profile-action-desc">
+                        Gestioná el inventario, creá nuevos productos y
+                        actualizá precios o stock.
+                      </p>
+                    </div>
+                    <span className="profile-action-cta">
+                      Abrir administración{' '}
+                      <span aria-hidden="true">&rarr;</span>
+                    </span>
+                  </Link>
+                )}
                 <Link to="/mis-pedidos" className="profile-action-card">
                   <div>
                     <div className="profile-action-top">
@@ -227,82 +318,6 @@ export default function ProfilePage() {
                     Ir al carrito <span aria-hidden="true">&rarr;</span>
                   </span>
                 </Link>
-
-                <Link to="/productos" className="profile-action-card">
-                  <div>
-                    <div className="profile-action-top">
-                      <span className="profile-action-icon" aria-hidden="true">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3" />
-                          <path d="M2 11v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-4 0Z" />
-                          <path d="M4 18v2" />
-                          <path d="M20 18v2" />
-                        </svg>
-                      </span>
-                    </div>
-                    <h3 className="profile-action-title">
-                      Catálogo de Muebles
-                    </h3>
-                    <p className="profile-action-desc">
-                      Explorá nuestras colecciones artesanales para living,
-                      comedor, dormitorio y trabajo.
-                    </p>
-                  </div>
-                  <span className="profile-action-cta">
-                    Explorar catálogo <span aria-hidden="true">&rarr;</span>
-                  </span>
-                </Link>
-
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="profile-action-card profile-action-card--accent"
-                  >
-                    <div>
-                      <div className="profile-action-top">
-                        <span
-                          className="profile-action-icon"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-                            <circle cx="12" cy="12" r="3" />
-                          </svg>
-                        </span>
-                        <span className="profile-action-pill">Admin</span>
-                      </div>
-                      <h3 className="profile-action-title">
-                        Panel de Administración
-                      </h3>
-                      <p className="profile-action-desc">
-                        Gestioná el inventario, creá nuevos productos y
-                        actualizá precios o stock.
-                      </p>
-                    </div>
-                    <span className="profile-action-cta">
-                      Abrir administración{' '}
-                      <span aria-hidden="true">&rarr;</span>
-                    </span>
-                  </Link>
-                )}
               </div>
             </div>
           </div>

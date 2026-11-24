@@ -20,6 +20,7 @@ import CartPage from './components/Cart/CartPage';
 import { ProductsProvider, useProducts } from './context/ProductsContext';
 import AdminPanel from './components/Admin/AdminPanel';
 import ProductForm from './components/Admin/ProductForm';
+import AdminOrdersPage from './components/Admin/AdminOrdersPage';
 import Chatbot from './components/Chatbot/Chatbot';
 import { AuthProvider } from './context/AuthContext';
 import WhatsAppButton from './components/WhatsAppButton/WhatsAppButton';
@@ -128,6 +129,14 @@ function AppLayout() {
               element={
                 <ProtectedRoute adminOnly>
                   <ProductForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/pedidos"
+              element={
+                <ProtectedRoute adminOnly>
+                  <AdminOrdersPage />
                 </ProtectedRoute>
               }
             />

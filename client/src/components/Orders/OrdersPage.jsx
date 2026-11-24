@@ -152,7 +152,6 @@ export default function OrdersPage() {
     <article className="account-page">
       <header className="orders-hero-banner">
         <div className="orders-hero-content">
-          <span className="orders-hero-badge">✦ HISTORIAL EXCLUSIVO</span>
           <h1 className="orders-hero-title">Mis Pedidos</h1>
           <p className="orders-hero-subtitle">
             Seguí el estado de tus compras y revisá el detalle de cada pieza

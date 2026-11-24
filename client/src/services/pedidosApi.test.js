@@ -162,4 +162,74 @@ describe('pedidosApi', () => {
       status: 400,
     });
   });
+
+  it('obtiene todos los pedidos de todos los usuarios para admin [getAllOrders]', async () => {
+    localStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify({ token: 'admin-jwt-token', user: { role: 'admin' } })
+    );
+
+    const apiOrders = [
+      {
+        _id: '6b04c008e5ae71044588986d',
+        user: { name: 'Ramón', email: 'usuario@hermanosjota.com' },
+        items: [
+          { productId: 'p1', name: 'Aparador', price: 1890000, quantity: 1 },
+        ],
+        total: 1890000,
+        status: 'pending',
+        createdAt: '2026-11-23T22:36:56.844Z',
+      },
+    ];
+
+    global.fetch.mockResolvedValue(jsonResponse(apiOrders));
+
+    const orders = await pedidosApi.getAllOrders();
+
+    expect(global.fetch).toHaveBeenCalledWith(`${PEDIDOS_URL}/admin/all`, {
+      headers: {
+        Authorization: 'Bearer admin-jwt-token',
+      },
+    });
+    expect(orders).toHaveLength(1);
+    expect(orders[0].id).toBe('6b04c008e5ae71044588986d');
+    expect(orders[0].user.name).toBe('Ramón');
+  });
+
+  it('actualiza el estado de un pedido como admin [updateOrderStatus]', async () => {
+    localStorage.setItem(
+      AUTH_STORAGE_KEY,
+      JSON.stringify({ token: 'admin-jwt-token', user: { role: 'admin' } })
+    );
+
+    const updatedOrder = {
+      _id: '6b04c008e5ae71044588986d',
+      user: { name: 'Ramón', email: 'usuario@hermanosjota.com' },
+      items: [
+        { productId: 'p1', name: 'Aparador', price: 1890000, quantity: 1 },
+      ],
+      total: 1890000,
+      status: 'completed',
+    };
+
+    global.fetch.mockResolvedValue(jsonResponse(updatedOrder));
+
+    const result = await pedidosApi.updateOrderStatus(
+      '6b04c008e5ae71044588986d',
+      'completed'
+    );
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      `${PEDIDOS_URL}/admin/6b04c008e5ae71044588986d/status`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer admin-jwt-token',
+        },
+        body: JSON.stringify({ status: 'completed' }),
+      }
+    );
+    expect(result.status).toBe('completed');
+  });
 });
