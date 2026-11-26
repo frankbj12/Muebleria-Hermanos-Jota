@@ -2,7 +2,9 @@
 
 ### Mueblería artesanal · E-commerce
 
-Aplicación full stack para explorar un catálogo de muebles artesanales, gestionar inventario, realizar compras con descuento de stock y autenticar usuarios. El frontend está construido con React 19 y React Router; la API REST usa Node.js, Express y Mongoose, con persistencia en MongoDB Atlas y almacenamiento multimedia en Vercel Blob.
+Aplicación Full Stack de comercio electrónico para una mueblería artesanal. Permite explorar el catálogo de productos, gestionar inventario y pedidos, realizar compras con actualización automática de stock y administrar cuentas de usuario con autenticación y control de acceso por roles.
+
+El frontend está desarrollado con React 19 y React Router. El backend utiliza Node.js, Express y Mongoose, con persistencia en MongoDB Atlas y almacenamiento de imágenes mediante Vercel Blob.
 
 [![MongoDB](https://img.shields.io/badge/MongoDB-023430?style=for-the-badge&logo=MongoDB)](https://www.mongodb.com/es/docs/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
@@ -13,10 +15,8 @@ Aplicación full stack para explorar un catálogo de muebles artesanales, gestio
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
 [![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens)](https://jwt.io/)
 
-**Diplomatura Full Stack · ITBA**
-
+### 🌐 DEMO: [Muebleria Hermanos JOTA](https://muebleria-hermanos-jota-grupo-j.vercel.app/)
 ---
-
 ## 👥 Equipo
 
 | Integrante | GitHub |
@@ -171,7 +171,7 @@ La API maneja modelos de `Product`, `User` y `Order` persistidos en MongoDB. Tod
 │   │   └── db.js                        Conexión a MongoDB Atlas
 │   ├── controllers/
 │   │   ├── authController.js            Registro, login y sesión (/me)
-│   │   ├── pedidosController.js         Creación de pedidos, stock y administración
+│   │   ├── pedidosController.js         Gestión de pedidos, actualización de estados y control de stock
 │   │   └── productosController.js       Operaciones CRUD de catálogo
 │   ├── middlewares/
 │   │   ├── errorHandler.js              Respuestas centralizadas de error
@@ -238,9 +238,13 @@ La API maneja modelos de `Product`, `User` y `Order` persistidos en MongoDB. Tod
 │   ├── .env.example                     Plantilla de variables del cliente
 │   └── package.json                     Dependencias y comandos del cliente
 │
-├── docs/                                Documentación y especificaciones
-├── AGENTS.md                            Criterios y reglas de trabajo del repositorio
+├── .agents/                             Skills, instrucciones y configuraciones para agentes
+├── .husky/                              Hooks de Git del proyecto
+├── AGENTS.md                            Instrucciones generales y convenciones de desarrollo para agentes
 ├── eslint.config.js                     Configuración de ESLint
+├── commitlint.config.cjs                Reglas para mensajes de commit
+├── package.json                         Herramientas y scripts de la raíz
+├── docs/                                Documentación y especificaciones
 └── README.md                            Documentación del proyecto
 ```
 
@@ -268,7 +272,14 @@ La API maneja modelos de `Product`, `User` y `Order` persistidos en MongoDB. Tod
   ```bash
   npm test -- --watchAll=false
   ```
+
 - **Pruebas de backend:** desde `backend/`, ejecutá:
   ```bash
   npm test
   ```
+
+---
+
+**Diplomatura Full Stack · ITBA**
+
+---
