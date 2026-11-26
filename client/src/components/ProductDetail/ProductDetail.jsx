@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductImageUrl, FALLBACK_PRODUCT_IMAGE } from '../../utils/imageUrl';
+import {
+  getProductImageUrl,
+  FALLBACK_PRODUCT_IMAGE,
+} from '../../utils/imageUrl';
+
+const getProductModelUrl = (product) => {
+  if (!product) return null;
+  if (product.modelUrl) return product.modelUrl;
+  const normalizedName = (product.name || '').toLowerCase();
+  if (
+    normalizedName.includes('biblioteca') &&
+    normalizedName.includes('recoleta')
+  ) {
+    return '/models/biblioteca_recoleta.glb';
+  }
+  return null;
+};
 
 /**
  * Formatea un número como moneda en pesos argentinos (ARS).
@@ -40,6 +56,8 @@ const getCategoryLabel = (cat) => {
 function ProductDetail({ product, onClearSelection }) {
   const { cart, addToCart } = useCart();
   const { addToast } = useToast();
+  const [show3D, setShow3D] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
 
   if (!product) {
     return (
@@ -80,6 +98,9 @@ function ProductDetail({ product, onClearSelection }) {
   }
 
   const { name, category, description, price, image, specs, stock } = product;
+  const modelUrl = getProductModelUrl(product);
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUrl)}`;
 
   const productId = product.id ?? product._id;
   const itemInCart = cart.find((item) => (item.id ?? item._id) === productId);
@@ -130,17 +151,76 @@ function ProductDetail({ product, onClearSelection }) {
         )}
 
         <div className="product-detail-grid" id="product-detail-content">
-          <div className="product-gallery">
-            <img
-              src={getProductImageUrl(image)}
-              alt={name}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
-              }}
-            />
+          <div className="product-gallery-column">
+            <div className="product-gallery">
+              {modelUrl && show3D ? (
+                <model-viewer
+                  src={modelUrl}
+                  alt={`Modelo 3D de ${name}`}
+                  ar
+                  ar-modes="webxr scene-viewer quick-look"
+                  camera-controls
+                  auto-rotate
+                  shadow-intensity="1"
+                  style={{
+                    width: '100%',
+                    height: '420px',
+                    backgroundColor: '#f8f5f0',
+                    borderRadius: '12px',
+                  }}
+                >
+                  <button
+                    slot="ar-button"
+                    type="button"
+                    className="btn btn-primary"
+                    style={{
+                      position: 'absolute',
+                      bottom: '16px',
+                      right: '16px',
+                    }}
+                  >
+                    Ver en tu espacio (AR)
+                  </button>
+                </model-viewer>
+              ) : (
+                <img
+                  src={getProductImageUrl(image)}
+                  alt={name}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = FALLBACK_PRODUCT_IMAGE;
+                  }}
+                />
+              )}
+            </div>
+
+            {modelUrl && (
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '0.5rem',
+                  marginTop: '0.75rem',
+                  justifyContent: 'center',
+                }}
+              >
+                <button
+                  type="button"
+                  className={`btn ${!show3D ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setShow3D(false)}
+                >
+                  Foto
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${show3D ? 'btn-primary' : 'btn-secondary'}`}
+                  onClick={() => setShow3D(true)}
+                >
+                  Vista 3D
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="product-info">
@@ -219,6 +299,15 @@ function ProductDetail({ product, onClearSelection }) {
                     ? 'Máximo en carrito'
                     : 'Añadir al Carrito'}
               </button>
+              {modelUrl && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowQrModal((prev) => !prev)}
+                >
+                  {showQrModal ? 'Ocultar QR 3D' : 'Ver en tu espacio (QR)'}
+                </button>
+              )}
               {onClearSelection && (
                 <button
                   type="button"
@@ -229,6 +318,42 @@ function ProductDetail({ product, onClearSelection }) {
                 </button>
               )}
             </div>
+
+            {modelUrl && showQrModal && (
+              <div
+                style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  border: '1px solid #e5dfd5',
+                  borderRadius: '12px',
+                  backgroundColor: '#faf7f2',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <img
+                  src={qrImageUrl}
+                  alt={`Código QR para ver ${name} en 3D`}
+                  width={140}
+                  height={140}
+                  style={{ borderRadius: '8px', backgroundColor: '#fff' }}
+                />
+                <div style={{ flex: '1 1 200px' }}>
+                  <strong style={{ display: 'block', marginBottom: '0.35rem' }}>
+                    Proyectalo en tu espacio con el celular
+                  </strong>
+                  <p
+                    style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.45 }}
+                  >
+                    Escaneá este QR con la cámara de tu teléfono, tocá{' '}
+                    <strong>Vista 3D</strong> y luego{' '}
+                    <strong>Ver en tu espacio (AR)</strong>.
+                  </p>
+                </div>
+              </div>
+            )}
 
             {specs && Object.keys(specs).length > 0 && (
               <div className="product-specs">
