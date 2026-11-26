@@ -2,24 +2,22 @@
 
 ### Mueblería artesanal · E-commerce
 
-Aplicación full stack para explorar un catálogo de muebles artesanales y gestionar sus productos. El frontend está construido con React y React Router; la API REST usa Node.js, Express y Mongoose, con persistencia en MongoDB Atlas.
+Aplicación Full Stack de comercio electrónico para una mueblería artesanal. Permite explorar el catálogo de productos, gestionar inventario y pedidos, realizar compras con actualización automática de stock y administrar cuentas de usuario con autenticación y control de acceso por roles.
 
-[![Vercel Deployment](https://img.shields.io/badge/Frontend-Vercel-black?style=for-the-badge&logo=vercel)](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
-[![Render Deployment](https://img.shields.io/badge/API-Render-141414?style=for-the-badge&logo=render)](https://muebleria-hermanos-jota-api-b051.onrender.com/api/health)
+El frontend está desarrollado con React 19 y React Router. El backend utiliza Node.js, Express y Mongoose, con persistencia en MongoDB Atlas y almacenamiento de imágenes mediante Vercel Blob.
+
 [![MongoDB](https://img.shields.io/badge/MongoDB-023430?style=for-the-badge&logo=MongoDB)](https://www.mongodb.com/es/docs/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens)](https://jwt.io/)
 
-
-- **Frontend:** [muebleria-hermanos-jota-grupo-13.vercel.app](https://muebleria-hermanos-jota-grupo-13.vercel.app/)
-- **API:** [muebleria-hermanos-jota-api-b051.onrender.com](https://muebleria-hermanos-jota-api-b051.onrender.com/api/health)
-
-**Diplomatura Full Stack · ITBA**
-
+### 🌐 DEMO: [Muebleria Hermanos JOTA](https://muebleria-hermanos-jota-grupo-j.vercel.app/)
 ---
-
-## 👥Equipo
+## 👥 Equipo
 
 | Integrante | GitHub |
 | --- | --- |
@@ -28,19 +26,23 @@ Aplicación full stack para explorar un catálogo de muebles artesanales y gesti
 | Brian Reil | [@reilbrian](https://github.com/reilbrian) |
 | Camilo Facundo Desza | [@CamiloD2212](https://github.com/CamiloD2212) |
 
+---
 
-## 🛠️Tecnologías
+## 🛠️ Tecnologías
 
 | Área | Herramientas |
 | --- | --- |
-| Cliente | React, React Router, JavaScript, CSS |
-| Servidor | Node.js, Express |
-| Datos y Media | MongoDB Atlas, Mongoose, Vercel Blob |
-| Despliegue | Vercel (frontend), Render (API) |
+| Cliente | React 19, React Router, Context API, CSS3, HTML5 |
+| Servidor | Node.js, Express, Multer, Helmet, express-rate-limit |
+| Autenticación | JSON Web Tokens (JWT), bcryptjs |
+| Datos y Media | MongoDB Atlas, Mongoose, Vercel Blob SDK |
+| Testing | Jest, Supertest, React Testing Library |
 
-## 🛠️Puesta en marcha
+---
 
-**Requisitos:** Node.js y npm. Para ejecutar toda la aplicación localmente, necesitás una URI de MongoDB Atlas con permisos de acceso.
+## 🛠️ Puesta en marcha
+
+**Requisitos:** Node.js y npm. Para ejecutar toda la aplicación localmente, necesitás una URI de MongoDB Atlas (o instancia local) con permisos de acceso.
 
 ### 1. Configurar e iniciar la API
 
@@ -49,16 +51,29 @@ cd backend
 npm install
 ```
 
-Copiá `backend/.env.example` a `backend/.env` y completá `MONGODB_URI` con tus credenciales. No compartas ni subas el archivo `.env`.
+Copiá `backend/.env.example` a `backend/.env` y completá las variables de configuración. No compartas ni subas el archivo `.env`.
 
 ```env
 PORT=5000
 MONGODB_URI=mongodb+srv://<usuario>:<contraseña>@<cluster>/<base>
 CORS_ORIGIN=http://localhost:3000
+JWT_SECRET=tu_secreto_para_firmar_tokens
+JWT_EXPIRES_IN=1d
+ADMIN_NAME=Administrador
+ADMIN_EMAIL=admin@muebleriajota.com
+ADMIN_PASSWORD=PasswordSeguro123!
 BLOB_READ_WRITE_TOKEN="vercel_blob_rw_xxxxxxxxxxxxxxxx"
 ```
 
-Para habilitar la subida y administración de imágenes en la nube con Vercel Blob, configurá el token en `BLOB_READ_WRITE_TOKEN`.
+**Carga de datos y usuario administrador:**
+- Para cargar el catálogo inicial de productos:
+  ```bash
+  npm run seed
+  ```
+- Para crear el usuario administrador inicial según los datos de tu `.env`:
+  ```bash
+  npm run seed:admin
+  ```
 
 Iniciá el servidor:
 
@@ -66,7 +81,9 @@ Iniciá el servidor:
 npm run dev
 ```
 
-La API local estará disponible en `http://localhost:5000`.
+La API local estará disponible en `http://localhost:5000` (chequeo de estado en `http://localhost:5000/api/health`).
+
+---
 
 ### 2. Configurar e iniciar el frontend
 
@@ -75,149 +92,194 @@ cd client
 npm install
 ```
 
-Para usar la API local, no hace falta configurar `REACT_APP_API_URL`: el cliente usa `http://localhost:5000/api/productos` por defecto. Para apuntar a la API desplegada, creá `client/.env.local`:
+Para usar la API local, no hace falta configurar `REACT_APP_API_URL`: el cliente se conecta a `http://localhost:5000` por defecto. Si necesitás especificar una URL base distinta, creá `client/.env.local`:
 
 ```env
-REACT_APP_API_URL=https://muebleria-hermanos-jota-api-b051.onrender.com/api/productos
+REACT_APP_API_URL=http://localhost:5000
 ```
 
-Luego iniciá React:
+Iniciá React:
 
 ```bash
 npm start
 ```
 
-El frontend se abrirá en `http://localhost:3000`. Para usar la API local, mantené ambos procesos activos. Si cambiás una variable `REACT_APP_*`, reiniciá el servidor de desarrollo.
+El frontend se abrirá en `http://localhost:3000`.
 
-### Variables en producción
+---
 
-- **Render:** definir `MONGODB_URI`, `CORS_ORIGIN` y `BLOB_READ_WRITE_TOKEN` (para la gestión y persistencia de imágenes en Vercel Blob) en la configuración del servicio. `CORS_ORIGIN` debe incluir el origen exacto del frontend publicado.
-- **Vercel:** definir `REACT_APP_API_URL` con `https://muebleria-hermanos-jota-api-b051.onrender.com/api/productos` y volver a desplegar el frontend.
+## 🔐 Roles y Niveles de Acceso
 
-No guardes credenciales ni secretos en el repositorio. El archivo `.env.example` documenta los nombres de variables sin contener valores secretos.
+La aplicación implementa permisos diferenciados según el estado de la sesión y el rol del usuario:
 
-## ⚙API
+| Nivel / Rol | Acceso en la Aplicación | Permisos de API |
+| :--- | :--- | :--- |
+| **Visitante**<br>*(Sin sesión / Anónimo)* | • Exploración del catálogo, búsqueda en tiempo real y filtros.<br>• Detalle de productos, medidas y especificaciones técnicas.<br>• Armado del carrito de compras (persistido en `localStorage`).<br>• Formulario de contacto y páginas legales.<br>• *Al intentar comprar o ingresar a `/perfil`, `/mis-pedidos` o `/admin`, es redirigido a `/login`.* | • Consultas públicas (`GET /api/productos`, `GET /api/upload`, `GET /api/health`).<br>• Registro (`POST /api/auth/register`).<br>• Login con rate limiter (`POST /api/auth/login`). |
+| **Cliente**<br>*(Sesión activa · Rol `user`)* | • Todo lo anterior.<br>• Acceso a su perfil personal en `/perfil` y cierre de sesión.<br>• **Finalización de compra (Checkout):** creación de orden, descuento atómico de stock en base de datos, vaciado de carrito y confirmación con ID de pedido.<br>• Consulta de historial de compras en `/mis-pedidos` con seguimiento de estado.<br>• *Sin acceso al panel `/admin` (restringido por `<ProtectedRoute>` y middleware).* | • Todos los accesos públicos.<br>• Restauración de sesión (`GET /api/auth/me`).<br>• Creación de órdenes (`POST /api/pedidos`).<br>• Historial de pedidos personal (`GET /api/pedidos/mis-pedidos`). |
+| **Administrador**<br>*(Sesión activa · Rol `admin`)* | • Todo lo anterior.<br>• Acceso exclusivo al panel de control `/admin`.<br>• **Gestión de inventario:** alta, edición y baja de productos, control de stock y subida de imágenes a Vercel Blob.<br>• **Gestión de pedidos:** listado global de todas las órdenes de compra y cambio de estado (`pending`, `completed`, `cancelled`).<br>• *El usuario inicial se genera ejecutando `npm run seed:admin` con los datos definidos en `backend/.env`.* | • Todos los accesos anteriores.<br>• Alta/edición/baja de productos (`POST`, `PUT`, `DELETE /api/productos`).<br>• Subida/baja de archivos (`POST`, `DELETE /api/upload`).<br>• Listado y actualización de órdenes (`GET`, `PATCH /api/pedidos/admin/*`). |
 
-La API utiliza el modelo `Product` y persiste los registros en MongoDB. Los productos se manejan con campos en inglés (`name`, `description`, `price`, `stock`, `image`, `category`, `featured`, `specs`) y su identificador MongoDB (`_id`/`id`). Además, integra endpoints dedicados a la subida y administración de archivos multimedia con Vercel Blob.
+---
 
-### Catálogo de productos
+## ⚙️ API
 
-| Método | Endpoint | Descripción |
-| --- | --- | --- |
-| `GET` | `/api/health` | Estado de la API. |
-| `GET` | `/api/productos` | Lista de productos. |
-| `GET` | `/api/productos/:id` | Producto por ID; responde `404` si no existe. |
-| `POST` | `/api/productos` | Crea un producto y responde `201`. |
-| `PUT` | `/api/productos/:id` | Actualiza un producto existente. |
-| `DELETE` | `/api/productos/:id` | Elimina un producto existente. |
+La API maneja modelos de `Product`, `User` y `Order` persistidos en MongoDB. Todas las respuestas son emitidas en formato JSON. Los endpoints protegidos requieren el encabezado `Authorization: Bearer <token>`.
 
-También están disponibles las rutas CRUD bajo `/productos` para compatibilidad.
+### Autenticación (`/api/auth`)
 
-### Almacenamiento multimedia (Vercel Blob)
+| Método | Endpoint | Acceso | Descripción |
+| --- | --- | --- | --- |
+| `POST` | `/api/auth/register` | Público | Registra un nuevo usuario con contraseña hasheada (`bcrypt`). |
+| `POST` | `/api/auth/login` | Público *(Rate limit)* | Valida credenciales y devuelve JWT. Limita a 5 intentos cada 15 min por IP. |
+| `GET` | `/api/auth/me` | Protegido *(JWT)* | Devuelve los datos del usuario autenticado a partir del token. |
 
-| Método | Endpoint | Descripción |
-| --- | --- | --- |
-| `GET` | `/api/upload` | Lista las imágenes almacenadas en Vercel Blob ordenadas cronológicamente. |
-| `POST` | `/api/upload` | Sube una imagen (`multipart/form-data`, campo `image`, máx. 5 MB) a Vercel Blob y responde con su URL pública. |
-| `DELETE` | `/api/upload` | Elimina una imagen de Vercel Blob a partir de su URL (enviada en el cuerpo JSON o query string). |
+### Pedidos y Checkout (`/api/pedidos`)
 
-## 📂Estructura
+| Método | Endpoint | Acceso | Descripción |
+| --- | --- | --- | --- |
+| `POST` | `/api/pedidos` | Protegido *(JWT)* | Registra un pedido, valida y descuenta stock atómicamente en la base de datos. |
+| `GET` | `/api/pedidos/mis-pedidos` | Protegido *(JWT)* | Lista los pedidos correspondientes al usuario autenticado. |
+| `GET` | `/api/pedidos/admin/all` | Protegido *(Admin)* | Lista todas las órdenes registradas en el sistema para gestión. |
+| `PATCH` | `/api/pedidos/admin/:id/status` | Protegido *(Admin)* | Actualiza el estado de una orden (`pending`, `completed`, `cancelled`). |
+
+### Catálogo de productos (`/api/productos`)
+
+| Método | Endpoint | Acceso | Descripción |
+| --- | --- | --- | --- |
+| `GET` | `/api/health` | Público | Estado de la API y tiempo de actividad. |
+| `GET` | `/api/productos` | Público | Lista de productos con soporte para búsqueda y categorías. |
+| `GET` | `/api/productos/:id` | Público | Producto por ID; responde `404` si no existe. |
+| `POST` | `/api/productos` | Protegido *(Admin)* | Crea un nuevo producto en el catálogo. |
+| `PUT` | `/api/productos/:id` | Protegido *(Admin)* | Actualiza un producto existente. |
+| `DELETE` | `/api/productos/:id` | Protegido *(Admin)* | Elimina un producto existente. |
+
+### Almacenamiento multimedia (`/api/upload`)
+
+| Método | Endpoint | Acceso | Descripción |
+| --- | --- | --- | --- |
+| `GET` | `/api/upload` | Público | Lista las imágenes almacenadas en Vercel Blob ordenadas por fecha. |
+| `POST` | `/api/upload` | Protegido *(Admin)* | Sube una imagen (`multipart/form-data`, máx. 5 MB) a Vercel Blob y responde con su URL pública. |
+| `DELETE` | `/api/upload` | Protegido *(Admin)* | Elimina una imagen de Vercel Blob a partir de su URL. |
+
+---
+
+## 📂 Estructura
 
 ```text
 .
-├── backend/                         API Node.js y Express
+├── backend/                             API Node.js y Express
 │   ├── config/
-│   │   └── db.js                    Conexión a MongoDB
+│   │   └── db.js                        Conexión a MongoDB Atlas
 │   ├── controllers/
-│   │   └── productosController.js   Operaciones CRUD
-│   ├── models/
-│   │   └── Product.js               Esquema y modelo Mongoose
+│   │   ├── authController.js            Registro, login y sesión (/me)
+│   │   ├── pedidosController.js         Gestión de pedidos, actualización de estados y control de stock
+│   │   └── productosController.js       Operaciones CRUD de catálogo
 │   ├── middlewares/
-│   │   ├── errorHandler.js          Respuestas centralizadas de error
-│   │   └── logger.js                Registro de método y URL
+│   │   ├── errorHandler.js              Respuestas centralizadas de error
+│   │   ├── logger.js                    Registro de peticiones en consola
+│   │   ├── loginRateLimiter.js          Límite de tasa en login (5 intentos / 15m)
+│   │   ├── requireAdmin.js              Control de acceso para rol administrador
+│   │   └── verifyToken.js               Validación de JWT en encabezado Bearer
+│   ├── models/
+│   │   ├── Order.js                     Esquema y modelo de pedidos
+│   │   ├── Product.js                   Esquema y modelo de productos
+│   │   └── User.js                      Esquema y modelo de usuarios
 │   ├── routes/
-│   │   ├── productos.js             Endpoints de productos
-│   │   └── upload.js                Subida y gestión de imágenes (Vercel Blob)
-│   ├── index.js                     Configuración y arranque del servidor
-│   ├── seed.js                      Carga inicial de productos
-│   ├── .env.example                 Plantilla de variables de entorno
-│   └── package.json                 Dependencias y comandos del backend
+│   │   ├── auth.js                      Rutas de autenticación
+│   │   ├── pedidos.js                   Rutas de pedidos y órdenes
+│   │   ├── productos.js                 Rutas del catálogo de productos
+│   │   └── upload.js                    Subida y gestión de imágenes (Vercel Blob)
+│   ├── tests/                           Pruebas de integración del backend
+│   ├── index.js                         Configuración del servidor, Helmet y CORS
+│   ├── seed.js                          Carga inicial de productos
+│   ├── seedAdmin.js                     Creación de usuario administrador
+│   ├── .env.example                     Plantilla de variables de entorno
+│   └── package.json                     Dependencias y comandos del backend
 │
-├── client/                          Aplicación React
+├── client/                              Aplicación React
 │   ├── public/
-│   │   ├── assets/                  Imágenes, logo y videos usados por la UI
-│   │   │   └── products/            Imágenes del catálogo e imagen de mantenimiento
-│   │   ├── index.html               Documento HTML de entrada de React
-│   │   ├── manifest.json            Metadatos de la aplicación web
-│   │   └── robots.txt               Directivas para rastreadores
+│   │   ├── assets/                      Imágenes, logos e iconos
+│   │   │   └── products/                Imágenes del catálogo e imagen de mantenimiento
+│   │   ├── index.html                   Documento HTML de entrada
+│   │   └── manifest.json                Metadatos de la aplicación web
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Admin/               Panel, formulario y modal de confirmación
-│   │   │   │   ├── AdminPanel.jsx        Métricas, filtros y tabla de gestión
-│   │   │   │   ├── ConfirmDeleteModal.jsx Modal destructivo estilo GitHub
-│   │   │   │   └── ProductForm.jsx       Alta/edición, drag & drop y Vercel Blob
-│   │   │   ├── Cart/                Vista e ítem reutilizable del carrito
-│   │   │   ├── ContactForm/         Formulario y datos de contacto
-│   │   │   ├── Footer/              Pie de página
-│   │   │   ├── Home/                Inicio y carrusel de piezas destacadas
-│   │   │   │   ├── FeaturedCarousel.jsx  Carrusel responsivo con reel continuo
-│   │   │   │   └── Home.jsx              Vista principal
-│   │   │   ├── Navbar/              Navegación y contador del carrito
-│   │   │   ├── NotFound/            Vista de página no encontrada
-│   │   │   ├── ProductCard/         Tarjeta reutilizable de producto
-│   │   │   ├── ProductDetail/       Detalle dinámico y especificaciones
-│   │   │   └── ProductList/         Catálogo, búsqueda y filtros
+│   │   │   ├── Admin/                   Panel de administración, métricas y órdenes
+│   │   │   ├── AnnouncementBar/         Barra superior de avisos
+│   │   │   ├── Auth/                    LoginPage, RegisterPage y ProtectedRoute
+│   │   │   ├── Cart/                    Carrito de compras y CheckoutModal
+│   │   │   ├── Chatbot/                 Asistente interactivo
+│   │   │   ├── ContactForm/             Formulario de contacto
+│   │   │   ├── Footer/                  Pie de página y arrepentimiento
+│   │   │   ├── Home/                    Inicio y carrusel de destacados
+│   │   │   ├── Legal/                   Términos, privacidad y devoluciones
+│   │   │   ├── Navbar/                  Navegación dinámica según estado de sesión
+│   │   │   ├── NotFound/                Vista 404 personalizada
+│   │   │   ├── Orders/                  Historial de compras del usuario
+│   │   │   ├── ProductCard/             Tarjeta de producto reutilizable
+│   │   │   ├── ProductDetail/           Detalle dinámico y especificaciones
+│   │   │   ├── ProductList/             Catálogo con filtros y búsqueda
+│   │   │   ├── User/                    Página de perfil de usuario
+│   │   │   └── WhatsAppButton/          Acceso a WhatsApp
 │   │   ├── context/
-│   │   │   ├── CartContext.jsx      Carrito persistido en localStorage
-│   │   │   ├── CartContext.test.jsx Pruebas de persistencia del carrito
-│   │   │   ├── ProductsContext.jsx  Estado, carga y actualización del catálogo
-│   │   │   ├── ProductsContext.test.jsx Prueba de actualización tras un alta
-│   │   │   └── ToastContext.jsx     Notificaciones de la interfaz
+│   │   │   ├── AuthContext.jsx          Estado de sesión, login, registro y token JWT
+│   │   │   ├── CartContext.jsx          Carrito persistido en localStorage
+│   │   │   ├── ProductsContext.jsx      Estado y carga reactiva del catálogo
+│   │   │   ├── RepentanceModalContext.jsx Modal de arrepentimiento de compra
+│   │   │   └── ToastContext.jsx         Notificaciones globales
 │   │   ├── services/
-│   │   │   ├── productosApi.js      Acceso HTTP a los endpoints de productos
-│   │   │   └── productosApi.test.js Pruebas del servicio HTTP
+│   │   │   ├── apiClient.js             Cliente HTTP centralizado con token Bearer
+│   │   │   ├── pedidosApi.js            Acceso a endpoints de pedidos
+│   │   │   └── productosApi.js          Acceso a endpoints de productos
 │   │   ├── utils/
-│   │   │   └── imageUrl.js          Normalización de URLs y fallback global
-│   │   ├── App.js                   Rutas de la aplicación
-│   │   ├── index.js                 Montaje de React y proveedores globales
-│   │   └── index.css                Estilos globales y diseño del sistema
-│   └── package.json                 Dependencias y comandos del cliente
+│   │   │   └── imageUrl.js              Resolución de URLs y fallback de imágenes
+│   │   ├── App.js                       Declaración de rutas de la aplicación
+│   │   ├── index.js                     Montaje del root de React
+│   │   └── index.css                    Variables y estilos del sistema
+│   ├── .env.example                     Plantilla de variables del cliente
+│   └── package.json                     Dependencias y comandos del cliente
 │
-├── assets/                          Copia original de los recursos gráficos
-├── docs/
-│   ├── sprints/                     Consignas de los sprints
-│   ├── sprint-01-02-legacy/         Versión anterior archivada (HTML/CSS/JS)
-│   ├── brand.md                     Manual de marca
-│   └── products.md                  Información del catálogo
-│
-├── .agents/                         Skills e instrucciones auxiliares del agente
-├── .husky/                          Hooks de Git del proyecto
-├── AGENTS.md                        Criterios y reglas de trabajo del repositorio
-├── eslint.config.js                 Configuración de ESLint
-├── commitlint.config.cjs            Reglas para mensajes de commit
-├── package.json                     Herramientas y scripts de la raíz
-└── README.md                        Documentación del proyecto
+├── .agents/                             Skills, instrucciones y configuraciones para agentes
+├── .husky/                              Hooks de Git del proyecto
+├── AGENTS.md                            Instrucciones generales y convenciones de desarrollo para agentes
+├── eslint.config.js                     Configuración de ESLint
+├── commitlint.config.cjs                Reglas para mensajes de commit
+├── package.json                         Herramientas y scripts de la raíz
+├── docs/                                Documentación y especificaciones
+└── README.md                            Documentación del proyecto
 ```
 
-### 📜Cómo se organiza
+### 📜 Cómo se organiza
 
-- **`backend/`** contiene la API. `index.js` configura Express y monta middlewares y rutas (`productos.js` para CRUD y `upload.js` para la integración con Vercel Blob); `config/db.js` conecta MongoDB y los controladores implementan la persistencia.
-- **`client/src/`** contiene la aplicación cliente. `App.js` define las rutas principales (`/`, `/productos`, `/productos/:id`, `/carrito`, `/contacto`, `/admin`, `/admin/crear-producto`, `/admin/editar-producto/:id`); `services/productosApi.js` centraliza las peticiones HTTP y adapta la respuesta de la API al modelo en inglés; `ProductsContext.jsx` gestiona la carga y actualización del catálogo; `utils/imageUrl.js` provee la resolución de imágenes con fallback automático.
-- **Administración de catálogo:** `AdminPanel.jsx` brinda métricas de inventario, filtros combinables por nivel de existencias y ordenamiento de columnas; `ProductForm.jsx` maneja altas/ediciones con medidas compuestas, drag and drop y subida directa a Vercel Blob; `ConfirmDeleteModal.jsx` previene eliminaciones accidentales mediante confirmación segura.
-- **Home y piezas destacadas:** `FeaturedCarousel.jsx` presenta los productos destacados con reel continuo para dispositivos móviles, centrado adaptable en grilla estática cuando no hay overflow y pausa interactiva al interactuar (hover/touch).
-- **Carrito:** `CartContext.jsx` administra el carrito de compras y lo conserva en `localStorage` ante recargas.
-- **`client/public/assets/`** contiene los recursos estáticos que el navegador solicita directamente, incluyendo la imagen de mantenimiento (`Imagen Mantenimiento.png`) para respaldo de errores de carga. La carpeta raíz `assets/` conserva los recursos originales del proyecto.
-- **`docs/`** reúne documentación funcional y de marca. `sprint-01-02-legacy/` es una referencia archivada y no forma parte de la aplicación React actual.
-- **Configuración raíz:** `package.json`, ESLint, Husky y Commitlint dan soporte a tareas de desarrollo y colaboración; no son parte del runtime del sitio.
+- **`backend/`** contiene la API Express. Las rutas están modularizadas (`auth.js`, `pedidos.js`, `productos.js` y `upload.js`). Los controladores manejan la lógica de negocio y persistencia en MongoDB con Mongoose. La seguridad se gestiona mediante middlewares centralizados (`verifyToken`, `requireAdmin`, `loginRateLimiter` y `helmet`).
+- **`client/src/`** contiene la aplicación React. El estado global está organizado en Contextos (`AuthContext` para sesión con JWT, `CartContext` con persistencia en `localStorage`, `ProductsContext` para catálogo y `ToastContext` para feedback). Las rutas privadas se encuentran protegidas por el componente `<ProtectedRoute>`.
+- **`services/`** centraliza las peticiones HTTP (`apiClient.js`), inyectando automáticamente el token Bearer en las llamadas que lo requieren y gestionando la URL base de forma uniforme.
+
+---
 
 ## ✅ Alcance y validación
 
-- Catálogo sincronizado desde la API con búsqueda en tiempo real, filtros por categoría y vista detallada por ID.
-- Carrusel de productos destacados adaptable y continuo en la página principal.
-- Panel de administración integral con filtros avanzados de stock, ordenamiento de columnas y confirmación destructiva segura.
-- Formulario de alta y edición de muebles con carga de imágenes a Vercel Blob (incluyendo drag & drop) y especificaciones técnicas estructuradas.
-- Carrito de compras con persistencia local en `localStorage` y cálculo dinámico de totales.
-- Pruebas del frontend: desde `client/`, ejecutá `npm test -- --watchAll=false` (51 pruebas unitarias y de integración pasando).
-- Build de producción: desde `client/`, ejecutá `npm run build`.
+- **Autenticación y usuarios:** Registro con validación en tiempo real y contraseña hasheada (`bcryptjs`); inicio de sesión con JWT y persistencia en `localStorage`; perfil de usuario y cierre de sesión.
+- **Rutas protegidas:** Acceso condicional en frontend mediante `<ProtectedRoute>` para `/perfil`, `/mis-pedidos` y el panel `/admin`, con protección correspondiente a nivel de API (`verifyToken` y `requireAdmin`).
+- **Catálogo interactivo:** Búsqueda en tiempo real, filtros combinados por categoría y nivel de stock, vista detallada por ID y carrusel continuo en página de inicio.
+- **Carrito y Checkout:** Gestión de carrito en `localStorage`, verificación de inicio de sesión previa a la compra, envío de orden a la API con descuento de existencias en MongoDB y modal de confirmación con identificador de compra.
+- **Historial de pedidos:** Visualización cronológica de órdenes personales en `/mis-pedidos` con estados de elaboración.
+- **Panel de administración:** Inventario con métricas, altas/ediciones con medidas compuestas y subida a Vercel Blob, confirmación destructiva y administración de pedidos de clientes.
+- **Seguridad:** Cabeceras HTTP protegidas con Helmet y límite de intentos en el login para mitigar ataques de fuerza bruta.
 
-El formulario de contacto muestra una confirmación de interfaz y no envía datos a un servicio. El checkout es informativo y no procesa pagos.
+### Pruebas automatizadas
+
+- **Pruebas de frontend:** desde `client/`, ejecutá:
+  ```bash
+  npm test -- --watchAll=false
+  ```
+
+- **Pruebas de backend:** desde `backend/`, ejecutá:
+  ```bash
+  npm test
+  ```
+
+---
+
+**Diplomatura Full Stack · ITBA**
+
+---
