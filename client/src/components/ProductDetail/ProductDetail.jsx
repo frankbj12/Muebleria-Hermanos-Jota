@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
@@ -7,17 +7,28 @@ import {
   FALLBACK_PRODUCT_IMAGE,
 } from '../../utils/imageUrl';
 
+const PRODUCT_MODEL_MAP = [
+  {
+    keywords: ['biblioteca', 'recoleta'],
+    model: '/models/biblioteca_recoleta.glb',
+  },
+  { keywords: ['aparador', 'uspallata'], model: '/models/aparador.glb' },
+  { keywords: ['sillon', 'copacabana'], model: '/models/sillon.glb' },
+  { keywords: ['silla', 'cordoba'], model: '/models/silla.glb' },
+  { keywords: ['escritorio', 'costa'], model: '/models/escritorio.glb' },
+];
+
 const getProductModelUrl = (product) => {
   if (!product) return null;
   if (product.modelUrl) return product.modelUrl;
-  const normalizedName = (product.name || '').toLowerCase();
-  if (
-    normalizedName.includes('biblioteca') &&
-    normalizedName.includes('recoleta')
-  ) {
-    return '/models/biblioteca_recoleta.glb';
-  }
-  return null;
+  const normalizedName = (product.name || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+  const match = PRODUCT_MODEL_MAP.find(({ keywords }) =>
+    keywords.every((kw) => normalizedName.includes(kw))
+  );
+  return match ? match.model : null;
 };
 
 /**
@@ -56,8 +67,30 @@ const getCategoryLabel = (cat) => {
 function ProductDetail({ product, onClearSelection }) {
   const { cart, addToCart } = useCart();
   const { addToast } = useToast();
-  const [show3D, setShow3D] = useState(false);
+  const is3DFromUrl =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('vista') === '3d';
+  const [show3D, setShow3D] = useState(is3DFromUrl);
   const [showQrModal, setShowQrModal] = useState(false);
+  const modelViewerRef = useRef(null);
+
+  useEffect(() => {
+    const viewer = modelViewerRef.current;
+    if (!is3DFromUrl || !viewer) return;
+
+    const handleLoad = () => {
+      try {
+        if (typeof viewer.activateAR === 'function') {
+          viewer.activateAR();
+        }
+      } catch {
+        // Algunos navegadores bloquean AR sin toque previo; el botón AR queda visible.
+      }
+    };
+
+    viewer.addEventListener('load', handleLoad);
+    return () => viewer.removeEventListener('load', handleLoad);
+  }, [is3DFromUrl]);
 
   if (!product) {
     return (
@@ -99,8 +132,13 @@ function ProductDetail({ product, onClearSelection }) {
 
   const { name, category, description, price, image, specs, stock } = product;
   const modelUrl = getProductModelUrl(product);
-  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUrl)}`;
+  const qrTargetUrl = (() => {
+    if (typeof window === 'undefined') return '';
+    const url = new URL(window.location.href);
+    url.searchParams.set('vista', '3d');
+    return url.toString();
+  })();
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrTargetUrl)}`;
 
   const productId = product.id ?? product._id;
   const itemInCart = cart.find((item) => (item.id ?? item._id) === productId);
@@ -155,6 +193,7 @@ function ProductDetail({ product, onClearSelection }) {
             <div className="product-gallery">
               {modelUrl && show3D ? (
                 <model-viewer
+                  ref={modelViewerRef}
                   src={modelUrl}
                   alt={`Modelo 3D de ${name}`}
                   ar
