@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
@@ -72,25 +72,6 @@ function ProductDetail({ product, onClearSelection }) {
     new URLSearchParams(window.location.search).get('vista') === '3d';
   const [show3D, setShow3D] = useState(is3DFromUrl);
   const [showQrModal, setShowQrModal] = useState(false);
-  const modelViewerRef = useRef(null);
-
-  useEffect(() => {
-    const viewer = modelViewerRef.current;
-    if (!is3DFromUrl || !viewer) return;
-
-    const handleLoad = () => {
-      try {
-        if (typeof viewer.activateAR === 'function') {
-          viewer.activateAR();
-        }
-      } catch {
-        // Algunos navegadores bloquean AR sin toque previo; el botón AR queda visible.
-      }
-    };
-
-    viewer.addEventListener('load', handleLoad);
-    return () => viewer.removeEventListener('load', handleLoad);
-  }, [is3DFromUrl]);
 
   if (!product) {
     return (
@@ -193,7 +174,6 @@ function ProductDetail({ product, onClearSelection }) {
             <div className="product-gallery">
               {modelUrl && show3D ? (
                 <model-viewer
-                  ref={modelViewerRef}
                   src={modelUrl}
                   alt={`Modelo 3D de ${name}`}
                   ar
